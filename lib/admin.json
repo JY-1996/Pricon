@@ -1,0 +1,14 @@
+{
+  "atk":{
+    "flag": [
+      "a",
+      "-a",
+      "atk",
+      "-atk"
+    ]
+  },
+  "cancel": {
+    "no_reserve": "<@[id]>无法搜寻此会员",
+    "reserve_cancel": "<@[id]>已删除<@[member]>"
+  }
+}

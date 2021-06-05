@@ -1,0 +1,26 @@
+{
+  "atk":{
+    "no_reserve":"<@[id]>进攻失败!!\n请先预约或使用!atkx进攻！！",
+    "diff_reserve":"<@[id]>进攻失败!!\n您已经预约[boss]王！！",
+    "attacking": "<@[id]>正在进攻中。。。",
+    "attack": "<@[id]>向[boss]王发起了进攻！！"
+  },
+  "boss":{
+    "no_reserve": "<@[id]>进攻失败!!\n请先预约或使用!atkx进攻！！",
+    "damage": "<@[id]>对[boss]王造成了[hp]伤害！！",
+    "should_died": "\n[boss]王的剩余血量是0\n请执行!died指令！！",
+    "hp_left": "\n[boss]王的剩余血量是[hp]萬！！"
+  },
+  "cancel":{
+    "cancel_reserve": "<@[id]>取消预约！！",
+    "no_reserve": "<@[id]>无法搜寻预约！！"
+  },
+  "died": {
+    "boss_fainted": "[boss]王倒下了！！\n现在是[next_boss]王！！预约者：\n",
+    "member_info": "<@[id]> [comment]\n"
+  },
+  "reserve": {
+    "repeated": "<@[id]>预约失败！！\n已预约了[boss]王！！",
+    "reserved": "<@[id]>预约了[boss]王！！"
+  }
+}

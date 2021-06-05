@@ -1,0 +1,81 @@
+{
+  "list": {
+    "reserve": {
+      "name": "reserve",
+      "shortDescription": "预约指令",
+      "alias": [
+        "r",
+        "reserve"
+      ],
+      "displayAlias": "r | reserve",
+      "syntax": "!r <王> <内容>",
+      "description": "新增预约記錄\n"
+    },
+    "cancel": {
+      "name": "cancel",
+      "shortDescription": "取消指令",
+      "alias": [
+        "c",
+        "cancel"
+      ],
+      "displayAlias": "c | cancel",
+      "syntax": "!c [周目] [王] [-all]",
+      "description": "刪除预约\n"
+    },
+    "atk": {
+      "name": "atk",
+      "shortDescription": "进攻指令",
+      "alias": [
+        "a",
+        "atk"
+      ],
+      "displayAlias": "a | atk",
+      "syntax": "!atk",
+      "description": "开始进攻，必须先预约 \n"
+    },
+    "atkx": {
+      "name": "atkx",
+      "shortDescription": "强行进攻指令",
+      "alias": [
+        "ax",
+        "atkx"
+      ],
+      "displayAlias": "ax | atkx",
+      "syntax": "!atkx",
+      "description": "强行进攻，请先得到管理员允许 \n"
+    },
+    "boss": {
+      "name": "boss",
+      "shortDescription": "报告伤害指令",
+      "alias": [
+        "b",
+        "boss"
+      ],
+      "displayAlias": "b | boss",
+      "syntax": "!b [伤害]",
+      "description": "报告伤害，如果已击杀，请使用!died\n"
+    },
+    "died": {
+      "name": "died",
+      "shortDescription": "击杀指令",
+      "alias": [
+        "d",
+        "died"
+      ],
+      "displayAlias": "d | died",
+      "syntax": "!d [周目] [王] [-all]",
+      "description": "击杀指令，并列出下个王的预约者\n"
+    }
+  },
+  "generalHelp": {
+      "display":"接受名稱",
+      "syntax":"指令語法",
+      "description":"用途",
+      "invalid_command_name": "❕ 未找到相應的指令。請使用 `!h` 查看指令列表。",
+      "list_title": "指令列表",
+      "list_title_admin": "管理員指令列表",
+      "list_footer": "請使用 !h <指令名> 以獲得更詳細資訊",
+      "admin_list_footer": "▫ 為系統管理員指令",
+      "detail_footer": "<必須輸入> [視乎情況使用]\nA | B：AB作用相同"
+   }
+}

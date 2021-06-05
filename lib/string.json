@@ -1,0 +1,15 @@
+{
+  "common": {
+    "waiting": "等待中。。。",
+    "boss_out_of_range": "❌ 请选择（1-5）王"
+  },
+  "prompt": {
+    "week": "❔ 請輸入周目",
+    "boss": "❔ 請輸入王(1-5)",
+    "type": "❔ 請輸入刀種",
+    "user": "❔ 請輸入Discord成員ID/@mention",
+    "not_a_member": "❔ 請輸入有效的Discord成員/@mention。",
+    "not_a_number": "❌ 請輸入有效數字",
+    "not_a_channel": "❌ 請輸入有效頻道"
+  }
+}
