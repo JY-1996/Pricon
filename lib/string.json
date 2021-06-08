@@ -1,7 +1,9 @@
 {
   "common": {
     "waiting": "等待中。。。",
-    "boss_out_of_range": "❌ 请选择（1-5）王"
+    "boss_out_of_range": "❌ 请选择（1-5）王",
+    "no_knife_channel": "❌ 未設置報刀頻道",
+    "wrong_knife_channel": "❌ 請在報刀頻道[channel]報刀"
   },
   "prompt": {
     "week": "❔ 請輸入周目",

@@ -1,13 +1,13 @@
 const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
-const UtilLib = require("../../api/util-lib");
-const { MessageEmbed } = require('discord.js');
+const Knife = require("../../classes/Knife");
+const { DatabaseManager } = require("../../api/storage-lib");
 
 class ReserveCommand extends Command {
    constructor() {
       super("reserve", {
-         aliases: ['r','reserve'],
+         aliases: ['r','reserve','預約'],
          cooldown: 3000,
          channel: 'guild',
          args: [
@@ -33,10 +33,12 @@ class ReserveCommand extends Command {
       });
    };
 
-   async exec(message, args) {
+   async exec(message, args) {   
+      const guildID = message.guild.id
       const clientID = message.author.id
+      const clientName = message.author.username
       const db = this.client.db
-
+      
       let loadingMsg = await message.channel.send(strings.common.waiting);
       
       const boss = args.boss;
@@ -50,36 +52,48 @@ class ReserveCommand extends Command {
       if (args.comment) {
         comment = args.comment;
       }
-      const member_detail = await message.guild.members.fetch(clientID)
-      const member = UtilLib.extractInGameName(member_detail.displayName, false)
       
-      let knifeRef = db.collection('knife').doc(clientID)
-      let knife = await knifeRef.get();
-      if (knife.exists) {
-        loadingMsg.edit(command.reserve.repeated.replace('[id]', clientID).replace('[boss]',knife.data().boss))
-        return
-      } 
+      const knife_channel = await DatabaseManager.getchannelQuery(guildID, 'knife')
+      if(!knife_channel){
+         loadingMsg.edit(strings.common.no_knife_channel);
+         return
+      }else if(knife_channel != message.channel.id){
+         loadingMsg.edit(strings.common.wrong_knife_channel.replace('[channel]', `<#${knife_channel}>`));
+         return
+      }
 
-      await knifeRef.set({
+      let serverKnifeRef = DatabaseManager.getKnifeQuery(guildID)
+      let serverKnife = await serverKnifeRef.get();
+
+      let serverSettingRef = db.collection('servers').doc(guildID).collection('setting').doc('knife_channel')
+      let serverSetting = await serverSettingRef.get();
+      if(serverSetting.exists && serverSetting.data().knife_count){
+        if(serverKnife.size >= serverSetting.data().knife_count){
+            loadingMsg.edit(command.reserve.knife_count_exceed.replace('[id]', clientID).replace('[count]', serverSetting.data().knife_count).replace('[current]', serverKnife.size))
+            return
+        }
+      }
+  
+      let serverCurrentBoss = await serverKnifeRef.where('boss','==', boss).get()
+      if(!serverCurrentBoss.empty){
+          loadingMsg.edit(command.reserve.repeated.replace('[id]', clientID))
+            return
+      }
+      
+      await db.collection('servers').doc(guildID).collection('knife').doc().set({
           boss: boss,
           comment: comment,
           time: Date.now(),
-          member:  member,
-          member_id: message.author.id,
+          member:  clientName,
+          member_id: clientID,
           status: 'processing'
       })
 
-      loadingMsg.edit(command.reserve.reserved.replace('[id]', clientID).replace('[boss]',boss));
+      loadingMsg.edit(command.reserve.reserved.replace('[id]', clientID).replace('[boss]',boss).replace('[comment]',comment));
       
-      // const embed = new MessageEmbed();
-      // embed.setColor("#90ffff");
-      // embed.addField("自己",'改', true);
-      // loadingMsg.delete();
-      // return message.channel.send(embed)
-      this.client.emit("knifeUpdate", message.guild);
+      this.client.emit("reportUpdate", message.guild);
+      this.client.emit("logUpdate", message.guild,command.reserve.log.replace('[member]', clientName).replace('[boss]',boss).replace('[comment]',comment));
       return;
-
-    
    };
 
 }

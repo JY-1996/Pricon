@@ -1,4 +1,6 @@
-const admin = require("firebase-admin");
+// const { createConnection } = require('mysql');
+// const database = require('mysql')
+const admin = require('firebase-admin')
 const serviceAccount = require("../private_keys/pricon-38956-firebase-adminsdk-d6snq-994f1b8116.json");
 
 class Database {
@@ -9,5 +11,4 @@ class Database {
       .firestore();
   }
 }
-
 module.exports = new Database().db

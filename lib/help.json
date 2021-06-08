@@ -63,19 +63,109 @@
         "died"
       ],
       "displayAlias": "d | died",
-      "syntax": "!d [周目] [王] [-all]",
+      "syntax": "!d [王]",
       "description": "击杀指令，并列出下个王的预约者\n"
+    },
+    "list": {
+      "name": "list",
+      "shortDescription": "列表指令",
+      "alias": [
+        "l",
+        "list"
+      ],
+      "displayAlias": "l | list",
+      "syntax": "!l",
+      "description": "列出所有預約\n"
+    }
+  },
+  "admin": {
+    "boss": {
+      "name": "AdminBoss",
+      "shortDescription": "設置指令",
+      "alias": [
+        "ab",
+        "adminboss"
+      ],
+      "displayAlias": "ab | adminboss",
+      "syntax": "!ab",
+      "description": "設置王的血量\n"
+    },
+    "cancel": {
+      "name": "AdminCancel",
+      "shortDescription": "取消指令",
+      "alias": [
+        "ac",
+        "admincancel"
+      ],
+      "displayAlias": "ac | admincancel",
+      "syntax": "!ac [會員]",
+      "description": "取消會員預約\n"
+    },
+    "knife": {
+      "name": "Knife",
+      "shortDescription": "設置報刀頻道",
+      "alias": [
+        "knife",
+        "報刀頻道"
+      ],
+      "displayAlias": "knife | 報刀頻道",
+      "syntax": "!knife | !knife [頻道]",
+      "description": "設置刀頻道\n"
+    },
+    "log": {
+      "name": "Log",
+      "shortDescription": "設置指令記錄",
+      "alias": [
+        "log",
+        "報刀頻道"
+      ],
+      "displayAlias": "log | 指令記錄",
+      "syntax": "!log | !log [頻道]",
+      "description": "設置指令記錄\n"
+    },
+    "report": {
+      "name": "Report",
+      "shortDescription": "設置報刀表",
+      "alias": [
+        "report",
+        "報刀表"
+      ],
+      "displayAlias": "report | 報刀表",
+      "syntax": "!report | !report [頻道]",
+      "description": "設置報刀表\n"
+    },
+    "setup": {
+      "name": "Setup",
+      "shortDescription": "重置",
+      "alias": [
+        "setup",
+        "重置"
+      ],
+      "displayAlias": "setup | 重置",
+      "syntax": "!setup",
+      "description": "重置\n"
+    },
+    "reset": {
+      "name": "Reset",
+      "shortDescription": "設置當前王",
+      "alias": [
+        "reset"
+      ],
+      "displayAlias": "reset",
+      "syntax": "!reset [週目] [王]",
+      "description": "設置當前階段，週目，王\n"
     }
   },
   "generalHelp": {
-      "display":"接受名稱",
-      "syntax":"指令語法",
-      "description":"用途",
-      "invalid_command_name": "❕ 未找到相應的指令。請使用 `!h` 查看指令列表。",
-      "list_title": "指令列表",
-      "list_title_admin": "管理員指令列表",
-      "list_footer": "請使用 !h <指令名> 以獲得更詳細資訊",
-      "admin_list_footer": "▫ 為系統管理員指令",
-      "detail_footer": "<必須輸入> [視乎情況使用]\nA | B：AB作用相同"
-   }
+    "display": "接受名稱",
+    "syntax": "指令語法",
+    "description": "用途",
+    "invalid_command_name": "❕ 未找到相應的指令。請使用 `!h` 查看指令列表。",
+    "list_title": "指令列表",
+    "list_title_admin": "管理員指令列表",
+    "list_footer": "請使用 !h <指令名> 以獲得更詳細資訊",
+    "list_admin_footer": "請使用 !h <指令名> 以獲得更詳細資訊",
+    "admin_list_footer": "▫ 為系統管理員指令",
+    "detail_footer": "<必須輸入> [視乎情況使用]\nA | B：AB作用相同"
+  }
 }

@@ -1,14 +1,18 @@
 {
-  "atk":{
-    "flag": [
-      "a",
-      "-a",
-      "atk",
-      "-atk"
-    ]
+  "setup":{
+    "success": "機器人設置成功",
+    "repeat": "機器人已設置",
+    "report": "已設置[channel]為報刀表",
+    "log": "已設置[channel]為指令記錄",
+    "knife": "已設置[channel]為報刀頻道"
+
   },
   "cancel": {
-    "no_reserve": "<@[id]>无法搜寻此会员",
-    "reserve_cancel": "<@[id]>已删除<@[member]>"
+    "no_reserve": "<@[id]>無法搜尋此會員",
+    "reserve_cancel": "<@[id]>已刪除[member]的預約"
+  },
+  "reset": {
+    "title": "進度重置",
+    "field": "[phase]階段[week]周[boss]王"
   }
 }

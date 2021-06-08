@@ -1,26 +1,35 @@
 {
   "atk":{
-    "no_reserve":"<@[id]>进攻失败!!\n请先预约或使用!atkx进攻！！",
-    "diff_reserve":"<@[id]>进攻失败!!\n您已经预约[boss]王！！",
-    "attacking": "<@[id]>正在进攻中。。。",
-    "attack": "<@[id]>向[boss]王发起了进攻！！"
+    "no_reserve":"<@[id]>進攻失敗!!\n請先預約或使用!atkx進攻！！",
+    "diff_reserve":"<@[id]>進攻失敗!!\n您已經預約[boss]王！！",
+    "attack": "<@[id]>向[boss]王發起了進攻！！",
+    "log": "[member]向[boss]王發起了進攻！！"
   },
   "boss":{
-    "no_reserve": "<@[id]>进攻失败!!\n请先预约或使用!atkx进攻！！",
-    "damage": "<@[id]>对[boss]王造成了[hp]伤害！！",
-    "should_died": "\n[boss]王的剩余血量是0\n请执行!died指令！！",
-    "hp_left": "\n[boss]王的剩余血量是[hp]萬！！"
+    "damage": "<@[id]>對[boss]王造成了[hp]萬的傷害！！",
+    "should_died": "\n[boss]王的剩餘血量是0\n請執行!died指令！！",
+    "hp_left": "\n[boss]王的剩余血量是[hp]萬！！",
+    "log": "[member]对[boss]王造成了[hp]萬的伤害！！"
   },
   "cancel":{
-    "cancel_reserve": "<@[id]>取消预约！！",
-    "no_reserve": "<@[id]>无法搜寻预约！！"
+    "cancel_reserve": "<@[id]>取消預約！！",
+    "no_reserve": "<@[id]>無法搜尋預約！！",
+    "log": "[member]取消預約！！"
   },
   "died": {
-    "boss_fainted": "[boss]王倒下了！！\n现在是[next_boss]王！！预约者：\n",
-    "member_info": "<@[id]> [comment]\n"
+    "boss_fainted": "[boss]王倒下了！！\n現在是[next_boss]王！！預約者：\n",
+    "member_info": "<@[id]> [comment]\n",
+    "log": "[boss]王倒下了！！現在是[next_boss]王！！"    
   },
   "reserve": {
-    "repeated": "<@[id]>预约失败！！\n已预约了[boss]王！！",
-    "reserved": "<@[id]>预约了[boss]王！！"
+    "repeated": "<@[id]>預約重複！！",
+    "reserved": "<@[id]>預約了[boss]王！！備註：[comment]",
+    "knife_count_exceed" : "<@[id]>已經超出了[count]個預約！！目前預約數:[current]",
+    "log": "[member]預約了[boss]王！！備註：[comment]"
+  },
+  "list":{
+    "title": "<@[id]>的預約有\n",
+    "reserve": "[boss]王，備註:[comment]\n",
+    "no_reserve": "<@[id]>暫時沒任何預約"
   }
 }
