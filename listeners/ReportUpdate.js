@@ -1,6 +1,6 @@
 const { Listener } = require('discord-akairo')
 const UtilLib = require("../api/util-lib")
-const CurrentBossDetail = require("../classes/CurrentBossDetail");
+const DatabaseManager = require("../classes/DatabaseManager");
 
 class ReportUpdateListener extends Listener { 
   constructor() {
@@ -12,24 +12,21 @@ class ReportUpdateListener extends Listener {
 
    async exec(guild) {
     const db = this.client.db
+    const guildID = guild.id
+    const dm = new DatabaseManager(db,guildID)
     
     let tableText = ''
     
-    const serverQueryRef = db.collection('servers').doc(guild.id).collection("setting").doc('report_channel');
-    const serverQuery = await serverQueryRef.get()
-
-    if(!serverQuery.exists){
+    const report_channel = await dm.getChannel('report')
+    if(!report_channel){
       return
     }
-    const serverSettings = serverQuery.data()
 
-    const boardChannel = this.client.util.resolveChannel(serverSettings.id, guild.channels.cache); 
+    const boardChannel = this.client.util.resolveChannel(report_channel, guild.channels.cache); 
     if(!boardChannel){
-        await serverQueryRef.delete()
         return 
     }
-    const curr_boss_detail = new CurrentBossDetail(db);
-    const boss_detail = await curr_boss_detail.getDetail(guild.id)
+    const boss_detail = await dm.getBossDetail()
     const current_boss = boss_detail.current_boss
     const current_phase = boss_detail.current_phase
     const current_week = boss_detail.current_week
@@ -37,8 +34,7 @@ class ReportUpdateListener extends Listener {
 
     tableText += '現在為第' + current_phase + '階段' + current_week + '周'+ current_boss + '王，剩餘血量' + current_boss_hp + '萬\n--------------------------------------------------\n';
 
-    const knifeQueryRef =  db.collection('servers').doc(guild.id).collection('knife').orderBy('time', 'asc')
-    const knifeQuery = await knifeQueryRef.get()
+    const knifeQuery = await dm.getAllKnife()
     let array = [[],[],[],[],[]]
 
     knifeQuery.forEach(doc => {
@@ -60,28 +56,19 @@ class ReportUpdateListener extends Listener {
             tableText += '`' + (key + 1) + '王 無人預約                               `\n'
         }
     })
-    // const boardMessage = await boardChannel.send(tableText);
-    // await serverQueryRef.update({ id: boardMessage.id })
-
-    if (!serverSettings.id) {
-         // board message is not defined, send board message to the channel and save the id to database
-         const boardMessage = await boardChannel.send(tableText);
-         await serverQueryRef.update({ message: boardMessage.id })
-         return;
-
+    const board_message = await dm.getReportMessage()
+    if (!board_message) {
+        const boardMessage = await boardChannel.send(tableText);
+        await dm.setReportMessage(boardMessage.id)
+        return;
       } else {
-         // check if board_message message exist
          try {
-
-            // try to fetch the board message
-            const boardMessage = await boardChannel.messages.fetch(serverSettings.message)
+            const boardMessage = await boardChannel.messages.fetch(board_message)
             boardMessage.edit(tableText);
-
          } catch (e) {
-            // actually catching the discord unknown message error due to the message being removed or in different channel
             console.log(e)
             const boardMessage = await boardChannel.send(tableText)
-            await serverQueryRef.update({ message: boardMessage.id })
+            await dm.setReportMessage(boardMessage.id)
 
          }
       };

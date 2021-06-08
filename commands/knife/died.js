@@ -1,9 +1,7 @@
 const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
-const UtilLib = require("../../api/util-lib");
-const CurrentBossDetail = require("../../classes/CurrentBossDetail");
-const Global = require("../../classes/Global");
+const DatabaseManager  = require("../../classes/DatabaseManager");
 
 class DiedCommand extends Command {
    constructor() {
@@ -25,11 +23,11 @@ class DiedCommand extends Command {
       const guildID = message.guild.id
       const clientID = message.author.id
       const db = this.client.db
+      const dm = new DatabaseManager(db,guildID,clientID)
 
       let loadingMsg = await message.channel.send(strings.common.waiting);
       
-      const global = new Global(db);
-      const knife_channel = await global.getKnifeChannel(guildID)
+      const knife_channel = await dm.getChannel('knife')
       if(!knife_channel){
          loadingMsg.edit(strings.common.no_knife_channel);
          return
@@ -38,30 +36,25 @@ class DiedCommand extends Command {
          return
       }
 
-      const member_detail = await message.guild.members.fetch(clientID)
-      const member = UtilLib.extractInGameName(member_detail.displayName, false)
-
-      const curr_boss_detail = new CurrentBossDetail(db);
-      const boss_detail = await curr_boss_detail.getDetail(guildID)
+      const boss_detail = await dm.getBossDetail()
 
       const total_boss_died = boss_detail.total_boss_died    
       const current_boss = boss_detail.current_boss
       const next_boss = current_boss + 1 == 6 ? 1 : current_boss + 1
 
-      await curr_boss_detail.nextBoss(guildID)
+      await dm.nextBoss()
       //remove knife
-      let serverKnifeRef = db.collection('servers').doc(guildID).collection('knife').where('member_id','==',clientID).where('boss','==', current_boss).where('status','in', ['processing', 'attacking'])
-      let serverKnife = await serverKnifeRef.get();
+      let serverKnife = await dm.getKnifeBossQuery(current_boss)
       if (!serverKnife.empty) {
         await serverKnife.forEach(doc => {
-          db.collection('servers').doc(guildID).collection('knife').doc(doc.id).update({status:'done'})
+          dm.deleteKnife(doc.id)
         })
       }
 
       let text = command.died.boss_fainted.replace('[boss]', current_boss).replace('[next_boss]', next_boss)
       //get next boss member
-      let knifeBossQuery = await db.collection('servers').doc(guildID).collection('knife').where('boss','==',next_boss).get()
-      knifeBossQuery.forEach( doc => {
+      let knifeBoss = await dm.getKnifeBossQuery(next_boss)
+      knifeBoss.forEach( doc => {
         const data = doc.data()
         text += command.died.member_info.replace('[id]',data.member_id).replace('[comment]', data.comment)
       })

@@ -1,8 +1,7 @@
 const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
-const CurrentBossDetail = require("../../classes/CurrentBossDetail");
-const Global = require("../../classes/Global");
+const DatabaseManager  = require("../../classes/DatabaseManager");
 
 class AtkCommand extends Command {
   constructor() {
@@ -23,27 +22,25 @@ class AtkCommand extends Command {
     const clientID = message.author.id
     const clientName = message.author.username
     const db = this.client.db
+    const dm = new DatabaseManager(db,guildID,clientID)
 
     let loadingMsg = await message.channel.send(strings.common.waiting)
     
-    const global = new Global(db);
-      const knife_channel = await global.getKnifeChannel(guildID)
-      if(!knife_channel){
-         loadingMsg.edit(strings.common.no_knife_channel);
-         return
-      }else if(knife_channel != message.channel.id){
-         loadingMsg.edit(strings.common.wrong_knife_channel.replace('[channel]', `<#${knife_channel}>`));
-         return
-      }
+    const knife_channel = await dm.getChannel('knife')
+    if(!knife_channel){
+        loadingMsg.edit(strings.common.no_knife_channel);
+        return
+    }else if(knife_channel != message.channel.id){
+        loadingMsg.edit(strings.common.wrong_knife_channel.replace('[channel]', `<#${knife_channel}>`));
+        return
+    }
 
-    const curr_boss_detail = new CurrentBossDetail(db);
-    const boss_detail = await curr_boss_detail.getDetail(guildID)
+    const boss_detail = await dm.getBossDetail()
     const current_boss = boss_detail.current_boss
 
-    let serverKnifekRef = await db.collection('servers').doc(guildID).collection('knife').where('member_id','==',clientID).where('boss','==', current_boss).where('status','in', ['processing', 'attacking'])
-    let serverKnife = await serverKnifekRef.get()
+    let knife = await dm.getKnifeBossQuery(current_boss)
 
-    if (serverKnife.empty) {
+    if (knife.empty) {
       loadingMsg.edit(command.atk.no_reserve.replace('[id]',clientID))
       return
     }

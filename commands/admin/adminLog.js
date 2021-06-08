@@ -2,6 +2,8 @@ const { Command } = require("discord-akairo");
 const { Permissions } = require('discord.js');
 const strings = require("../../lib/string.json");
 const admin = require("../../lib/admin.json");
+const DatabaseManager  = require("../../classes/DatabaseManager");
+
 
 class AdminLogCommand extends Command {
    constructor() {
@@ -25,25 +27,17 @@ class AdminLogCommand extends Command {
     };
 
     async exec(message, args) {
-      let loadingMsg = await message.channel.send(strings.common.waiting);
-
       const db = this.client.db
       const guildID = message.guild.id;
-      let channelID = message.channel.id
+      const channelID = message.channel.id
+      const dm = new DatabaseManager(db,guildID)
 
-      const serverQueryRef = this.client.db
-         .collection('servers')
-         .doc(guildID)
-         .collection('setting')
-         .doc('log_channel')
-      let serverQuery = serverQueryRef.get() 
+      let loadingMsg = await message.channel.send(strings.common.waiting);
+
       if (args.channel) {
           channelID = args.channel.id
       } 
-      if(serverQuery.exists){   
-          await serverQueryRef.delete()
-      }
-      await serverQueryRef.set({id: channelID})
+      await dm.setLogChannel(channelID)
       loadingMsg.edit(admin.setup.report.replace("[channel]", `<#${channelID}>`));
       // this.client.emit("logUpdate", message.guild);
     };

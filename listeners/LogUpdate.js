@@ -1,6 +1,5 @@
 const { Listener } = require('discord-akairo')
-const UtilLib = require("../api/util-lib")
-const CurrentBossDetail = require("../classes/CurrentBossDetail");
+const DatabaseManager = require("../classes/DatabaseManager");
 
 class LogUpdateListener extends Listener { 
   constructor() {
@@ -12,14 +11,14 @@ class LogUpdateListener extends Listener {
 
   async exec(guild,message) {
     const db = this.client.db
-    const serverQueryRef = db.collection('servers').doc(guild.id).collection("setting").doc('log_channel');
-    const serverQuery = await serverQueryRef.get()
+    const guildID = guild.id
 
-    if(!serverQuery.data()){
-      return
-    }
-    const serverSettings = serverQuery.data()
-    const boardChannel = this.client.util.resolveChannel(serverSettings.id, guild.channels.cache); 
+    const dm = new DatabaseManager(db,guildID)
+    const log_channel = await dm.getChannel('log')
+      if(!log_channel){
+         return
+      }
+    const boardChannel = this.client.util.resolveChannel(log_channel, guild.channels.cache); 
     const boardMessage = await boardChannel.send(message);
     return;
   }

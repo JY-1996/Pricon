@@ -1,9 +1,9 @@
 const { Command } = require("discord-akairo");
 const { Permissions } = require('discord.js');
 const strings = require("../../lib/string.json");
-const CurrentBossDetail = require("../../classes/CurrentBossDetail");
 const admin = require("../../lib/admin.json");
 const { MessageEmbed } = require('discord.js');
+const DatabaseManager  = require("../../classes/DatabaseManager");
 
 class AdminResetCommand extends Command {
    constructor() {
@@ -42,6 +42,7 @@ class AdminResetCommand extends Command {
       const guildID = message.guild.id
       const clientID = message.author.id
       const db = this.client.db
+      const dm = new DatabaseManager(db,guildID,clientID)
       
       let loadingMsg = await message.channel.send(strings.common.waiting);
 
@@ -49,12 +50,12 @@ class AdminResetCommand extends Command {
       const boss = args.boss
 
       const total_boss_died = (week - 1) * 5 + boss -1  
-      const curr_boss_detail = new CurrentBossDetail(db);
-      const detail = await curr_boss_detail.resetBoss(guildID,total_boss_died)
+
+      const detail = await dm.resetBoss(week,boss)
       
       const embed = new MessageEmbed();
       embed.setColor("#90ffff");
-      embed.setTitle(admin.reset.title + ' | ' +admin.reset.field.replace('[phase]', detail.phase).replace('[week]', detail.week).replace('[boss]', detail.boss));
+      embed.setTitle(admin.reset.title + ' | ' +admin.reset.field.replace('[week]', week).replace('[boss]', boss));
       loadingMsg.delete()
       await message.channel.send(embed);
       this.client.emit("reportUpdate", message.guild);

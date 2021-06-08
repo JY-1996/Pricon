@@ -1,8 +1,8 @@
 const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
-const UtilLib = require("../../api/util-lib");
-const Global = require("../../classes/Global");
+const DatabaseManager  = require("../../classes/DatabaseManager");
+
 
 class CancelCommand extends Command {
    constructor() {
@@ -33,11 +33,11 @@ class CancelCommand extends Command {
       const clientID = message.author.id
       const clientName = message.author.username
       const db = this.client.db
+      const dm = new DatabaseManager(db,guildID,clientID)
 
       let loadingMsg = await message.channel.send(strings.common.waiting);
 
-      const global = new Global(db);
-      const knife_channel = await global.getKnifeChannel(guildID)
+      const knife_channel = await dm.getChannel('knife')
       if(!knife_channel){
          loadingMsg.edit(strings.common.no_knife_channel);
          return
@@ -52,16 +52,13 @@ class CancelCommand extends Command {
          return
       }
 
-      let serverKnifeRef = db.collection('servers').doc(guildID).collection('knife')         .where('member_id','==',clientID)
-              .where('boss','==', boss)
-              .where('status','in', ['processing', 'attacking'])
-      let serverKnife = await serverKnifeRef.get()
+      let serverKnife = await dm.getKnifeBossQuery(boss)
       if (serverKnife.empty) {
         loadingMsg.edit(command.cancel.no_reserve.replace('[id]',clientID));
         return
       }
       await serverKnife.forEach(doc => {
-          db.collection('servers').doc(guildID).collection('knife').doc(doc.id).delete()
+          dm.deleteKnife(doc.id)
       })
       
       loadingMsg.edit(command.cancel.cancel_reserve.replace('[id]',clientID));

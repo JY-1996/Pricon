@@ -2,7 +2,7 @@ const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
 const Knife = require("../../classes/Knife");
-const { DatabaseManager } = require("../../api/storage-lib");
+const DatabaseManager = require("../../classes/DatabaseManager");
 
 class ReserveCommand extends Command {
    constructor() {
@@ -34,15 +34,15 @@ class ReserveCommand extends Command {
    };
 
    async exec(message, args) {   
+      const db = this.client.db
       const guildID = message.guild.id
       const clientID = message.author.id
       const clientName = message.author.username
-      const db = this.client.db
+      const dm = new DatabaseManager(db,guildID,clientID)
       
       let loadingMsg = await message.channel.send(strings.common.waiting);
       
       const boss = args.boss;
-      
       if (boss < 1 || boss > 5) {
          loadingMsg.edit(strings.common.boss_out_of_range);
          return
@@ -53,7 +53,7 @@ class ReserveCommand extends Command {
         comment = args.comment;
       }
       
-      const knife_channel = await DatabaseManager.getchannelQuery(guildID, 'knife')
+      const knife_channel = await dm.getChannel('knife')
       if(!knife_channel){
          loadingMsg.edit(strings.common.no_knife_channel);
          return
@@ -62,25 +62,24 @@ class ReserveCommand extends Command {
          return
       }
 
-      let serverKnifeRef = DatabaseManager.getKnifeQuery(guildID)
-      let serverKnife = await serverKnifeRef.get();
+      let serverKnife = await dm.getKnifeQuery()
 
-      let serverSettingRef = db.collection('servers').doc(guildID).collection('setting').doc('knife_channel')
-      let serverSetting = await serverSettingRef.get();
-      if(serverSetting.exists && serverSetting.data().knife_count){
-        if(serverKnife.size >= serverSetting.data().knife_count){
-            loadingMsg.edit(command.reserve.knife_count_exceed.replace('[id]', clientID).replace('[count]', serverSetting.data().knife_count).replace('[current]', serverKnife.size))
+      let boss_detail =  await dm.getBossDetail()
+      let knifeCount = boss_detail.knife_count
+      if(knifeCount){
+        if(serverKnife.size >= knifeCount){
+            loadingMsg.edit(command.reserve.knife_count_exceed.replace('[id]', clientID).replace('[count]', knifeCount).replace('[current]', serverKnife.size))
             return
         }
       }
   
-      let serverCurrentBoss = await serverKnifeRef.where('boss','==', boss).get()
+      let serverCurrentBoss = await dm.getKnifeBossQuery(boss)
       if(!serverCurrentBoss.empty){
           loadingMsg.edit(command.reserve.repeated.replace('[id]', clientID))
             return
       }
       
-      await db.collection('servers').doc(guildID).collection('knife').doc().set({
+      await dm.setKnife({
           boss: boss,
           comment: comment,
           time: Date.now(),

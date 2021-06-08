@@ -1,9 +1,7 @@
 const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
-const UtilLib = require("../../api/util-lib");
-const CurrentBossDetail = require("../../classes/CurrentBossDetail");
-const Global = require("../../classes/Global");
+const DatabaseManager  = require("../../classes/DatabaseManager");
 
 class AtkCommand extends Command {
    constructor() {
@@ -21,20 +19,16 @@ class AtkCommand extends Command {
       });
    };
 
-  //  async userPermissions(member) {
-  //     return SettingsManager.checkMember(member);
-  //  }
-
    async exec(message, args) {
       const guildID = message.guild.id
       const clientID = message.author.id
       const clientName = message.author.username
       const db = this.client.db;
+      const dm = new DatabaseManager(db,guildID,clientID)
 
       let loadingMsg = await message.channel.send(strings.common.waiting);
      
-      const global = new Global(db);
-      const knife_channel = await global.getKnifeChannel(guildID)
+      const knife_channel = await dm.getChannel('knife')
       if(!knife_channel){
          loadingMsg.edit(strings.common.no_knife_channel);
          return
@@ -43,28 +37,23 @@ class AtkCommand extends Command {
          return
       }
 
-      const curr_boss_detail = new CurrentBossDetail(db);
-      const boss_detail = await curr_boss_detail.getDetail(guildID)
+      const boss_detail = await dm.getBossDetail()
       const current_boss = boss_detail.current_boss
 
-      let serverKnifeRef = await db.collection('servers').doc(guildID).collection('knife').where('member_id','==',clientID).where('boss','==', current_boss).where('status','in', ['processing', 'attacking'])
-      let serverKnife = await serverKnifeRef.get()
-
+      let serverKnife = await dm.getKnifeBossQuery(current_boss)
       if(serverKnife.empty){
-        const member_detail = await message.guild.members.fetch(clientID)
-        const member = UtilLib.extractInGameName(member_detail.displayName, false)
-        await serverKnifeRef.set({
+        await dm.setKnife({
             boss: current_boss,
-            comment: '',
+            comment: comment,
             time: Date.now(),
-            member:  member,
-            member_id:  clientID,
+            member:  clientName,
+            member_id: clientID,
             status: 'attacking'
-            })
+        })
       }
       loadingMsg.edit(command.atk.attack.replace('[id]',clientID).replace('[boss]',current_boss))
       this.client.emit("reportUpdate", message.guild)
-       this.client.emit("logUpdate", message.guild,command.atk.log.replace('[member]', clientName).replace('[boss]',current_boss))
+      this.client.emit("logUpdate", message.guild,command.atk.log.replace('[member]', clientName).replace('[boss]',current_boss))
       return
    };
 
