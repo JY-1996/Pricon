@@ -12,7 +12,8 @@ class BotClient extends AkairoClient {
       console.log("\n------------------------------------------------\n");
 
       console.log("Starting bot")
-      // this.settings = new SettingsManager(this.db)
+
+      this.settings = new SettingsManager(this.db)
       this.commandHandler = new CommandHandler(this, {
          directory: "./commands/",
          defaultCooldown: 1000,
@@ -23,23 +24,20 @@ class BotClient extends AkairoClient {
             if (message.guild) {
                let doc = await this.cachedb.findOne({ _id: message.guild.id });
                if (!doc) {
-                  // let dbSettings = await this.settings.getAll(message.guild.id)
-                  // if (!dbSettings || !dbSettings.prefix) {
-                  //    // write to cache
-                  //    this.cachedb.insert({ _id: message.guild.id, prefix: "!" });
-                  //    return "!";
-                  // } else {
-                  //    const { prefix } = dbSettings
-                  //    this.cachedb.insert({
-                  //       _id: message.guild.id,
-                  //       prefix
-                  //    });
+                  let dbSettings = await this.settings.getAll(message.guild.id)
+                  if (!dbSettings || !dbSettings.prefix) {
+                     this.cachedb.insert({ _id: message.guild.id, prefix: "!" });
+                     return "!";
+                  } else {
+                     const { prefix } = dbSettings
+                     this.cachedb.insert({
+                        _id: message.guild.id,
+                        prefix
+                     });
 
-                  //    return dbSettings.prefix;
-                  // }
-                  return "!";
+                     return dbSettings.prefix;
+                  }
                } else {
-                  // read from cache
                   return doc.prefix;
                }
             }

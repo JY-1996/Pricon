@@ -292,6 +292,15 @@ class DatabaseManager {
           })
       }                   
    }
+
+   async displayAll(){
+      let query = await this.db.collection('servers')
+                              .doc(this.guildID)
+                              .collection('setting')
+                              .get()
+      return query
+   }
+
 }
 
 module.exports = DatabaseManager

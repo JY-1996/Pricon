@@ -44,7 +44,7 @@ class AtkCommand extends Command {
       if(serverKnife.empty){
         await dm.setKnife({
             boss: current_boss,
-            comment: comment,
+            comment: '',
             time: Date.now(),
             member:  clientName,
             member_id: clientID,

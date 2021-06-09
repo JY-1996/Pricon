@@ -4,10 +4,10 @@ const strings = require("../../lib/string.json");
 const admin = require("../../lib/admin.json");
 const DatabaseManager  = require("../../classes/DatabaseManager");
 
-class AdminBossCommand extends Command {
+class AdminDisplayCommand extends Command {
    constructor() {
-      super('adminBoss', {
-         aliases: ['ab','adminboss'],
+      super('adminDisplay', {
+         aliases: ['admindisplay'],
          cooldown: 3000,
          channel: 'guild',
          userPermissions: Permissions.FLAGS.ADMINISTRATOR,
@@ -27,12 +27,17 @@ class AdminBossCommand extends Command {
       const dm = new DatabaseManager(db,guildID)
 
       let loadingMsg = await message.channel.send(strings.common.waiting);
-      await dm.init()
-      loadingMsg.edit('完成')
+      let result = await dm.displayAll()
+      let text = ''
+      await result.forEach(doc => {
+          let json = doc.data()
+          for(var k in json) {
+              text += k + ' : ' + json[k] + '\n'
+          }
+      })
+      loadingMsg.edit(text);
       return
     }
-    
- 
 }
-module.exports = AdminBossCommand;
+module.exports = AdminDisplayCommand;
 

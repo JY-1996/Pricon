@@ -98,7 +98,7 @@
         "admincancel"
       ],
       "displayAlias": "ac | admincancel",
-      "syntax": "!ac [會員]",
+      "syntax": "!ac [會員] [王]",
       "description": "取消會員預約\n"
     },
     "knife": {
@@ -164,7 +164,7 @@
     "list_title": "指令列表",
     "list_title_admin": "管理員指令列表",
     "list_footer": "請使用 !h <指令名> 以獲得更詳細資訊",
-    "list_admin_footer": "請使用 !h <指令名> 以獲得更詳細資訊",
+    "list_admin_footer": "請使用 !ah <指令名> 以獲得更詳細資訊",
     "admin_list_footer": "▫ 為系統管理員指令",
     "detail_footer": "<必須輸入> [視乎情況使用]\nA | B：AB作用相同"
   }
