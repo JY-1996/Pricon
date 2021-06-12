@@ -238,9 +238,9 @@ class DatabaseManager {
       await query.forEach(doc => {
         this.deleteKnife(doc.id)
       })
-   }
+  }
 
-   async init(){
+  async init(){
      const queryRef = this.db.collection('servers')
                       .doc(this.guildID)
                       .collection('setting')
@@ -267,9 +267,9 @@ class DatabaseManager {
               knife_count: 3
           })
       }
-   }
+  }
 
-   async resetBoss(current_week,current_boss){
+  async resetBoss(current_week,current_boss){
       const queryRef = this.db.collection('servers')
                           .doc(this.guildID)
                           .collection('setting')
@@ -287,20 +287,32 @@ class DatabaseManager {
       }
       if(!query.exist){
           await query1Ref.update({
-              total_boss_died: 0,
+              total_boss_died: (current_week - 1) * 5 + current_boss - 1,
               current_boss_hp: boss_max_hp[current_phase][current_boss == 5 ? 0 : current_boss]
           })
       }                   
-   }
+  }
 
-   async displayAll(){
-      let query = await this.db.collection('servers')
+  async displayAll(){
+      return await this.db.collection('servers')
                               .doc(this.guildID)
                               .collection('setting')
                               .get()
-      return query
-   }
+  }
+  
+  async getAllGuild(){
+      return await this.db.collection('servers')
+                              .get()
+  }
 
+  async deleteGuildKnife(guildID){
+      await this.db.collection('servers')
+                    .doc(guildID)
+                    .collection('knife')
+                    .doc()
+                    .delete()
+
+  }
 }
 
 module.exports = DatabaseManager

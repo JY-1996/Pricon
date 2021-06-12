@@ -44,18 +44,19 @@ class ReportUpdateListener extends Listener {
     })
     array.forEach( (data,key) => {
         if(data.length){
-            tableText += '`' + (key + 1) + '王 預約者：                               `\n'
+            tableText += '`' + (key + 1) + '王\t預約者：                               `\n'
             data.forEach(item => {
               if(item.comment){
-                tableText += '\t' + item.member + '\t\t' + item.comment + '\n'
+                tableText += '\t' + item.member + '\t\t\t' + item.comment + '\n'
               }else{
                 tableText += '\t' + item.member + '\n'
               }
             })
         }else{
-            tableText += '`' + (key + 1) + '王 無人預約                               `\n'
+            tableText += '`' + (key + 1) + '王\t無人預約                               `\n'
         }
     })
+    tableText += '\n最後更新：' + UtilLib.getFormattedDate();
     const board_message = await dm.getReportMessage()
     if (!board_message) {
         const boardMessage = await boardChannel.send(tableText);

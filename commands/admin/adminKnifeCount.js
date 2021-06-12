@@ -5,10 +5,10 @@ const admin = require("../../lib/admin.json");
 const { MessageEmbed } = require('discord.js');
 const DatabaseManager  = require("../../classes/DatabaseManager");
 
-class AdminResetCommand extends Command {
+class AdminKnifeCountCommand extends Command {
    constructor() {
-      super('adminReset', {
-         aliases: ['reset'],
+      super('knifeCount', {
+         aliases: ['kc','knifecount'],
          cooldown: 3000,
          channel: 'guild',
          userPermissions: Permissions.FLAGS.ADMINISTRATOR,
@@ -19,21 +19,13 @@ class AdminResetCommand extends Command {
                flag: ['c','-c','com','-com']
             },
             {
-               id: "week",
+               id: "count",
                type: "integer",
                prompt: {
-                  start: strings.prompt.week,
+                  start: strings.prompt.knife,
                   retry: strings.prompt.not_a_number,
                },
-            },
-            {
-               id: "boss",
-               type: "integer",
-               prompt: {
-                  start: strings.prompt.boss,
-                  retry: strings.prompt.not_a_number,
-               },
-            },
+            }
          ],
       });
    };
@@ -46,16 +38,11 @@ class AdminResetCommand extends Command {
       
       let loadingMsg = await message.channel.send(strings.common.waiting);
 
-      const week = args.week
-      const boss = args.boss
-
-      const total_boss_died = (week - 1) * 5 + boss -1  
-
-      const detail = await dm.resetBoss(week,boss)
+      const detail = await dm.setKnifeCount(args.count)
       
       const embed = new MessageEmbed();
       embed.setColor("#90ffff");
-      embed.setTitle(admin.reset.title + ' | ' +admin.reset.field.replace('[week]', week).replace('[boss]', boss));
+      embed.setTitle(admin.knifeCount.title + ' | ' + args.count);
       loadingMsg.delete()
       await message.channel.send(embed);
       this.client.emit("reportUpdate", message.guild);
@@ -65,5 +52,5 @@ class AdminResetCommand extends Command {
     
  
 }
-module.exports = AdminResetCommand;
+module.exports = AdminKnifeCountCommand;
 

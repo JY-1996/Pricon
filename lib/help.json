@@ -87,8 +87,8 @@
         "adminboss"
       ],
       "displayAlias": "ab | adminboss",
-      "syntax": "!ab",
-      "description": "設置王的血量\n"
+      "syntax": "!ab [周] [王]",
+      "description": "設置當前週數，王\n"
     },
     "cancel": {
       "name": "AdminCancel",
@@ -145,15 +145,16 @@
       "syntax": "!setup",
       "description": "重置\n"
     },
-    "reset": {
-      "name": "Reset",
-      "shortDescription": "設置當前王",
+    "knifeCount": {
+      "name": "KnifeCount",
+      "shortDescription": "設置報刀數",
       "alias": [
-        "reset"
+        "kc",
+        "knifecount"
       ],
-      "displayAlias": "reset",
-      "syntax": "!reset [週目] [王]",
-      "description": "設置當前階段，週目，王\n"
+      "displayAlias": "knifecount",
+      "syntax": "!kc [報刀數]",
+      "description": "設置允許報刀數\n"
     }
   },
   "generalHelp": {

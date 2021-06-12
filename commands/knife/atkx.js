@@ -2,6 +2,7 @@ const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
 const DatabaseManager  = require("../../classes/DatabaseManager");
+const UtilLib = require("../../api/util-lib");
 
 class AtkCommand extends Command {
    constructor() {
@@ -22,7 +23,8 @@ class AtkCommand extends Command {
    async exec(message, args) {
       const guildID = message.guild.id
       const clientID = message.author.id
-      const clientName = message.author.username
+      const member = await message.guild.members.fetch(message.author.id)
+      const clientName = UtilLib.extractInGameName(member.displayName, false)
       const db = this.client.db;
       const dm = new DatabaseManager(db,guildID,clientID)
 

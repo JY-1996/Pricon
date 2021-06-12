@@ -1,13 +1,16 @@
 const { Command } = require("discord-akairo");
+const { Permissions } = require('discord.js');
 const help = require("../../lib/help.json");
 const { MessageEmbed } = require('discord.js');
 
 class HelpCommand extends Command {
    constructor() {
       super("adminHelp", {
-         aliases: ['ah','adminhelp'],
-         channel: 'guild',
-         args: [
+          aliases: ['ah','adminhelp'],
+          channel: 'guild',
+          cooldown: 3000,
+          userPermissions: Permissions.FLAGS.ADMINISTRATOR,
+          args: [
             {
                id: "compensate",
                match: "flag",

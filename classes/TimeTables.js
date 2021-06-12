@@ -3,12 +3,14 @@ class TimeTables {
   constructor(db) {
     this.db = db
     this.documents = []
+    this.document_ids = []
   };
     
   async getTimeTables(guildID) {
     await this.db.collection('servers').doc(guildID).collection('timetable').get().then(querySnapshot => {
       querySnapshot.docs.forEach(doc => {
       this.documents.push(doc.data());
+      this.document_ids.push(doc.id)
       });
     });
     for(let i=0;i<this.documents.length;i++){
@@ -38,13 +40,14 @@ class TimeTables {
   }
 
   async listTimeTables(guild) {
-    let strs = ""
-    // await this.getTimeTables(guild)
+    let strs = '```markdown\n請選擇刀表\n=========\n'
     for(let i=0;i<this.documents.length;i++) {
       let table = this.documents[i]
-      let str = String(table['phase']) + "周" + String(table['boss']) + "王\t" + "Name: " + table['name'] + '\n'
+      let str = String(String(i+1) + ". " + table['phase']) + "周" + String(table['boss']) + "王 " + "[" + table['name'] + '][.]\n'
+      // let str = this.document_ids[i]
       strs += str
     }
+    strs += '\n```'
     return strs;
   }
 }

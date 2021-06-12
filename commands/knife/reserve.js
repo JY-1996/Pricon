@@ -1,6 +1,7 @@
 const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
+const UtilLib = require("../../api/util-lib");
 const Knife = require("../../classes/Knife");
 const DatabaseManager = require("../../classes/DatabaseManager");
 
@@ -36,8 +37,12 @@ class ReserveCommand extends Command {
    async exec(message, args) {   
       const db = this.client.db
       const guildID = message.guild.id
-      const clientID = message.author.id
-      const clientName = message.author.username
+      const clientID = message.author.id 
+      const member = await message.guild.members.fetch(message.author.id)
+      const clientName = UtilLib.extractInGameName(member.displayName, false)
+      this.client.emit("dailyReset");
+
+      return
       const dm = new DatabaseManager(db,guildID,clientID)
       
       let loadingMsg = await message.channel.send(strings.common.waiting);

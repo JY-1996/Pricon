@@ -14,5 +14,9 @@
   "reset": {
     "title": "進度重置",
     "field": "[phase]階段[week]周[boss]王"
+  },
+  "knifeCount": {
+    "title": "允許報刀數"
+
   }
 }

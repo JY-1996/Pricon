@@ -1,6 +1,7 @@
 const { AkairoClient, CommandHandler, ListenerHandler } = require("discord-akairo");
 const SettingsManager = require('./classes/SettingsManager')
 const NeDB = require("nedb-promises");
+const schedule = require('node-schedule');
 
 class BotClient extends AkairoClient {
     constructor() {
@@ -62,3 +63,17 @@ const client = new BotClient();
 client.login(process.env['TOKEN']).then(() => {
   console.log("Re:Dive Assistant logged in as " + client.user.username);
 });
+
+// daily reset
+let rule = new schedule.RecurrenceRule();
+
+rule.tz = 'Asia/Hong_Kong';
+rule.second = 0;
+rule.minute = 0;
+rule.hour = 5;
+
+let resetJob = schedule.scheduleJob(rule, function () {
+   client.emit("DailyReset")
+});
+
+client.resetTimer = resetJob

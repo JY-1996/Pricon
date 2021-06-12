@@ -6,6 +6,7 @@
     "wrong_knife_channel": "❌ 請在報刀頻道[channel]報刀"
   },
   "prompt": {
+    "knife": "❔ 請輸入允許報刀數",
     "week": "❔ 請輸入周目",
     "boss": "❔ 請輸入王(1-5)",
     "type": "❔ 請輸入刀種",
