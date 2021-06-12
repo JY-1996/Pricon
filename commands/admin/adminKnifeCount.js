@@ -2,7 +2,6 @@ const { Command } = require("discord-akairo");
 const { Permissions } = require('discord.js');
 const strings = require("../../lib/string.json");
 const admin = require("../../lib/admin.json");
-const { MessageEmbed } = require('discord.js');
 const DatabaseManager  = require("../../classes/DatabaseManager");
 
 class AdminKnifeCountCommand extends Command {
@@ -40,11 +39,8 @@ class AdminKnifeCountCommand extends Command {
 
       const detail = await dm.setKnifeCount(args.count)
       
-      const embed = new MessageEmbed();
-      embed.setColor("#90ffff");
-      embed.setTitle(admin.knifeCount.title + ' | ' + args.count);
-      loadingMsg.delete()
-      await message.channel.send(embed);
+      loadingMsg.edit(admin.knifeCount.title + ' => ' + args.count);
+
       this.client.emit("reportUpdate", message.guild);
 
       return
