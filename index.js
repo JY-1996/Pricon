@@ -60,7 +60,7 @@ class BotClient extends AkairoClient {
 }
 
 const client = new BotClient();
-client.login(process.env['TOKEN']).then(() => {
+client.login(require('./private_keys/token.json').TOKEN).then(() => {
   console.log("Re:Dive Assistant logged in as " + client.user.username);
 });
 
@@ -73,7 +73,7 @@ rule.minute = 0;
 rule.hour = 5;
 
 let resetJob = schedule.scheduleJob(rule, function () {
-   client.emit("DailyReset")
+   client.emit("dailyReset")
 });
 
 client.resetTimer = resetJob
