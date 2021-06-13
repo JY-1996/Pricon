@@ -3,6 +3,8 @@ const { Permissions } = require('discord.js');
 const strings = require("../../lib/string.json");
 const admin = require("../../lib/admin.json");
 const DatabaseManager  = require("../../classes/DatabaseManager");
+const { MessageEmbed } = require('discord.js');
+const UtilLib = require("../../api/util-lib");
 
 class AdminCancelCommand extends Command {
    constructor() {
@@ -41,6 +43,7 @@ class AdminCancelCommand extends Command {
       const clientID = message.author.id
       const db = this.client.db
       const guildID = message.guild.id
+ 
       const dm = new DatabaseManager(db,guildID)
 
       let loadingMsg = await message.channel.send(strings.common.waiting);
@@ -52,8 +55,12 @@ class AdminCancelCommand extends Command {
          return
       }
       let knifeRef = await dm.cancelMemberKnife(member.id,boss)
-
-      loadingMsg.edit(admin.cancel.reserve_cancel.replace('[id]', clientID).replace('[member]', member))
+      const memberName = UtilLib.extractInGameName(member.displayName, false)
+      const embed = new MessageEmbed();
+      embed.setColor("#90ffff");
+      embed.setTitle(admin.cancel.reserve_cancel.replace('[member]', memberName));
+      loadingMsg.delete()
+      await message.channel.send(embed);
       this.client.emit("reportUpdate", message.guild);
 
       return

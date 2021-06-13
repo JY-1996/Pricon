@@ -3,6 +3,7 @@ const { Permissions } = require('discord.js');
 const strings = require("../../lib/string.json");
 const admin = require("../../lib/admin.json");
 const DatabaseManager  = require("../../classes/DatabaseManager");
+const { MessageEmbed } = require('discord.js');
 
 class AdminKnifeCommand extends Command {
    constructor() {
@@ -32,8 +33,13 @@ class AdminKnifeCommand extends Command {
           channelID = args.channel.id
       } 
       await dm.setKnifeChannel(channelID)
-      
-      loadingMsg.edit(admin.setup.knife.replace("[channel]", `<#${channelID}>`));
+      const boardChannel = this.client.util.resolveChannel(channelID, message.guild.channels.cache); 
+       const embed = new MessageEmbed();
+      embed.setColor("#90ffff");
+      embed.setTitle(admin.setup.knife.replace("[channel]", boardChannel.name));
+      loadingMsg.delete()
+      await message.channel.send(embed);
+      // loadingMsg.edit(admin.setup.knife.replace("[channel]", `<#${channelID}>`));
     };
 }
 module.exports = AdminKnifeCommand;

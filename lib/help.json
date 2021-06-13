@@ -81,7 +81,7 @@
   "admin": {
     "boss": {
       "name": "AdminBoss",
-      "shortDescription": "設置指令",
+      "shortDescription": "設置王指令",
       "alias": [
         "ab",
         "adminboss"

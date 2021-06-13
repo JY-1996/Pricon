@@ -11,72 +11,96 @@ class Timetable extends Command {
       aliases: ['t','timetable'],
       cooldown: 3000,
       channel: 'guild',
+      args: [{
+        id: "create",
+        match: "flag",
+        flag: ['-c','create']
+        },{
+        id: "delete",
+        match: "flag",
+        flag: ['-d','delete']
+        },{
+        id: "list",
+        match: "flag",
+        flag: ['-l','list']
+        },{
+        id: "number1",
+        type: "number",
+        default:undefined
+        },{
+        id: "number2",
+        type: "number",
+        default:0
+        },{
+        id: "name",
+        type: "string",
+        default:""
+        }
+      ]
     });
   };
-
-  *args() {
-    const x = yield ({
-        type: 'integer',
-        prompt: {
-            start:"1. 查看刀表\n2.新建刀表\n3.刪除刀表"
-        }
-    });
-    if(x==2) {
-      const name = yield ({
-        type: 'string',
-        prompt: {
-          start:"請輸入刀表名稱"
-        }
-      })
-      const phase = yield({
-        type: "integer",
-        prompt: {
-          start:"几周?"
-        }
-      })
-      const boss = yield({
-        type: "integer",
-        prompt: {
-          start:"几王?"
-        }
-      })
-      const timetable = yield({
-        type: "string",
-        prompt: {
-          start: '請輸入刀表',
-        }
-      })
-      return {x,name,phase,boss,timetable}
-    }else{
-      return {x}
-    };
-  }
 
   async exec(message, args) {
     const db = this.client.db
     let timetables = new TimeTables(db)
     await timetables.getTimeTables(message.guild.id)
-    if (args.x == 1){ //查看
-      let timetable = await timetables.listTimeTables(message.guild.id)
-      message.channel.send(timetable)
-      prompter.message(message.channel, {
-        question: timetables,
+    if (args.list){ //查看
+      this.list(message,args,db,timetables)
+    }else if(args.create) { //新增
+      this.create(message,args,db)
+    }else if (args.delete) { //刪除
+      message.reply("刪除")
+    }else{
+      this.list(message,args,db,timetables)
+    }
+    return;
+  };
+
+  async list(message,args,db,timetables){
+    let timetable = await timetables.listTimeTables(message.guild.id)
+    let table = ""
+    if (args.number1 == undefined){
+      await prompter.message(message.channel, {
+        question: timetable,
         userId: message.author.id,
         max: 1,
         timeout: 10000,
-      })
-      .then(responses => {
+      }).then(responses => {
         if (!responses.size) {
-          // return message.channel.send(`No time for questions? I see.`);
+          message.channel.send(`已超出時間。`);
           return
         }
         const response = responses.first();
-      });
-      return;
-      //========================================================
-    }else if(args.x == 2) { //新增
-      const guildID = message.guild.id
-      const inp = args.timetable
+      table = timetables.getTable(parseInt(response)-1)
+      })
+      // table = timetables.getShiftedTable(parseInt(response)-1,60)
+    }else{
+      table = timetables.getTable(parseInt(args.number1)-1)
+    }
+    message.channel.send(table)
+    return;
+  }
+
+  async create(message,args,db){
+    const guildID = message.guild.id
+    var inp = "";
+    await prompter.message(message.channel, {
+        question: "請輸入刀表",
+        userId: message.author.id,
+        max: 1,
+        timeout: 100000,
+      }).then(responses => {
+        if (!responses.size) {
+          message.channel.send(`已超出時間。`);
+          return
+        }
+        try{
+          inp = responses.first()['content'];
+        }catch(err){
+          console.log(err)
+        }
+      })
+    try{
       let line = inp.split("\n")
       let timelines = {}
       for (let i = 0; i < line.length; i++){
@@ -92,21 +116,18 @@ class Timetable extends Command {
       let tableRef = db.collection('servers').doc(guildID).collection('timetable')
       await tableRef.add({
           name: args.name,
-          phase: args.phase,
-          boss: args.boss,
+          phase: args.number1,
+          boss: args.number2,
           data: out,
           time: Date.now(),
       })
       message.channel.send("已記錄"+args.name)
-      return;
-      //============================================================
-    }else if (args.x == 3) { //刪除
-      message.reply("刪除")
-      return;
+    }catch(err){
+      console.log(err)
+      message.reply("Invalid input")
     }
     return;
-  };
-
+  }
 }
 module.exports = Timetable;
 

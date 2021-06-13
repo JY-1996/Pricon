@@ -8,12 +8,12 @@
 
   },
   "cancel": {
-    "no_reserve": "<@[id]>無法搜尋此會員",
-    "reserve_cancel": "<@[id]>已刪除[member]的預約"
+    "no_reserve": "無法搜尋此會員",
+    "reserve_cancel": "已刪除[member]的預約"
   },
   "reset": {
     "title": "進度重置",
-    "field": "[phase]階段[week]周[boss]王"
+    "field": "[week]周[boss]王"
   },
   "knifeCount": {
     "title": "允許報刀數"

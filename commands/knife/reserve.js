@@ -40,7 +40,6 @@ class ReserveCommand extends Command {
       const clientID = message.author.id 
       const member = await message.guild.members.fetch(message.author.id)
       const clientName = UtilLib.extractInGameName(member.displayName, false)
-
       const dm = new DatabaseManager(db,guildID,clientID)
       
       let loadingMsg = await message.channel.send(strings.common.waiting);

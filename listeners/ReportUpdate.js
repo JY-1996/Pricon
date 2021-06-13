@@ -47,7 +47,12 @@ class ReportUpdateListener extends Listener {
             tableText += '`' + (key + 1) + '王\t預約者：                               `\n'
             data.forEach(item => {
               if(item.comment){
-                tableText += '\t' + item.member + '\t\t\t' + item.comment + '\n'
+                let final = '\t' + item.member
+                var i;
+                for (i = 20; i > item.member.length; i--) {
+                    final += ' ';
+                }
+                tableText += final + item.comment + '\n'
               }else{
                 tableText += '\t' + item.member + '\n'
               }
@@ -75,7 +80,6 @@ class ReportUpdateListener extends Listener {
       };
     return
   }
-
 }
 
 module.exports = ReportUpdateListener;
