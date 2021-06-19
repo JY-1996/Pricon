@@ -27,7 +27,6 @@ class ShiftCommand extends Command {
     const db = this.client.db
     let timetables = new TimeTables(db)
     await timetables.getTimeTables(message.guild.id)
-    let loadingMsg = await message.channel.send(strings.common.waiting)
     let inp = ''
     await prompter.message(message.channel, {
         question: "請輸入刀表",

@@ -29,6 +29,8 @@ class AdminSetupCommand extends Command {
       let loadingMsg = await message.channel.send(strings.common.waiting);
       await dm.deleteGuildKnife(guildID)
       loadingMsg.edit(admin.reset.title)
+      this.client.emit("reportUpdate", message.guild);
+      
       return
     }
     
