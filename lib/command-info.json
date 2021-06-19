@@ -31,5 +31,10 @@
     "title": "<@[id]>的預約有\n",
     "reserve": "[boss]王，備註:[comment]\n",
     "no_reserve": "<@[id]>暫時沒任何預約"
+  },
+  "timetable":{
+    "no_name": "請輸入名字",
+    "no_phase": "請輸入階段(1-5)",
+    "no_boss": "請輸入王(1-5)"
   }
 }

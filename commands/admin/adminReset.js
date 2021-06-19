@@ -6,8 +6,8 @@ const DatabaseManager  = require("../../classes/DatabaseManager");
 
 class AdminSetupCommand extends Command {
    constructor() {
-      super('adminSetup', {
-         aliases: ['setup','初始化'],
+      super('adminReset', {
+         aliases: ['reset','重置'],
          cooldown: 3000,
          channel: 'guild',
          userPermissions: Permissions.FLAGS.ADMINISTRATOR,
@@ -27,8 +27,8 @@ class AdminSetupCommand extends Command {
       const dm = new DatabaseManager(db,guildID)
 
       let loadingMsg = await message.channel.send(strings.common.waiting);
-      await dm.init()
-      loadingMsg.edit('完成')
+      await dm.deleteGuildKnife(guildID)
+      loadingMsg.edit(admin.reset.title)
       return
     }
     

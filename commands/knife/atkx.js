@@ -50,7 +50,8 @@ class AtkCommand extends Command {
             time: Date.now(),
             member:  clientName,
             member_id: clientID,
-            status: 'attacking'
+            status: 'attacking',
+            isForced: true
         })
       }
       loadingMsg.edit(command.atk.attack.replace('[id]',clientID).replace('[boss]',current_boss))

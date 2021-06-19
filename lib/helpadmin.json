@@ -1,0 +1,104 @@
+{
+  "admin": {
+    "boss": {
+      "name": "AdminBoss",
+      "shortDescription": "設置王指令",
+      "alias": [
+        "ab",
+        "adminboss"
+      ],
+      "displayAlias": "ab | adminboss",
+      "syntax": "!ab [周] [王]",
+      "description": "設置當前週數，王\n"
+    },
+    "cancel": {
+      "name": "AdminCancel",
+      "shortDescription": "取消指令",
+      "alias": [
+        "ac",
+        "admincancel"
+      ],
+      "displayAlias": "ac | admincancel",
+      "syntax": "!ac [會員] [王]",
+      "description": "取消會員預約\n"
+    },
+      "knifeCount": {
+      "name": "KnifeCount",
+      "shortDescription": "報刀數",
+      "alias": [
+        "kc",
+        "knifecount"
+      ],
+      "displayAlias": "knifecount",
+      "syntax": "!kc [報刀數]",
+      "description": "設置允許報刀數\n"
+    },
+    "log": {
+      "name": "Log",
+      "shortDescription": "指令記錄",
+      "alias": [
+        "log",
+        "指令記錄"
+      ],
+      "displayAlias": "log | 指令記錄",
+      "syntax": "!log | !log [頻道]",
+      "description": "設置指令記錄頻道\n"
+    },
+    "report": {
+      "name": "Report",
+      "shortDescription": "報刀表頻道",
+      "alias": [
+        "report",
+        "報刀表"
+      ],
+      "displayAlias": "report | 報刀表",
+      "syntax": "!report | !report [頻道]",
+      "description": "設置報刀表頻道\n"
+    },
+    "knife": {
+      "name": "Knife",
+      "shortDescription": "報刀頻道",
+      "alias": [
+        "knife",
+        "報刀頻道"
+      ],
+      "displayAlias": "knife | 報刀頻道",
+      "syntax": "!knife | !knife [頻道]",
+      "description": "設置刀頻道\n"
+    },
+    "setup": {
+      "name": "Setup",
+      "shortDescription": "機器人初始化",
+      "alias": [
+        "setup",
+        "初始化"
+      ],
+      "displayAlias": "setup | 初始化",
+      "syntax": "!setup",
+      "description": "初始化\n"
+    },
+    "reset": {
+      "name": "Reset",
+      "shortDescription": "重置",
+      "alias": [
+        "reset",
+        "重置"
+      ],
+      "displayAlias": "reset",
+      "syntax": "!reset",
+      "description": "重置所有預約\n"
+    }
+  },
+  "generalHelp": {
+    "display": "接受名稱",
+    "syntax": "指令語法",
+    "description": "用途",
+    "invalid_command_name": "❕ 未找到相應的指令。請使用 `!h` 查看指令列表。",
+    "list_title": "指令列表",
+    "list_title_admin": "管理員指令列表",
+    "list_footer": "請使用 !h <指令名> 以獲得更詳細資訊",
+    "list_admin_footer": "請使用 !ah <指令名> 以獲得更詳細資訊",
+    "admin_list_footer": "▫ 為系統管理員指令",
+    "detail_footer": "<必須輸入> [視乎情況使用]\nA | B：AB作用相同"
+  }
+}

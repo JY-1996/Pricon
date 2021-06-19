@@ -1,16 +1,13 @@
 const { Command } = require("discord-akairo");
-const { Permissions } = require('discord.js');
-const help = require("../../lib/helpadmin.json");
+const help = require("../../lib/helpshift.json");
 const { MessageEmbed } = require('discord.js');
 
-class HelpCommand extends Command {
+class HelpShiftCommand extends Command {
    constructor() {
-      super("adminHelp", {
-          aliases: ['ah','adminhelp'],
-          channel: 'guild',
-          cooldown: 3000,
-          userPermissions: Permissions.FLAGS.ADMINISTRATOR,
-          args: [
+      super("helpshift", {
+         aliases: ['hs','helpshift'],
+         channel: 'guild',
+         args: [
             {
                id: "compensate",
                match: "flag",
@@ -35,12 +32,12 @@ class HelpCommand extends Command {
       if(!args.comment){
           embed.setTitle(help.generalHelp.list_title);
 
-          Object.keys(help.admin).forEach(key => {
-            embed.addField(help.admin[key].name, help.admin[key].shortDescription, true);
+          Object.keys(help.list).forEach(key => {
+            embed.addField(help.list[key].name, help.list[key].shortDescription, true);
          });
-         embed.setFooter(help.generalHelp.list_admin_footer);
+         embed.setFooter(help.generalHelp.list_footer);
       }else{
-         const command = this.getCommand(help.admin,args.comment)
+         const command = this.getCommand(help.list,args.comment)
         if(command == false){
           loadingMsg.edit(help.generalHelp.invalid_command_name);
           return
@@ -70,4 +67,4 @@ class HelpCommand extends Command {
 
    };
 }
-module.exports = HelpCommand;
+module.exports = HelpShiftCommand;

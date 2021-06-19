@@ -1,0 +1,49 @@
+{
+  "list": {
+    "timetable": {
+      "name": "timetable",
+      "shortDescription": "顯示刀表",
+      "alias": [
+        "t",
+        "timetable"
+      ],
+      "displayAlias": "t | timetable",
+      "syntax": "!t [-shift <時間>] [刀表編號]",
+      "description": "查看刀表\n"
+    },
+    "create": {
+      "name": "create",
+      "shortDescription": "新建刀表",
+      "alias": [
+        "create",
+        "c"
+      ],
+      "displayAlias": "t -c | table -create",
+      "syntax": "!c [階段] [王] [-all]",
+      "description": "新建刀表\n"
+    },
+    "delete": {
+      "name": "delete",
+      "shortDescription": "刪除刀表",
+      "alias": [
+        "delete",
+        "d"
+      ],
+      "displayAlias": "t -d | table -delete",
+      "syntax": "!d [刀表編號]",
+      "description": "刪除刀表\n"
+    }
+  },
+  "generalHelp": {
+    "display": "接受名稱",
+    "syntax": "指令語法",
+    "description": "用途",
+    "invalid_command_name": "❕ 未找到相應的指令。請使用 `!hs` 查看指令列表。",
+    "list_title": "指令列表",
+    "list_title_admin": "管理員指令列表",
+    "list_footer": "請使用 !hs <指令名> 以獲得更詳細資訊",
+    "list_admin_footer": "請使用 !hs <指令名> 以獲得更詳細資訊",
+    "admin_list_footer": "▫ 為系統管理員指令",
+    "detail_footer": "<必須輸入> [視乎情況使用]\nA | B：AB作用相同"
+  }
+}

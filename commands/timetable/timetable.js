@@ -12,29 +12,34 @@ class Timetable extends Command {
       cooldown: 3000,
       channel: 'guild',
       args: [{
-        id: "create",
-        match: "flag",
-        flag: ['-c','create']
+          id: "create",
+          match: "flag",
+          flag: ['-c','create']
         },{
-        id: "delete",
-        match: "flag",
-        flag: ['-d','delete']
+          id: "delete",
+          match: "flag",
+          flag: ['-d','delete']
         },{
-        id: "list",
-        match: "flag",
-        flag: ['-l','list']
+          id: "list",
+          match: "flag",
+          flag: ['-l','list']
         },{
-        id: "number1",
-        type: "number",
-        default:undefined
+          id: "phase",
+          type: "number",
+          default:undefined
         },{
-        id: "number2",
-        type: "number",
-        default:0
+          id: "boss",
+          type: "number",
+          default:undefined
         },{
-        id: "name",
-        type: "string",
-        default:""
+          id: "name",
+          type: "string",
+          default:""
+        },{
+          id: 'shift',
+          match: 'option',
+          flag: ['shift:','-shift','s','-s'],
+          default: 0
         }
       ]
     });
@@ -49,7 +54,7 @@ class Timetable extends Command {
     }else if(args.create) { //新增
       this.create(message,args,db)
     }else if (args.delete) { //刪除
-      message.reply("刪除")
+      this.delete(message,args,db,timetables)
     }else{
       this.list(message,args,db,timetables)
     }
@@ -59,6 +64,7 @@ class Timetable extends Command {
   async list(message,args,db,timetables){
     let timetable = await timetables.listTimeTables(message.guild.id)
     let table = ""
+    let tbno = 0
     if (args.number1 == undefined){
       await prompter.message(message.channel, {
         question: timetable,
@@ -71,11 +77,17 @@ class Timetable extends Command {
           return
         }
         const response = responses.first();
-      table = timetables.getTable(parseInt(response)-1)
+        tbno = parseInt(response) - 1
+        
       })
-      // table = timetables.getShiftedTable(parseInt(response)-1,60)
     }else{
-      table = timetables.getTable(parseInt(args.number1)-1)
+      tbno = parseInt(args.number1)-1
+    }
+    if(args.shift != 0){
+      console.log("shifted")
+      table = timetables.getShiftedTable(tbno,args.shift)
+    }else{
+      table = timetables.getTable(tbno)
     }
     message.channel.send(table)
     return;
@@ -101,6 +113,15 @@ class Timetable extends Command {
         }
       })
     try{
+      if(!args.name){
+        message.channel.send(command.timetable.no_name)
+      }
+      if(!args.phase){
+         message.channel.send(command.timetable.no_phase)
+      }
+      if(!args.boss){
+         message.channel.send(command.timetable.no_boss)
+      }
       let line = inp.split("\n")
       let timelines = {}
       for (let i = 0; i < line.length; i++){
@@ -116,8 +137,8 @@ class Timetable extends Command {
       let tableRef = db.collection('servers').doc(guildID).collection('timetable')
       await tableRef.add({
           name: args.name,
-          phase: args.number1,
-          boss: args.number2,
+          phase: args.phase,
+          boss: args.boss,
           data: out,
           time: Date.now(),
       })
@@ -126,6 +147,32 @@ class Timetable extends Command {
       console.log(err)
       message.reply("Invalid input")
     }
+    return;
+  }
+
+  async delete(message,args,db,timetables){
+    let timetable = await timetables.listTimeTables(message.guild.id)
+    let table = ""
+    if (args.number1 == undefined){
+      await prompter.message(message.channel, {
+        question: timetable,
+        userId: message.author.id,
+        max: 1,
+        timeout: 10000,
+      }).then(responses => {
+        if (!responses.size) {
+          message.channel.send(`已超出時間。`);
+          return
+        }
+        const response = responses.first();
+        table = timetables.getTableID(parseInt(response)-1)
+      })
+      // table = timetables.getShiftedTable(parseInt(response)-1,60)
+    }else{
+      table = timetables.getTableID(parseInt(args.number1)-1)
+    }
+    let check = await db.collection('servers').doc(message.guild.id).collection('timetable').doc(table).delete()
+    console.log(check)
     return;
   }
 }

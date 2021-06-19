@@ -43,7 +43,7 @@ class ReserveCommand extends Command {
       const dm = new DatabaseManager(db,guildID,clientID)
       
       let loadingMsg = await message.channel.send(strings.common.waiting);
-      
+
       const boss = args.boss;
       if (boss < 1 || boss > 5) {
          loadingMsg.edit(strings.common.boss_out_of_range);
@@ -87,7 +87,8 @@ class ReserveCommand extends Command {
           time: Date.now(),
           member:  clientName,
           member_id: clientID,
-          status: 'processing'
+          status: 'processing',
+          isForced: false
       })
 
       loadingMsg.edit(command.reserve.reserved.replace('[id]', clientID).replace('[boss]',boss).replace('[comment]',comment));

@@ -39,6 +39,39 @@ class TimeTables {
     return time
   }
 
+  // timeToString(inp){
+  //   let input = parseInt(inp)
+  //   let str = ""
+  //   let sec = input
+  //   let min = 0
+  //   console.log(input)
+  //   console.log(sec)
+  //   if(input >= 60){
+  //     while(sec >= 60){
+  //       sec = sec - 60
+  //       min += 1
+  //     }
+  //     console.log(min)
+  //     console.log(sec)
+  //   }
+  //   if(min > 0){
+  //     return String(min) + "." + String(sec).padStart(2, '0')
+  //   }else{
+  //     return String(sec)
+  //   }
+  // }
+  timeToString(time,shift){
+    let min = parseInt(time)
+    if(min >= 100){
+      min = min - 100 + 60
+    }
+    let final = min - shift
+    if(final > 60){
+      final = final - 60 + 100
+    }
+    return final
+  }
+
   async listTimeTables(guild) {
     let strs = '```markdown\n請選擇刀表\n=========\n'
     for(let i=0;i<this.documents.length;i++) {
@@ -56,7 +89,7 @@ class TimeTables {
       let strs = ""
       for(let i=0;i<Object.keys(this.documents[num]['datas']).length;i++){
         let line = this.documents[num]['datas'][i]
-        let str = String(line['time'] + " " + line['comment'] + "\n")
+        let str = String(this.timeToString(line['time'],0) + " " + line['comment'] + "\n")
         strs += str
       }
       return strs
@@ -74,12 +107,7 @@ class TimeTables {
         let line = this.documents[num]['datas'][i]
         let time = parseInt(line['time'])
         if(time-shift >= 0){
-          if(time-shift >= 60){
-            let shifted_time = "1." + String(time - shift - 60).padStart(2, '0')
-            str = String(shifted_time + " " + line['comment'] + "\n")
-          }else{
-            str = String(time-shift + " " + line['comment'] + "\n")
-          }
+          str = String(this.timeToString(time,shift) + " " + line['comment'] + "\n")
         }
         strs += str
       }
@@ -87,6 +115,30 @@ class TimeTables {
     }
     else {
       return "Invalid number"
+    }
+  }
+
+  async getShifted(data,shift){
+     let strs = ""
+      for(let i=0;i<Object.keys(data).length;i++){
+        let str = ""
+        let line = data[i]
+        let time = parseInt(line['time'])
+
+        if(time-shift >= 0){
+          str = String(this.timeToString(time,shift) + " " + line['comment'] + "\n")
+        }
+        strs += str
+      }
+      return strs
+  }
+
+  getTableID(num){
+    if(this.document_ids[num]){
+      return this.document_ids[num]
+    }
+    else{
+      return;
     }
   }
 }

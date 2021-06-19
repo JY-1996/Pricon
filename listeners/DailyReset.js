@@ -14,12 +14,7 @@ class DailyResetListener extends Listener {
       const db = this.client.db
       const dm = new DatabaseManager(db)
       const res = await dm.getAllGuild()
-
-      let resetServerId = []
-      res.forEach(doc =>{
-        console.log(doc.id)
-        resetServerId.push(doc.id)
-      })
+      let resetServerId = res.docs.map(d => d.id) 
       console.log(resetServerId)
       console.log(`Currently targetting ${resetServerId.length} guild...\n`)
 

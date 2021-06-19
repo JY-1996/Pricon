@@ -20,6 +20,7 @@ class DatabaseManager {
                           .doc(this.guildID)
                           .collection('knife')
                           .where('member_id','==', this.clientID)
+                          .where('isForced','==', false)  
                           .where('status','in', ['processing', 'attacking'])
                           .get()
     }
@@ -241,32 +242,35 @@ class DatabaseManager {
   }
 
   async init(){
-     const queryRef = this.db.collection('servers')
+    await this.db.collection('servers')
+                .doc(this.guildID)
+                .set({setup: true})
+    const queryRef = await this.db.collection('servers')
                       .doc(this.guildID)
                       .collection('setting')
                       .doc('boss_max_hp')
-      let query = queryRef.get() 
-      if(!query.exist){
-          await queryRef.set({
+    let query = queryRef.get() 
+    if(!query.exist){
+        await queryRef.set({
               1:[600,800,1000,1200,1500],
               2:[600,800,1000,1200,1500],
               3:[700,900,1200,1500,2000],
               4:[1700,1800,2000,2100,2200],
               5:[8500,9000,9500,10000,10500]
-          })
-      }
-      const query1Ref = this.db.collection('servers')
+        })
+    }
+    const query1Ref = this.db.collection('servers')
                           .doc(this.guildID)
                           .collection('setting')
                           .doc('boss')
-      let query1 = query1Ref.get() 
-      if(!query1.exist){
+    let query1 = query1Ref.get() 
+    if(!query1.exist){
           await query1Ref.set({
               total_boss_died: 0,
               current_boss_hp: 600,
               knife_count: 3
           })
-      }
+    }
   }
 
   async resetBoss(current_week,current_boss){
@@ -308,17 +312,45 @@ class DatabaseManager {
   
   async getAllGuild(){
       return await this.db.collection('servers')
-                              .get()
+                          .get()
   }
 
-  async deleteGuildKnife(guildID){
-      await this.db.collection('servers')
-                    .doc(guildID)
-                    .collection('knife')
-                    .doc()
-                    .delete()
+  async deleteGuildKnife(guildID, batchSize = 10) {
 
-  }
+      const collectionRef = this.db
+         .collection("servers")
+         .doc(guildID)
+         .collection("knife");
+      const query = collectionRef.limit(batchSize);
+
+      // Delete all existing knife reports
+      return new Promise((resolve, reject) => {
+         this._deleteQueryBatch(this.db, query, resolve).catch(reject);
+      });
+  };
+
+  async _deleteQueryBatch(db, query, resolve) {
+      const snapshot = await query.get();
+
+      const batchSize = snapshot.size;
+      if (batchSize == 0) {
+         // When there are no documents left, we are done
+         resolve();
+         return;
+      }
+
+      // Delete documents in a batch
+      const batch = db.batch();
+      snapshot.docs.forEach((doc) => {
+         batch.delete(doc.ref);
+      });
+      await batch.commit();
+
+      // Recursion on the next process tick, to avoid exploding the stack.
+      process.nextTick(() => {
+         this._deleteQueryBatch(db, query, resolve);
+      });
+   }
 }
 
 module.exports = DatabaseManager

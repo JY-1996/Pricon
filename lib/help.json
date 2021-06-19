@@ -76,85 +76,17 @@
       "displayAlias": "l | list",
       "syntax": "!l",
       "description": "列出所有預約\n"
-    }
-  },
-  "admin": {
-    "boss": {
-      "name": "AdminBoss",
-      "shortDescription": "設置王指令",
-      "alias": [
-        "ab",
-        "adminboss"
-      ],
-      "displayAlias": "ab | adminboss",
-      "syntax": "!ab [周] [王]",
-      "description": "設置當前週數，王\n"
     },
-    "cancel": {
-      "name": "AdminCancel",
-      "shortDescription": "取消指令",
+    "shift": {
+      "name": "shift",
+      "shortDescription": "計算報刀",
       "alias": [
-        "ac",
-        "admincancel"
+        "s",
+        "shift"
       ],
-      "displayAlias": "ac | admincancel",
-      "syntax": "!ac [會員] [王]",
-      "description": "取消會員預約\n"
-    },
-    "knife": {
-      "name": "Knife",
-      "shortDescription": "設置報刀頻道",
-      "alias": [
-        "knife",
-        "報刀頻道"
-      ],
-      "displayAlias": "knife | 報刀頻道",
-      "syntax": "!knife | !knife [頻道]",
-      "description": "設置刀頻道\n"
-    },
-    "log": {
-      "name": "Log",
-      "shortDescription": "設置指令記錄",
-      "alias": [
-        "log",
-        "報刀頻道"
-      ],
-      "displayAlias": "log | 指令記錄",
-      "syntax": "!log | !log [頻道]",
-      "description": "設置指令記錄\n"
-    },
-    "report": {
-      "name": "Report",
-      "shortDescription": "設置報刀表",
-      "alias": [
-        "report",
-        "報刀表"
-      ],
-      "displayAlias": "report | 報刀表",
-      "syntax": "!report | !report [頻道]",
-      "description": "設置報刀表\n"
-    },
-    "setup": {
-      "name": "Setup",
-      "shortDescription": "重置",
-      "alias": [
-        "setup",
-        "重置"
-      ],
-      "displayAlias": "setup | 重置",
-      "syntax": "!setup",
-      "description": "重置\n"
-    },
-    "knifeCount": {
-      "name": "KnifeCount",
-      "shortDescription": "設置報刀數",
-      "alias": [
-        "kc",
-        "knifecount"
-      ],
-      "displayAlias": "knifecount",
-      "syntax": "!kc [報刀數]",
-      "description": "設置允許報刀數\n"
+      "displayAlias": "s | shift",
+      "syntax": "!s [時間]",
+      "description": "計算報刀表格\n"
     }
   },
   "generalHelp": {

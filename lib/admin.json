@@ -12,8 +12,7 @@
     "reserve_cancel": "已刪除[member]的預約"
   },
   "reset": {
-    "title": "進度重置",
-    "field": "[week]周[boss]王"
+    "title": "所有預約已清除"
   },
   "knifeCount": {
     "title": "允許報刀數"
