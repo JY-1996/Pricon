@@ -8,7 +8,7 @@
         "timetable"
       ],
       "displayAlias": "t | timetable",
-      "syntax": "!t [-shift <時間>] [刀表編號]",
+      "syntax": "!t [-shift <剩餘時間>] [刀表編號]",
       "description": "查看刀表\n"
     },
     "create": {

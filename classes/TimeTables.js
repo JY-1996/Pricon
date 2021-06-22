@@ -61,11 +61,17 @@ class TimeTables {
   //   }
   // }
   timeToString(time,shift){
-    let min = parseInt(time)
-    if(min >= 100){
-      min = min - 100 + 60
+    const total = 90
+    let newShift = shift
+    if(shift >= 100){
+      newShift = shift - 100 + 60
     }
-    let final = min - shift
+    let diff = total - newShift
+    let newTime = time
+    if(time >= 100){
+      newTime = time - 100 + 60
+    }
+    let final = newTime - diff
     if(final > 60){
       final = final - 60 + 100
     }
@@ -99,18 +105,9 @@ class TimeTables {
     }
   }
 
-  getShiftedTable(num,shift){
+  async getShiftedTable(num,shift){
     if(this.documents[num]){
-      let strs = ""
-      for(let i=0;i<Object.keys(this.documents[num]['datas']).length;i++){
-        let str = ""
-        let line = this.documents[num]['datas'][i]
-        let time = parseInt(line['time'])
-        if(time-shift >= 0){
-          str = String(this.timeToString(time,shift) + " " + line['comment'] + "\n")
-        }
-        strs += str
-      }
+      let strs = await this.getShifted(this.documents[num]['datas'],shift)
       return strs
     }
     else {
@@ -125,8 +122,11 @@ class TimeTables {
         let line = data[i]
         let time = parseInt(line['time'])
 
-        if(time-shift >= 0){
-          str = String(this.timeToString(time,shift) + " " + line['comment'] + "\n")
+        let final = this.timeToString(time,shift)
+        str = String(final + " " + line['comment'] + "\n")
+        
+        if(final <= 0 ){
+          break
         }
         strs += str
       }

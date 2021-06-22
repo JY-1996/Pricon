@@ -1,4 +1,4 @@
-const { Command } = require("discord-akairo");
+ const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
 const UtilLib = require("../../api/util-lib");
@@ -24,11 +24,11 @@ class Timetable extends Command {
           match: "flag",
           flag: ['-l','list']
         },{
-          id: "phase",
+          id: "number1",
           type: "number",
           default:undefined
         },{
-          id: "boss",
+          id: "number2",
           type: "number",
           default:undefined
         },{
@@ -116,10 +116,10 @@ class Timetable extends Command {
       if(!args.name){
         message.channel.send(command.timetable.no_name)
       }
-      if(!args.phase){
+      if(!args.number1){
          message.channel.send(command.timetable.no_phase)
       }
-      if(!args.boss){
+      if(!args.number2){
          message.channel.send(command.timetable.no_boss)
       }
       let line = inp.split("\n")
@@ -137,8 +137,8 @@ class Timetable extends Command {
       let tableRef = db.collection('servers').doc(guildID).collection('timetable')
       await tableRef.add({
           name: args.name,
-          phase: args.phase,
-          boss: args.boss,
+          phase: args.number1,
+          boss: args.number2,
           data: out,
           time: Date.now(),
       })

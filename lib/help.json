@@ -85,7 +85,7 @@
         "shift"
       ],
       "displayAlias": "s | shift",
-      "syntax": "!s [時間]",
+      "syntax": "!s [剩餘時間]",
       "description": "計算報刀表格\n"
     }
   },
