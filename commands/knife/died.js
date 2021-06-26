@@ -53,7 +53,7 @@ class DiedCommand extends Command {
 
       let text = command.died.boss_fainted.replace('[boss]', current_boss).replace('[next_boss]', next_boss)
       //get next boss member
-      let knifeBoss = await dm.getKnifeBossQuery(next_boss)
+      let knifeBoss = await dm.getAllKnifeBossQuery(next_boss)
       knifeBoss.forEach( doc => {
         const data = doc.data()
         text += command.died.member_info.replace('[id]',data.member_id).replace('[comment]', data.comment)
