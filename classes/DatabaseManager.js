@@ -35,6 +35,15 @@ class DatabaseManager {
                           .get()
     }
 
+     async getAllKnifeBossQuery(boss){
+      return  await this.db.collection('servers')
+                          .doc(this.guildID)
+                          .collection('knife')
+                          .where('status','in', ['processing', 'attacking'])
+                          .where('boss','==', boss)
+                          .get()
+    }
+
     async setKnife(data){
       await this.db.collection('servers')
                     .doc(this.guildID)

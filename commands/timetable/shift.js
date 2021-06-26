@@ -28,6 +28,10 @@ class ShiftCommand extends Command {
     let timetables = new TimeTables(db)
     await timetables.getTimeTables(message.guild.id)
     let inp = ''
+
+    if(args.shift > 130 || args.shift < 0){
+      message.channel.send("請輸入正確的時間")
+    }
     await prompter.message(message.channel, {
         question: "請輸入刀表",
         userId: message.author.id,
