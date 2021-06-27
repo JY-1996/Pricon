@@ -11,7 +11,7 @@ class DatabaseManager {
       return await this.db.collection('servers')
                           .doc(this.guildID)
                           .collection('knife')
-                          .where('status','!=','done')
+                          .orderBy('time')
                           .get()
     }
 
@@ -21,7 +21,6 @@ class DatabaseManager {
                           .collection('knife')
                           .where('member_id','==', this.clientID)
                           .where('isForced','==', false)  
-                          .where('status','in', ['processing', 'attacking'])
                           .get()
     }
     
@@ -30,7 +29,7 @@ class DatabaseManager {
                           .doc(this.guildID)
                           .collection('knife')
                           .where('member_id','==', this.clientID)
-                          .where('status','in', ['processing', 'attacking'])
+                          .orderBy('time')
                           .where('boss','==', boss)
                           .get()
     }
@@ -39,8 +38,8 @@ class DatabaseManager {
       return  await this.db.collection('servers')
                           .doc(this.guildID)
                           .collection('knife')
-                          .where('status','in', ['processing', 'attacking'])
                           .where('boss','==', boss)
+                          .orderBy('time')
                           .get()
     }
 
@@ -242,7 +241,6 @@ class DatabaseManager {
                           .doc(this.guildID)
                           .collection('knife')
                           .where('member_id','==', member)
-                          .where('status','in', ['processing', 'attacking'])
                           .where('boss','==', boss)
                           .get()
       await query.forEach(doc => {

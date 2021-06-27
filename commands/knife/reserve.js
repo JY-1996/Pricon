@@ -68,18 +68,18 @@ class ReserveCommand extends Command {
 
       let boss_detail =  await dm.getBossDetail()
       let knifeCount = boss_detail.knife_count
-      if(knifeCount){
-        if(serverKnife.size >= knifeCount){
-            loadingMsg.edit(command.reserve.knife_count_exceed.replace('[id]', clientID).replace('[count]', knifeCount).replace('[current]', serverKnife.size))
-            return
-        }
-      }
+      // if(knifeCount){
+      //   if(serverKnife.size >= knifeCount){
+      //       loadingMsg.edit(command.reserve.knife_count_exceed.replace('[id]', clientID).replace('[count]', knifeCount).replace('[current]', serverKnife.size))
+      //       return
+      //   }
+      // }
   
-      let serverCurrentBoss = await dm.getKnifeBossQuery(boss)
-      if(!serverCurrentBoss.empty){
-          loadingMsg.edit(command.reserve.repeated.replace('[id]', clientID))
-            return
-      }
+      // let serverCurrentBoss = await dm.getKnifeBossQuery(boss)
+      // if(!serverCurrentBoss.empty){
+      //     loadingMsg.edit(command.reserve.repeated.replace('[id]', clientID))
+      //       return
+      // }
       
       await dm.setKnife({
           boss: boss,
