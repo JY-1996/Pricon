@@ -55,7 +55,7 @@ class BossCommand extends Command {
       let serverKnife = await dm.getKnifeBossQuery(current_boss)
       if(!serverKnife.empty){
          await serverKnife.forEach(doc => {
-            dm.updateKnife(doc.id)
+            dm.deleteKnife(doc.id)
         })
       }
       let boss_hp = boss_detail.current_boss_hp - hp
