@@ -49,8 +49,6 @@ class AdminBossCommand extends Command {
       const week = args.week
       const boss = args.boss
 
-      const total_boss_died = (week - 1) * 5 + boss -1  
-
       const detail = await dm.resetBoss(week,boss)
       
       const embed = new MessageEmbed();

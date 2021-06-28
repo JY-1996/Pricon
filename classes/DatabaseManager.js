@@ -288,7 +288,7 @@ class DatabaseManager {
                                         .collection('setting')
                                         .doc('boss_max_hp')  
                                         .get()                
-      let query = queryRef.get() 
+      let query = await queryRef.get() 
       let current_phase = 1
       if(current_week > 44){
         current_phase = 5
@@ -299,13 +299,11 @@ class DatabaseManager {
       }else if(current_week > 3){
         current_phase = 2
       }
-
-      if(query.exist){
-          await queryRef.update({
-              total_boss_died: (current_week - 1) * 5 + current_boss - 1,
-              current_boss_hp: boss_max_hp.data()[current_phase][current_boss == 5 ? 0 : current_boss]
-          })
-      }                   
+  
+      await queryRef.update({
+          total_boss_died: (current_week - 1) * 5 + current_boss - 1,
+          current_boss_hp: boss_max_hp.data()[current_phase][current_boss == 5 ? 0 : current_boss]
+      })                
   }
 
   async displayAll(){
