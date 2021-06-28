@@ -29,7 +29,6 @@ class DatabaseManager {
                           .doc(this.guildID)
                           .collection('knife')
                           .where('member_id','==', this.clientID)
-                          .orderBy('time')
                           .where('boss','==', boss)
                           .get()
     }
@@ -39,7 +38,6 @@ class DatabaseManager {
                           .doc(this.guildID)
                           .collection('knife')
                           .where('boss','==', boss)
-                          .orderBy('time')
                           .get()
     }
 
@@ -263,7 +261,7 @@ class DatabaseManager {
               2:[600,800,1000,1200,1500],
               3:[700,900,1200,1500,2000],
               4:[1700,1800,2000,2100,2200],
-              5:[8500,9000,9500,10000,10500]
+              5:[8500,9000,9500,10000,11100]
         })
     }
     const query1Ref = this.db.collection('servers')
@@ -302,7 +300,7 @@ class DatabaseManager {
         current_phase = 2
       }
 
-      if(!query.exist){
+      if(query.exist){
           await queryRef.update({
               total_boss_died: (current_week - 1) * 5 + current_boss - 1,
               current_boss_hp: boss_max_hp.data()[current_phase][current_boss == 5 ? 0 : current_boss]

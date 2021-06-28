@@ -55,7 +55,7 @@ class AdminBossCommand extends Command {
       
       const embed = new MessageEmbed();
       embed.setColor("#90ffff");
-      embed.setTitle(admin.reset.title + ' | ' +admin.reset.field.replace('[week]', week).replace('[boss]', boss));
+      embed.setTitle(admin.reset.field.replace('[week]', week).replace('[boss]', boss));
       loadingMsg.delete()
       await message.channel.send(embed);
       this.client.emit("reportUpdate", message.guild);
