@@ -4,8 +4,9 @@
     "repeat": "機器人已設置",
     "report": "已設置[channel]為報刀表",
     "log": "已設置[channel]為指令記錄",
-    "knife": "已設置[channel]為報刀頻道"
-
+    "knife": "已設置[channel]為報刀頻道",
+    "member_update": "已設置[channel]為會員報刀頻道",
+    "init": "公會初始化完成"
   },
   "cancel": {
     "no_reserve": "無法搜尋此會員",
@@ -17,6 +18,8 @@
   },
   "knifeCount": {
     "title": "允許報刀數"
-
+  },
+  "member": {
+    "title": "會員報刀記錄設置成功"
   }
 }

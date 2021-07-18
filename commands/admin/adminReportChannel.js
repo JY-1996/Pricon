@@ -2,10 +2,10 @@ const { Command } = require("discord-akairo");
 const { Permissions } = require('discord.js');
 const strings = require("../../lib/string.json");
 const admin = require("../../lib/admin.json");
-const DatabaseManager  = require("../../classes/DatabaseManager");
+const ChannelManager  = require("../../classes/ChannelManager");
 
 
-class AdminReportCommand extends Command {
+class AdminReportChannelCommand extends Command {
    constructor() {
       super('adminReport', {
          aliases: ['report','報刀表'],
@@ -14,9 +14,8 @@ class AdminReportCommand extends Command {
          userPermissions: Permissions.FLAGS.ADMINISTRATOR,
          args: [
             {
-               id: 'compensate',
-               match: 'flag',
-               flag: ['c','-c','com','-com']
+               id: "channel",
+               type: "textChannel"
             }
          ],
       });
@@ -26,7 +25,7 @@ class AdminReportCommand extends Command {
       const db = this.client.db
       const guildID = message.guild.id;
       let channelID = message.channel.id
-      const dm = new DatabaseManager(db,guildID)
+      const dm = new ChannelManager(db,guildID)
 
       let loadingMsg = await message.channel.send(strings.common.waiting);
 
@@ -39,5 +38,5 @@ class AdminReportCommand extends Command {
       this.client.emit("reportUpdate", message.guild);
     };
 }
-module.exports = AdminReportCommand;
+module.exports = AdminReportChannelCommand;
 

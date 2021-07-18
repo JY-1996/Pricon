@@ -2,10 +2,10 @@ const { Command } = require("discord-akairo");
 const { Permissions } = require('discord.js');
 const strings = require("../../lib/string.json");
 const admin = require("../../lib/admin.json");
-const DatabaseManager  = require("../../classes/DatabaseManager");
+const ChannelManager  = require("../../classes/ChannelManager");
 
 
-class AdminLogCommand extends Command {
+class AdminLogChannelCommand extends Command {
    constructor() {
       super('adminLog', {
          aliases: ['log','指令記錄'],
@@ -30,7 +30,7 @@ class AdminLogCommand extends Command {
       const db = this.client.db
       const guildID = message.guild.id;
       const channelID = message.channel.id
-      const dm = new DatabaseManager(db,guildID)
+      const dm = new ChannelManager(db,guildID)
 
       let loadingMsg = await message.channel.send(strings.common.waiting);
 
@@ -42,5 +42,5 @@ class AdminLogCommand extends Command {
       // this.client.emit("logUpdate", message.guild);
     };
 }
-module.exports = AdminLogCommand;
+module.exports = AdminLogChannelCommand;
 

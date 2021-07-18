@@ -34,7 +34,9 @@ class ReserveCommand extends Command {
       });
    };
 
-   async exec(message, args) {   
+   async exec(message, args) { 
+      // this.client.emit("memberUpdate", message);
+      // return
       const db = this.client.db
       const guildID = message.guild.id
       const clientID = message.author.id 
@@ -81,14 +83,13 @@ class ReserveCommand extends Command {
             return
       }
       
-      await dm.setKnife({
+      await dm.setKnife(Date.now(),{
           boss: boss,
           comment: comment,
           time: Date.now(),
           member:  clientName,
           member_id: clientID,
-          status: 'processing',
-          isForced: false
+          status: 'processing'
       })
 
       loadingMsg.edit(command.reserve.reserved.replace('[id]', clientID).replace('[boss]',boss).replace('[comment]',comment));

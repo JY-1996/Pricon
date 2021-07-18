@@ -7,7 +7,7 @@ const UtilLib = require("../../api/util-lib");
 class AtkCommand extends Command {
    constructor() {
       super("atkx", {
-         aliases: ['atkx'],
+         aliases: ['ax','atkx'],
          cooldown: 3000,
          channel: 'guild',
          args: [
@@ -43,17 +43,26 @@ class AtkCommand extends Command {
       const current_boss = boss_detail.current_boss
 
       let serverKnife = await dm.getKnifeBossQuery(current_boss)
-      if(serverKnife.empty){
-        await dm.setKnife({
+
+      let hasKnife = false
+      let id = ""
+      await serverKnife.forEach(doc => {
+        if(doc.data().status != 'done'){
+            hasKnife = true
+            dm.setKnifeToAtk(doc.id)
+        }
+      })
+      if(!hasKnife){
+         await dm.setKnife(Date.now(),{
             boss: current_boss,
             comment: '',
             time: Date.now(),
             member:  clientName,
             member_id: clientID,
-            status: 'attacking',
-            isForced: true
+            status: 'attacking'
         })
       }
+
       loadingMsg.edit(command.atk.attack.replace('[id]',clientID).replace('[boss]',current_boss))
       this.client.emit("reportUpdate", message.guild)
       this.client.emit("logUpdate", message.guild,command.atk.log.replace('[member]', clientName).replace('[boss]',current_boss))

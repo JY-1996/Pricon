@@ -2,29 +2,22 @@ const { Command } = require("discord-akairo");
 const { Permissions } = require('discord.js');
 const strings = require("../../lib/string.json");
 const admin = require("../../lib/admin.json");
-const DatabaseManager  = require("../../classes/DatabaseManager");
+const AdminManager  = require("../../classes/AdminManager");
 
-class AdminSetupCommand extends Command {
+class AdminDeleteGuildKnifeCommand extends Command {
    constructor() {
       super('adminReset', {
          aliases: ['reset','重置'],
          cooldown: 3000,
          channel: 'guild',
-         userPermissions: Permissions.FLAGS.ADMINISTRATOR,
-         args: [
-            {
-               id: 'compensate',
-               match: 'flag',
-               flag: ['c','-c','com','-com']
-            }
-         ],
+         userPermissions: Permissions.FLAGS.ADMINISTRATOR
       });
    };
 
    async exec(message, args) {
        const db = this.client.db
       const guildID = message.guild.id;
-      const dm = new DatabaseManager(db,guildID)
+      const dm = new AdminManager(db,guildID)
 
       let loadingMsg = await message.channel.send(strings.common.waiting);
       await dm.deleteGuildKnife(guildID)
@@ -36,5 +29,5 @@ class AdminSetupCommand extends Command {
     
  
 }
-module.exports = AdminSetupCommand;
+module.exports = AdminDeleteGuildKnifeCommand;
 

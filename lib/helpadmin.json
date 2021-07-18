@@ -66,6 +66,16 @@
       "syntax": "!knife | !knife [頻道]",
       "description": "設置刀頻道\n"
     },
+    "member": {
+      "name": "MemberUpdate",
+      "shortDescription": "報刀頻道",
+      "alias": [
+        "memberUpdate"
+      ],
+      "displayAlias": "memberUpdate",
+      "syntax": "!memberUpdate | !memberUpdate [頻道]",
+      "description": "設置會員刀表頻道\n"
+    },
     "setup": {
       "name": "Setup",
       "shortDescription": "機器人初始化",
@@ -87,6 +97,16 @@
       "displayAlias": "reset",
       "syntax": "!reset",
       "description": "重置所有預約\n"
+    },
+    "role": {
+      "name": "SetupRoleId",
+      "shortDescription": "設置會員刀表更新",
+      "alias": [
+        "role"
+      ],
+      "displayAlias": "role",
+      "syntax": "!role [@role]",
+      "description": "設置會員刀表更新\n"
     }
   },
   "generalHelp": {

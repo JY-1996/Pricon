@@ -2,7 +2,7 @@ const { Command } = require("discord-akairo");
 const { Permissions } = require('discord.js');
 const strings = require("../../lib/string.json");
 const admin = require("../../lib/admin.json");
-const DatabaseManager  = require("../../classes/DatabaseManager");
+const AdminManager  = require("../../classes/AdminManager");
 
 class AdminDisplayCommand extends Command {
    constructor() {
@@ -24,10 +24,10 @@ class AdminDisplayCommand extends Command {
    async exec(message, args) {
       const db = this.client.db
       const guildID = message.guild.id;
-      const dm = new DatabaseManager(db,guildID)
+      const dm = new AdminManager(db,guildID)
 
       let loadingMsg = await message.channel.send(strings.common.waiting);
-      let result = await dm.displayAll()
+      let result = await dm.displayAllSetting()
       let text = ''
       await result.forEach(doc => {
           let json = doc.data()

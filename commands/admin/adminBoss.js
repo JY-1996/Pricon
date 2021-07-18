@@ -3,7 +3,7 @@ const { Permissions } = require('discord.js');
 const strings = require("../../lib/string.json");
 const admin = require("../../lib/admin.json");
 const { MessageEmbed } = require('discord.js');
-const DatabaseManager  = require("../../classes/DatabaseManager");
+const AdminManager  = require("../../classes/AdminManager");
 
 class AdminBossCommand extends Command {
    constructor() {
@@ -42,7 +42,7 @@ class AdminBossCommand extends Command {
       const guildID = message.guild.id
       const clientID = message.author.id
       const db = this.client.db
-      const dm = new DatabaseManager(db,guildID,clientID)
+      const dm = new AdminManager(db,guildID,clientID)
       
       let loadingMsg = await message.channel.send(strings.common.waiting);
 

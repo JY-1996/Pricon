@@ -20,7 +20,7 @@ class BossCommand extends Command {
                id: "hp",
                type: "integer",
                prompt: {
-                  start: strings.prompt.boss,
+                  start: strings.prompt.hp,
                   retry: strings.not_a_number,
                },
             },
@@ -55,7 +55,7 @@ class BossCommand extends Command {
       let serverKnife = await dm.getKnifeBossQuery(current_boss)
       if(!serverKnife.empty){
          await serverKnife.forEach(doc => {
-            dm.deleteKnife(doc.id)
+            dm.updateKnifeToDone(doc.id,current_boss)
         })
       }
       let boss_hp = boss_detail.current_boss_hp - hp
@@ -73,6 +73,7 @@ class BossCommand extends Command {
 
       this.client.emit("reportUpdate", message.guild);
       this.client.emit("logUpdate", message.guild,command.boss.log.replace('[member]', clientName).replace('[boss]', current_boss).replace('[hp]', hp));
+      this.client.emit("memberUpdate", message);
       return;
    };
 

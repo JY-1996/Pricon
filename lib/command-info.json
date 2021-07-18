@@ -19,7 +19,8 @@
   "died": {
     "boss_fainted": "[boss]王倒下了！！\n現在是[next_boss]王！！預約者：\n",
     "member_info": "<@[id]> [comment]\n",
-    "log": "[boss]王倒下了！！現在是[next_boss]王！！"    
+    "log": "[boss]王倒下了！！現在是[next_boss]王！！",
+    "second":"請輸入正確時間！"   
   },
   "reserve": {
     "repeated": "<@[id]>預約重複！！",

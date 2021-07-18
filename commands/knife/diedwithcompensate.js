@@ -3,10 +3,10 @@ const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
 const DatabaseManager  = require("../../classes/DatabaseManager");
 
-class DiedCommand extends Command {
+class DiedWithCompensateCommand extends Command {
    constructor() {
-      super("died", {
-         aliases: ['d','died'],
+      super("diedc", {
+         aliases: ['dc','diedc'],
          cooldown: 3000,
          channel: 'guild',
          args: [
@@ -14,7 +14,15 @@ class DiedCommand extends Command {
                id: "compensate",
                match: "flag",
                flag: ['c','-c','com','-com']
-            }
+            },
+            // {
+            //    id: "second",
+            //    type: "integer",
+            //     prompt: {
+            //       start: strings.prompt.com,
+            //       retry: strings.not_a_number,
+            //    },
+            // },
          ],
       });
    };
@@ -35,6 +43,11 @@ class DiedCommand extends Command {
          loadingMsg.edit(strings.common.wrong_knife_channel.replace('[channel]', `<#${knife_channel}>`));
          return
       }
+      // let second = args.second
+      // if(second > 130 || (second < 100 && second > 60) || second < 0){
+      //    loadingMsg.edit(command.died.second)
+      //     return
+      // }
 
       const boss_detail = await dm.getBossDetail()
 
@@ -44,11 +57,11 @@ class DiedCommand extends Command {
 
       await dm.nextBoss()
       //remove knife
-      let serverKnife = await dm.getKnifeBossQuery(current_boss)
+       let serverKnife = await dm.getKnifeBossQuery(current_boss)
       if (!serverKnife.empty) {
         await serverKnife.forEach(doc => {
           if(doc.data().status != 'done'){
-            dm.updateKnifeToDone(doc.id,current_boss)
+            dm.updateKnifeToDoneWithCom(doc.id,current_boss)
           }
         })
       }
@@ -70,5 +83,5 @@ class DiedCommand extends Command {
    };
 
 }
-module.exports = DiedCommand;
+module.exports = DiedWithCompensateCommand;
 

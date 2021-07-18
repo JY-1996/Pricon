@@ -1,6 +1,7 @@
 const { Listener } = require('discord-akairo')
 const UtilLib = require("../api/util-lib")
 const DatabaseManager = require("../classes/DatabaseManager");
+const ChannelManager = require("../classes/ChannelManager");
 
 class ReportUpdateListener extends Listener { 
   constructor() {
@@ -14,7 +15,8 @@ class ReportUpdateListener extends Listener {
     const db = this.client.db
     const guildID = guild.id
     const dm = new DatabaseManager(db,guildID)
-    
+    const cm = new ChannelManager(db,guildID)
+
     let tableText = ''
     
     const report_channel = await dm.getChannel('report')
@@ -46,6 +48,12 @@ class ReportUpdateListener extends Listener {
         if(data.length){
             tableText += '`' + (key + 1) + '王\t預約者：                               `\n'
             data.forEach(item => {
+              if(item.status == 'attacking'){
+                  tableText += '⚔'
+              }else{
+                  tableText += '⌛'
+              }
+          
               if(item.comment){
                 let final = '\t' + item.member
                 var i;
@@ -62,10 +70,10 @@ class ReportUpdateListener extends Listener {
         }
     })
     tableText += '\n最後更新：' + UtilLib.getFormattedDate();
-    const board_message = await dm.getReportMessage()
+    const board_message = await cm.getReportMessage()
     if (!board_message) {
         const boardMessage = await boardChannel.send(tableText);
-        await dm.setReportMessage(boardMessage.id)
+        await cm.setReportMessage(boardMessage.id)
         return;
       } else {
          try {
@@ -74,7 +82,7 @@ class ReportUpdateListener extends Listener {
          } catch (e) {
             console.log(e)
             const boardMessage = await boardChannel.send(tableText)
-            await dm.setReportMessage(boardMessage.id)
+            await cm.setReportMessage(boardMessage.id)
 
          }
       };
