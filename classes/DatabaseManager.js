@@ -20,6 +20,15 @@ class DatabaseManager {
                           .doc(this.guildID)
                           .collection('knife')
                           .where('member_id','==', this.clientID)
+                          .where('compensate','==', false)
+                          .get()
+    }
+
+    async getAllKnifeQuery(){
+      return await this.db.collection('servers')
+                          .doc(this.guildID)
+                          .collection('knife')
+                          .where('member_id','==', this.clientID)
                           .get()
     }
     

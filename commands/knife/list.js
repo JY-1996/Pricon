@@ -36,7 +36,7 @@ class ListCommand extends Command {
          return
       }
 
-      let knifeQuery = await dm.getKnifeQuery()
+      let knifeQuery = await dm.getAllKnifeQuery()
       if (knifeQuery.empty) {
         loadingMsg.edit(command.list.no_reserve.replace('[id]',clientID));
         return
