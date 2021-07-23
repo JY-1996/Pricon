@@ -35,8 +35,8 @@ class ReserveCommand extends Command {
    };
 
    async exec(message, args) { 
-      // this.client.emit("memberUpdate", message);
-      // return
+      this.client.emit("dailyReset", message);
+      return
       const db = this.client.db
       const guildID = message.guild.id
       const clientID = message.author.id 

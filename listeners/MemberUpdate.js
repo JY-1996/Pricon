@@ -13,9 +13,9 @@ class MemberUpdateListener extends Listener {
       });
    }
 
-  async exec(message) {
+  async exec(guild) {
     const db = this.client.db
-    const guildID = message.guild.id
+    const guildID = guild.id
     const am = new AdminManager(db,guildID)
     const dm = new DatabaseManager(db,guildID)
     const cm = new ChannelManager(db,guildID)
@@ -30,7 +30,7 @@ class MemberUpdateListener extends Listener {
       return
     }
 
-    const boardChannel = this.client.util.resolveChannel(member_update_channel, message.guild.channels.cache); 
+    const boardChannel = this.client.util.resolveChannel(member_update_channel, guild.channels.cache); 
     if(!boardChannel){
         return 
     }
@@ -38,7 +38,7 @@ class MemberUpdateListener extends Listener {
     let array = {}
     let text = ''
 
-    let memberList = message.guild.roles.cache.find(role => 
+    let memberList = guild.roles.cache.find(role => 
       // role.id === '741160548577837157' //公會成員
       role.id === role_id
     ).members.map(member => 

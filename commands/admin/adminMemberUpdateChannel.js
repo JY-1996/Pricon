@@ -34,7 +34,7 @@ class AdminMemberUpdateChannelCommand extends Command {
       await dm.setMemberUpdateChannel(channelID)
       
       loadingMsg.edit(admin.setup.member_update.replace("[channel]", `<#${channelID}>`));
-      this.client.emit("memberUpdate", message);
+      this.client.emit("memberUpdate", message.guild);
     };
 }
 module.exports = AdminMemberUpdateChannelCommand;

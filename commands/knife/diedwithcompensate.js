@@ -77,7 +77,7 @@ class DiedWithCompensateCommand extends Command {
 
       this.client.emit("reportUpdate", message.guild);
       this.client.emit("logUpdate", message.guild,command.died.log.replace('[boss]', current_boss).replace('[next_boss]', next_boss));
-      this.client.emit("memberUpdate", message);
+      this.client.emit("memberUpdate", message.guild);
 
       return;
    };

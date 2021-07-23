@@ -1,5 +1,6 @@
 const { Listener } = require('discord-akairo');
 const DatabaseManager = require("../classes/DatabaseManager");
+const AdminManager = require("../classes/AdminManager");
 
 class DailyResetListener extends Listener {
    constructor() {
@@ -13,6 +14,8 @@ class DailyResetListener extends Listener {
       console.log("[E][Daily Reset]: ------------- START -------------")
       const db = this.client.db
       const dm = new DatabaseManager(db)
+      const am = new AdminManager(db)
+
       const res = await dm.getAllGuild()
       let resetServerId = res.docs.map(d => d.id) 
       console.log(resetServerId)
@@ -21,10 +24,10 @@ class DailyResetListener extends Listener {
       for (let serverId of resetServerId) {
          const guild = this.client.util.resolveGuild(serverId, this.client.guilds.cache)
          if (guild) {
-            await dm.deleteGuildKnife(guild.id)
+            await am.deleteGuildKnife(guild.id)
 
             this.client.emit("reportUpdate", guild);
-            this.client.emit("memberUpdate", guild);
+            this.client.emit("memberUpdate",guild);
             console.log(`> End of guild reset for ${guild.id} (${guild.name})\n`)
 
          } else {

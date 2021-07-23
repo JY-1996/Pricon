@@ -105,6 +105,11 @@ class AdminManager {
                     .delete()
   }
 
+  async getAllGuild(){
+      return await this.db.collection('servers')
+                          .get()
+  }
+
   async deleteGuildKnife(guildID, batchSize = 10) {
 
       const collectionRef = this.db

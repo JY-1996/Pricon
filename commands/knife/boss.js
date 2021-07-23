@@ -73,7 +73,7 @@ class BossCommand extends Command {
 
       this.client.emit("reportUpdate", message.guild);
       this.client.emit("logUpdate", message.guild,command.boss.log.replace('[member]', clientName).replace('[boss]', current_boss).replace('[hp]', hp));
-      this.client.emit("memberUpdate", message);
+      this.client.emit("memberUpdate", message.guild);
       return;
    };
 
