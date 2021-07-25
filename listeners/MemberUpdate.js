@@ -2,16 +2,15 @@ const { Listener } = require('discord-akairo')
 const AdminManager = require("../classes/AdminManager");
 const DatabaseManager  = require("../classes/DatabaseManager");
 const ChannelManager  = require("../classes/ChannelManager");
-
 const UtilLib = require("../api/util-lib");
 
 class MemberUpdateListener extends Listener { 
   constructor() {
-      super('memberupdate', {
-         emitter: 'client',
-         event: 'memberUpdate'
-      });
-   }
+    super('memberupdate', {
+     emitter: 'client',
+     event: 'memberUpdate'
+   });
+  }
 
   async exec(guild) {
     const db = this.client.db
@@ -32,7 +31,7 @@ class MemberUpdateListener extends Listener {
 
     const boardChannel = this.client.util.resolveChannel(member_update_channel, guild.channels.cache); 
     if(!boardChannel){
-        return 
+      return 
     }
 
     let array = {}
@@ -41,46 +40,49 @@ class MemberUpdateListener extends Listener {
     let memberList = guild.roles.cache.find(role => 
       // role.id === '741160548577837157' //公會成員
       role.id === role_id
-    ).members.map(member => 
+      ).members.map(member => 
       member.user
-    )
- 
-    for (const member of memberList) {
-      let memberData = await am.getMemberKnifeData(member.id)
+      )
+
+      for (const member of memberList) {
+        let memberData = await am.getMemberKnifeData(member.id)
         
         let count = 0
-      await memberData.forEach(doc => {
-        let status = doc.data().status
-        let compensate = doc.data().compensate
-        if(status == 'done'){
-          if(compensate){
-            count += 0.5
-          }else{
-            count += 1
+        await memberData.forEach(doc => {
+          let status = doc.data().status
+          let compensate = doc.data().compensate
+          if(status == 'done'){
+            if(compensate){
+              count += 0.5
+            }else{
+              count += 1
+            }
           }
-        }
-      })
-      text += member.username + '出刀數：' + count + '\n'
-    }
+        })
 
-    text += '\n最後更新：' + UtilLib.getFormattedDate();
+        const mMember = await guild.members.fetch(member.id)
+        const clientName = UtilLib.extractInGameName(mMember.displayName, false)
+        text += clientName + '出刀數：' + count + '\n'
+      }
 
-    const board_message = await cm.getMemberUpdateMessage()
-    if (!board_message) {
+      text += '\n最後更新：' + UtilLib.getFormattedDate();
+
+      const board_message = await cm.getMemberUpdateMessage()
+      if (!board_message) {
         const boardMessage = await boardChannel.send(text);
         await cm.setMemberUpdateMessage(boardMessage.id)
         return;
       } else {
-         try {
-            const boardMessage = await boardChannel.messages.fetch(board_message)
-            boardMessage.edit(text);
-         } catch (e) {
-            console.log(e)
-            const boardMessage = await boardChannel.send(text)
-            await cm.setMemberUpdateMessage(boardMessage.id)
+       try {
+        const boardMessage = await boardChannel.messages.fetch(board_message)
+        boardMessage.edit(text);
+      } catch (e) {
+        console.log(e)
+        const boardMessage = await boardChannel.send(text)
+        await cm.setMemberUpdateMessage(boardMessage.id)
 
-         }
-      };
+      }
+    };
     return
   }
 }
