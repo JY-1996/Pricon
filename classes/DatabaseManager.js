@@ -257,7 +257,7 @@ class DatabaseManager {
         current_phase = 2
       }
       await reportBossRef.update({
-        current_boss_hp: boss_max_hp[current_phase][current_boss == 5 ? 0 : current_boss],
+        current_boss_hp: boss_max_hp[current_phase][current_boss - 1],
         total_boss_died: total_boss_died + 1
       })
 
