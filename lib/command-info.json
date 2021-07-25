@@ -16,6 +16,9 @@
     "no_reserve": "<@[id]>無法搜尋預約！！",
     "log": "[member]取消預約！！"
   },
+  "cancel_atk":{
+    "cancel": "<@[id]>取消[boss]王的攻擊！！"
+  },
   "died": {
     "boss_fainted": "[boss]王倒下了！！\n現在是[next_boss]王！！預約者：\n",
     "member_info": "<@[id]> [comment]\n",

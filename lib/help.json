@@ -22,6 +22,18 @@
       "syntax": "!c [周目] [王] [-all]",
       "description": "刪除预约\n"
     },
+    "cancel_atk": {
+      "name": "cancelAttack",
+      "shortDescription": "取消进攻指令",
+      "alias": [
+        "cA",
+        "cancelAtk",
+        "cancelAttack"
+      ],
+      "displayAlias": "cA | cancelAtk | cancelAttack",
+      "syntax": "!ac",
+      "description": "取消进攻指令\n"
+    },
     "atk": {
       "name": "atk",
       "shortDescription": "进攻指令",

@@ -3,6 +3,7 @@ const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
 const DatabaseManager = require("../../classes/DatabaseManager");
 const { Permissions } = require('discord.js');
+const UtilLib = require("../../api/util-lib");
 
 class ListCommand extends Command {
    constructor() {
