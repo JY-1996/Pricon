@@ -2,6 +2,8 @@ const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
 const DatabaseManager  = require("../../classes/DatabaseManager");
+const { Permissions } = require('discord.js');
+const UtilLib = require("../../api/util-lib");
 
 class DiedWithCompensateCommand extends Command {
    constructor() {
@@ -15,6 +17,10 @@ class DiedWithCompensateCommand extends Command {
                match: "flag",
                flag: ['c','-c','com','-com']
             },
+            {
+              id: "member",
+              type: "memberMention",
+            }
             // {
             //    id: "second",
             //    type: "integer",
@@ -28,21 +34,36 @@ class DiedWithCompensateCommand extends Command {
    };
 
    async exec(message, args) {
-      const guildID = message.guild.id
-      const clientID = message.author.id
-      const db = this.client.db
-      const dm = new DatabaseManager(db,guildID,clientID)
-
       let loadingMsg = await message.channel.send(strings.common.waiting);
-      
+
+      //check channel
+      const db = this.client.db
+      const guildID = message.guild.id
+      const dm = new DatabaseManager(db,guildID)
+
       const knife_channel = await dm.getChannel('knife')
       if(!knife_channel){
-         loadingMsg.edit(strings.common.no_knife_channel);
-         return
+        loadingMsg.edit(strings.common.no_knife_channel);
+        return
       }else if(knife_channel != message.channel.id){
-         loadingMsg.edit(strings.common.wrong_knife_channel.replace('[channel]', `<#${knife_channel}>`));
-         return
+        loadingMsg.edit(strings.common.wrong_knife_channel.replace('[channel]', `<#${knife_channel}>`));
+        return
       }
+
+      let clientID = message.member.id 
+      if(args.member){
+        if(message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR)){
+          clientID = args.member.id
+        }else{
+          loadingMsg.edit(strings.common.no_permission);
+          return
+        }
+      }
+
+      const member = await message.guild.members.fetch(clientID)
+      const clientName = UtilLib.extractInGameName(member.displayName, false)
+      await dm.setClientID(clientID)
+
       // let second = args.second
       // if(second > 130 || (second < 100 && second > 60) || second < 0){
       //    loadingMsg.edit(command.died.second)

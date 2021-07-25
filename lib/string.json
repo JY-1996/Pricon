@@ -3,7 +3,8 @@
     "waiting": "等待中。。。",
     "boss_out_of_range": "❌ 请选择（1-5）王",
     "no_knife_channel": "❌ 未設置報刀頻道",
-    "wrong_knife_channel": "❌ 請在報刀頻道[channel]報刀"
+    "wrong_knife_channel": "❌ 請在報刀頻道[channel]報刀",
+    "no_permission": "您没有权限进行此操作！"
   },
   "prompt": {
     "knife": "❔ 請輸入允許報刀數",
