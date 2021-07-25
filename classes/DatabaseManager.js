@@ -7,6 +7,10 @@ class DatabaseManager {
       this.clientID = clientID
     }
 
+    async setClientID(clientID){
+      this.clientID = clientID
+    }
+
     async getAllKnife(){
       return await this.db.collection('servers')
                           .doc(this.guildID)

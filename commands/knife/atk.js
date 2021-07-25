@@ -3,31 +3,35 @@ const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
 const DatabaseManager  = require("../../classes/DatabaseManager");
 const UtilLib = require("../../api/util-lib");
+const { Permissions } = require('discord.js');
 
 class AtkCommand extends Command {
   constructor() {
-    super("atk", {
-      aliases: ['a','atk'],
-      cooldown: 3000,
-      channel: 'guild',
-      args: [{
-        id: "compensate",
-        match: "flag",
-        flag: command.atk.flag
-      }],
-    });
-  };
+      super("atk", {
+         aliases: ['a','atk'],
+         cooldown: 3000,
+         channel: 'guild',
+         args: [
+            {
+               id: "compensate",
+               match: "flag",
+               flag: ['c','-c','com','-com']
+            },
+            {
+              id: "member",
+              type: "memberMention",
+            }
+         ],
+      });
+   };
 
   async exec(message, args) {
-    const guildID = message.guild.id
-    const clientID = message.author.id
-    const member = await message.guild.members.fetch(message.author.id)
-    const clientName = UtilLib.extractInGameName(member.displayName, false)
-    const db = this.client.db
-    const dm = new DatabaseManager(db,guildID,clientID)
+    let loadingMsg = await message.channel.send(strings.common.waiting);
 
-    let loadingMsg = await message.channel.send(strings.common.waiting)
-    
+    //check channel
+    const db = this.client.db
+    const guildID = message.guild.id
+    const dm = new DatabaseManager(db,guildID)
     const knife_channel = await dm.getChannel('knife')
     if(!knife_channel){
         loadingMsg.edit(strings.common.no_knife_channel);
@@ -37,9 +41,21 @@ class AtkCommand extends Command {
         return
     }
 
+    let clientID = message.member.id 
+    if(args.member){
+      if(message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR)){
+        clientID = args.member.id
+      }else{
+        loadingMsg.edit(strings.common.no_permission);
+        return
+      }
+    }
+
+    const member = await message.guild.members.fetch(clientID)
+    const clientName = UtilLib.extractInGameName(member.displayName, false)
+    await dm.setClientID(clientID)
     const boss_detail = await dm.getBossDetail()
     const current_boss = boss_detail.current_boss
-
     let knife = await dm.getKnifeBossQuery(current_boss)
 
     let hasKnife = false

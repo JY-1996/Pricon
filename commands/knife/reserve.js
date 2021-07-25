@@ -4,6 +4,7 @@ const command = require("../../lib/command-info.json");
 const UtilLib = require("../../api/util-lib");
 const Knife = require("../../classes/Knife");
 const DatabaseManager = require("../../classes/DatabaseManager");
+const { Permissions } = require('discord.js');
 
 class ReserveCommand extends Command {
    constructor() {
@@ -26,6 +27,10 @@ class ReserveCommand extends Command {
                },
             },
             {
+                id: "member",
+                type: "memberMention",
+            },
+            {
                id: "comment",
                type: "string",
                match: "restContent"
@@ -37,15 +42,36 @@ class ReserveCommand extends Command {
    async exec(message, args) { 
       // this.client.emit("dailyReset", message);
       // return
-      const db = this.client.db
-      const guildID = message.guild.id
-      const clientID = message.author.id 
-      const member = await message.guild.members.fetch(message.author.id)
-      const clientName = UtilLib.extractInGameName(member.displayName, false)
-      const dm = new DatabaseManager(db,guildID,clientID)
-      
       let loadingMsg = await message.channel.send(strings.common.waiting);
 
+      //check channel
+      const db = this.client.db
+      const guildID = message.guild.id
+      const dm = new DatabaseManager(db,guildID)
+
+      const knife_channel = await dm.getChannel('knife')
+      if(!knife_channel){
+         loadingMsg.edit(strings.common.no_knife_channel);
+         return
+      }else if(knife_channel != message.channel.id){
+         loadingMsg.edit(strings.common.wrong_knife_channel.replace('[channel]', `<#${knife_channel}>`));
+         return
+      }
+
+      let clientID = message.member.id 
+      if(args.member){
+        if(message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR)){
+          clientID = args.member.id
+        }else{
+          loadingMsg.edit(strings.common.no_permission);
+          return
+        }
+      }
+
+      const member = await message.guild.members.fetch(clientID)
+      const clientName = UtilLib.extractInGameName(member.displayName, false)
+      await dm.setClientID(clientID)
+      
       const boss = args.boss;
       if (boss < 1 || boss > 5) {
          loadingMsg.edit(strings.common.boss_out_of_range);
@@ -57,15 +83,6 @@ class ReserveCommand extends Command {
         comment = args.comment;
       }
       
-      const knife_channel = await dm.getChannel('knife')
-      if(!knife_channel){
-         loadingMsg.edit(strings.common.no_knife_channel);
-         return
-      }else if(knife_channel != message.channel.id){
-         loadingMsg.edit(strings.common.wrong_knife_channel.replace('[channel]', `<#${knife_channel}>`));
-         return
-      }
-
       let serverKnife = await dm.getKnifeQuery()
 
       let boss_detail =  await dm.getBossDetail()
