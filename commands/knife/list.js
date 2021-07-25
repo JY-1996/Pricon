@@ -64,9 +64,9 @@ class ListCommand extends Command {
       let text = command.list.title.replace('[id]',clientID)
       await knifeQuery.forEach(doc => {
             if(doc.data().compensate){
-               text += command.list.reserve.replace('[boss]', doc.data().boss).replace('[comment]', doc.data().comment) + " (補償)"
+               text += command.list.reserve.replace('[boss]', doc.data().boss).replace('[comment]', doc.data().comment) + "\t, (補償) \n"
             }else{
-               text += command.list.reserve.replace('[boss]', doc.data().boss).replace('[comment]', doc.data().comment)
+               text += command.list.reserve.replace('[boss]', doc.data().boss).replace('[comment]', doc.data().comment) + "\n"
             }
          }
       )

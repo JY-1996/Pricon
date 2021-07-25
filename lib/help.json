@@ -31,7 +31,7 @@
         "cancelAttack"
       ],
       "displayAlias": "cA | cancelAtk | cancelAttack",
-      "syntax": "!ac",
+      "syntax": "!cA",
       "description": "取消进攻指令\n"
     },
     "atk": {

@@ -33,7 +33,7 @@
   },
   "list":{
     "title": "<@[id]>的預約有\n",
-    "reserve": "[boss]王，備註:[comment]\n",
+    "reserve": "[boss]王，備註:[comment]",
     "no_reserve": "<@[id]>暫時沒任何預約"
   },
   "timetable":{
