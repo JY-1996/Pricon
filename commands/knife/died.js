@@ -67,7 +67,7 @@ class DiedCommand extends Command {
       if (!serverKnife.empty) {
         await serverKnife.forEach(doc => {
           if(doc.data().status != 'done'){
-            dm.updateKnifeToDone(doc.id,current_boss)
+            dm.updateKnifeToDoneWithCom(doc.id,current_boss)
           }
         })
       }

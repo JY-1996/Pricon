@@ -56,14 +56,13 @@ class AtkXCommand extends Command {
     const clientName = UtilLib.extractInGameName(member.displayName, false)
     await dm.setClientID(clientID)
 
-    const boss_detail = await dm.getBossDetail()
+    let serverKnifeCount = await dm.getKnifeCount()
+    let boss_detail =  await dm.getBossDetail()
     const current_boss = boss_detail.current_boss
     let knifeCount = boss_detail.knife_count
-      
-    let knifeQuery = await dm.getKnifeQuery()
     if(knifeCount){
-    if(knifeQuery.size >= knifeCount){
-        loadingMsg.edit(command.reserve.knife_count_exceed.replace('[id]', clientID).replace('[count]', knifeCount).replace('[current]', knifeQuery.size))
+      if(serverKnifeCount >= knifeCount){
+        loadingMsg.edit(command.reserve.knife_count_exceed.replace('[id]', clientID).replace('[count]', knifeCount).replace('[current]', serverKnifeCount))
         return
       }
     }

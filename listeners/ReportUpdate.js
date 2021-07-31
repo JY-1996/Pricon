@@ -49,9 +49,9 @@ class ReportUpdateListener extends Listener {
             tableText += '`' + (key + 1) + '王\t預約者：                               `\n'
             data.forEach(item => {
               if(item.status == 'attacking'){
-                  tableText += '⚔'
+                  tableText += '\t⚔'
               }else{
-                  tableText += '⌛'
+                  tableText += '\t⌛'
               }
           
               if(item.comment){

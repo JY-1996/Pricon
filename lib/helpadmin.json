@@ -11,16 +11,27 @@
       "syntax": "!ab [周] [王]",
       "description": "設置當前週數，王\n"
     },
-    "cancel": {
-      "name": "AdminCancel",
-      "shortDescription": "取消指令",
+    "hp": {
+      "name": "AdminHp",
+      "shortDescription": "設置王血量指令",
       "alias": [
-        "ac",
-        "admincancel"
+        "ahp",
+        "adminHp"
       ],
-      "displayAlias": "ac | admincancel",
-      "syntax": "!ac [會員] [王]",
-      "description": "取消會員預約\n"
+      "displayAlias": "ahp | adminHp",
+      "syntax": "!ahp [血量]",
+      "description": "設置王當前血量\n"
+    },
+    "reserve": {
+      "name": "AdminReserve",
+      "shortDescription": "会员预约指令",
+      "alias": [
+        "ar",
+        "adminReserve"
+      ],
+      "displayAlias": "ar | adminReserve",
+      "syntax": "!ar [王] [會員] [备注]",
+      "description": "会员预约指令\n"
     },
       "knifeCount": {
       "name": "KnifeCount",

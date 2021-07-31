@@ -63,10 +63,18 @@ class ListCommand extends Command {
       }
       let text = command.list.title.replace('[id]',clientID)
       await knifeQuery.forEach(doc => {
-            if(doc.data().compensate){
-               text += command.list.reserve.replace('[boss]', doc.data().boss).replace('[comment]', doc.data().comment) + "\t, (補償) \n"
+            let data = doc.data()
+            if(data.kill){
+               let kill_detail = UtilLib.convertKillToPhaseWeekBoss(data.kill)
+               text += "\t已出刀" + kill_detail.phase + "階" + kill_detail.week + "周" + kill_detail.boss + "王"
             }else{
-               text += command.list.reserve.replace('[boss]', doc.data().boss).replace('[comment]', doc.data().comment) + "\n"
+               text += "\t预约" + data.boss + "王中。。。"
+            }
+
+            if(data.compensate){
+               text += "(0.5刀)\n"
+            }else{
+               text += "(1刀)\n"
             }
          }
       )

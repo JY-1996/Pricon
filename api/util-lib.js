@@ -12,7 +12,7 @@ class UtilLib {
    /**
     * Get a random loading message string from strings.loading
     */
-   static randomLoading() {
+    static randomLoading() {
       return rwc(randomList.random);
    };
 
@@ -23,7 +23,7 @@ class UtilLib {
    /**
     * Get current formatted date with UTC +8 YYYY/MM/DD HH/MM/SS hour24
     */
-   static getFormattedDate() {
+    static getFormattedDate() {
       let date = new Date()
       return date.toLocaleString("ja-JP", { timeZone: "Asia/Hong_Kong", hour12: false });
    };
@@ -31,7 +31,7 @@ class UtilLib {
     * Format the date given with UTC +8 YYYY/MM/DD HH/MM/SS hour24
     * @param {number} date Date to be formatted 
     */
-   static formatDate(date) {
+    static formatDate(date) {
       return date.toLocaleString("ja-JP", { timeZone: "Asia/Hong_Kong", hour12: false });
    };
 
@@ -41,23 +41,43 @@ class UtilLib {
     * 2. Directly output the username if does not contain square brackets.
     * @param {string} username Username to be [rpcessed]
  // {boolean} filterOn Uses util-lib.filter 
-    */
-   static extractInGameName(username) {
-      let output;
-      var rx = /((\[|［).*(\]|］))/g;
-      var arr = rx.exec(username);
-      if (!arr) {
-         output = username;
-      } else {
-         output = arr[1].slice(1, -1);
-      };
+ */
+ static extractInGameName(username) {
+   let output;
+   var rx = /((\[|［).*(\]|］))/g;
+   var arr = rx.exec(username);
+   if (!arr) {
+      output = username;
+   } else {
+      output = arr[1].slice(1, -1);
+   };
 
       // output = UtilLib.filter(output, "all")
 
       return output;
    };
 
-   static convertWeekToStage(week) {
+   static convertKillToPhaseWeekBoss(kill){
+      const week = parseInt(kill / 5) + 1 
+      const boss = kill % 5 + 1 
+      let phase = 1
+      if(week > 44){
+        phase = 5
+     }else if(week > 34){
+        phase = 4
+     }else if(week > 10){
+        phase = 3
+     }else if(week > 3){
+        phase = 2
+     }
+     return {
+        week: week,
+        boss: boss,
+        phase: phase,
+     }
+  }
+
+  static convertWeekToStage(week) {
 
       //return "11122222223333333333333333333333334".slice(Math.min(week - 1, 34), Math.min(week, 35));
 
@@ -81,7 +101,7 @@ class UtilLib {
     * @param {string} reactionEmoteString The continous string of emotes to be used as reaction
     * @param {number} reactionTimeout The timeout time for the selection; reactions will be deleted after timeout
     */
-   static async emojiResponseSelection(userID, reactedMessage, reactionCount = -1, reactionEmoteArr = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"], reactionTimeout = 45000, timeoutEdit = true) {
+    static async emojiResponseSelection(userID, reactedMessage, reactionCount = -1, reactionEmoteArr = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"], reactionTimeout = 45000, timeoutEdit = true) {
 
       // normalize reaction count if out of bound or something
       if (reactionCount < 0 || reactionEmoteArr.length < reactionCount) {
@@ -105,10 +125,10 @@ class UtilLib {
       await reactedMessage.awaitReactions(filter, {
          max: 1, time: reactionTimeout, errors: ['time']
       })
-         .then(collected => {
-            const reaction = collected.first().emoji.name;
+      .then(collected => {
+         const reaction = collected.first().emoji.name;
 
-            for (let i = 0; i < reactionArr.length; i++) {
+         for (let i = 0; i < reactionArr.length; i++) {
                // check if matched
                if (reaction == reactionArr[i]) {
                   selectionNumber = i + 1;
@@ -128,13 +148,13 @@ class UtilLib {
          });
 
 
-      if (selectionNumber > 0) {
-         return selectionNumber;
-      }
-      else return false;
+         if (selectionNumber > 0) {
+            return selectionNumber;
+         }
+         else return false;
 
-   };
+      };
 
-}
+   }
 
-module.exports = UtilLib
+   module.exports = UtilLib
