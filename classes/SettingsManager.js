@@ -1,4 +1,4 @@
-const InfoManager = require('./InfoManager');
+ const InfoManager = require('./InfoManager');
 const { Permissions } = require("discord.js");
 
 class SettingsManager extends InfoManager {

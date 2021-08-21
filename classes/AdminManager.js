@@ -165,6 +165,14 @@ class AdminManager {
       .where('member_id', '==', member_id)
       .get()
     }
+
+    async getMemberAllKnifeData(){
+      return await this.db.collection('servers')
+      .doc(this.guildID)
+      .collection('knife')
+      .orderBy('member')
+      .get()
+    }
   }
 
   module.exports = AdminManager

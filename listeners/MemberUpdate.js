@@ -43,7 +43,7 @@ class MemberUpdateListener extends Listener {
       ).members.map(member => 
       member.user
       )
-
+      let total = 0
       for (const member of memberList) {
         let memberData = await am.getMemberKnifeData(member.id)
         
@@ -59,12 +59,12 @@ class MemberUpdateListener extends Listener {
             }
           }
         })
-
+        total += count
         const mMember = await guild.members.fetch(member.id)
         const clientName = UtilLib.extractInGameName(mMember.displayName, false)
         text += clientName + '出刀數：' + count + '\n'
       }
-
+      text = "已出刀 = " + total + "\n\n" + text
       text += '\n最後更新：' + UtilLib.getFormattedDate();
 
       const board_message = await cm.getMemberUpdateMessage()
