@@ -2,12 +2,13 @@ const { Command } = require("discord-akairo");
 const { Permissions } = require('discord.js');
 const strings = require("../../lib/string.json");
 const admin = require("../../lib/admin.json");
+const help = require("../../lib/helpadmin.json");
 const AdminManager  = require("../../classes/AdminManager");
 
 class AdminSetupCommand extends Command {
    constructor() {
       super('adminSetup', {
-         aliases: ['setup','初始化'],
+         aliases: ['start'],
          cooldown: 3000,
          channel: 'guild',
          userPermissions: Permissions.FLAGS.ADMINISTRATOR

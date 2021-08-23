@@ -250,6 +250,55 @@ async getMemberData(){
   .collection('knife')
   .get()
 }
+
+  async insertMember(member_id,member_name){
+      let query = await this.db.collection('servers')
+      .doc(this.guildID)
+      .collection('member')
+      .doc(member_id)
+
+      let data = await query.get()
+      if(!data.exists){
+        await query.set({
+          SL: false,
+          name: member_name,
+          count: 0
+        })  
+      }
+    }
+
+    async setSL(member_id){
+      await this.db.collection('servers')
+      .doc(this.guildID)
+      .collection('member')
+      .doc(member_id)
+      .update({
+        SL: true
+      })
+    }
+
+    async addKnifeCount(member_id,count){
+      let query = await this.db.collection('servers')
+      .doc(this.guildID)
+      .collection('member')
+      .doc(member_id)
+
+      let data = await query.get()
+      if(data.exists){
+        let number = data.data().count
+        await query.update({
+          count: number + count
+        })  
+      }
+    }
+
+    async tagFailMember(){
+       return await this.db.collection('servers')
+      .doc(this.guildID)
+      .collection('member')
+      .where('count','!=',3)
+      .get()
+    }
 }
 
 module.exports = DatabaseManager

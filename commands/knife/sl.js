@@ -1,21 +1,17 @@
 const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
-const DatabaseManager  = require("../../classes/DatabaseManager");
+const DatabaseManager = require("../../classes/DatabaseManager");
 const { Permissions } = require('discord.js');
 const UtilLib = require("../../api/util-lib");
-class DiedCommand extends Command {
+
+class SLCommand extends Command {
    constructor() {
-      super("died", {
-         aliases: ['d','died'],
+      super("sl", {
+         aliases: ['sl'],
          cooldown: 3000,
          channel: 'guild',
          args: [
-            {
-               id: "compensate",
-               match: "flag",
-               flag: ['c','-c','com','-com']
-            },
             {
               id: "member",
               type: "memberMention",
@@ -55,40 +51,13 @@ class DiedCommand extends Command {
       const clientName = UtilLib.extractInGameName(member.displayName, false)
       await dm.setClientID(clientID)
 
-      const boss_detail = await dm.getBossDetail()
-
-      const total_boss_died = boss_detail.total_boss_died    
-      const current_boss = boss_detail.current_boss
-      const next_boss = current_boss + 1 == 6 ? 1 : current_boss + 1
-
-      await dm.nextBoss()
-      //remove knife
-      let serverKnife = await dm.getKnifeBossQuery(current_boss)
-      if (!serverKnife.empty) {
-        await serverKnife.forEach(doc => {
-          if(doc.data().status != 'done'){
-            dm.updateKnifeToDoneWithCom(doc.id,current_boss)
-            dm.addKnifeCount(clientID, 0.5)
-          }
-        })
-      }
-
-      let text = command.died.boss_fainted.replace('[boss]', current_boss).replace('[next_boss]', next_boss)
-      //get next boss member
-      let knifeBoss = await dm.getAllKnifeBossQuery(next_boss)
-      knifeBoss.forEach( doc => {
-        const data = doc.data()
-        text += command.died.member_info.replace('[id]',data.member_id).replace('[comment]', data.comment)
-      })
-      loadingMsg.edit(text);
-
-      this.client.emit("reportUpdate", message.guild);
-      this.client.emit("logUpdate", message.guild,command.died.log.replace('[boss]', current_boss).replace('[next_boss]', next_boss));
+      await dm.setSL(clientID)
+ 
+      loadingMsg.edit(command.sl.success);
       this.client.emit("memberUpdate", message.guild);
-
-      return;
+      return
    };
 
 }
-module.exports = DiedCommand;
+module.exports = SLCommand;
 

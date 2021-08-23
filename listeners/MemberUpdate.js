@@ -37,51 +37,46 @@ class MemberUpdateListener extends Listener {
     let array = {}
     let text = ''
 
-    let memberList = guild.roles.cache.find(role => 
-      // role.id === '741160548577837157' //公會成員
-      role.id === role_id
-      ).members.map(member => 
-      member.user
-      )
-      let total = 0
-      for (const member of memberList) {
-        let memberData = await am.getMemberKnifeData(member.id)
-        
-        let count = 0
-        await memberData.forEach(doc => {
-          let status = doc.data().status
-          let compensate = doc.data().compensate
-          if(status == 'done'){
-            if(compensate){
-              count += 0.5
-            }else{
-              count += 1
-            }
-          }
-        })
-        total += count
-        const mMember = await guild.members.fetch(member.id)
-        const clientName = UtilLib.extractInGameName(mMember.displayName, false)
-        text += clientName + '出刀數：' + count + '\n'
-      }
-      text = "已出刀 = " + total + "\n\n" + text
-      text += '\n最後更新：' + UtilLib.getFormattedDate();
 
-      const board_message = await cm.getMemberUpdateMessage()
-      if (!board_message) {
+
+    // let memberList = guild.roles.cache.find(role => 
+    //   // role.id === '741160548577837157' //公會成員
+    //   role.id === role_id
+    //   ).members.map(member => 
+    //   member.user
+    //   )
+    let total = 0
+    let memberCount = 0
+    let memberData = await am.getMemberData()
+        
+    await memberData.forEach(doc => {
+        let data = doc.data()
+        if(data.SL){
+          text += data.name + '出刀數：' + data.count + '(已SL)\n'
+        }else{
+          text += data.name + '出刀數：' + data.count + '\n'
+        }
+        total += data.count
+        memberCount += 1
+    })
+    text = "出刀人数 = " + memberCount + "\n\n已出刀 = " + total + "\n\n" + text
+    text += '\n最後更新：' + UtilLib.getFormattedDate();
+
+    const board_message = await cm.getMemberUpdateMessage()
+    if (!board_message) {
         const boardMessage = await boardChannel.send(text);
         await cm.setMemberUpdateMessage(boardMessage.id)
         return;
-      } else {
+    } else {
        try {
         const boardMessage = await boardChannel.messages.fetch(board_message)
         boardMessage.edit(text);
-      } catch (e) {
+    } catch (e) {
         console.log(e)
         const boardMessage = await boardChannel.send(text)
         await cm.setMemberUpdateMessage(boardMessage.id)
 
-      }
+    }
     };
     return
   }

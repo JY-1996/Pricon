@@ -44,21 +44,23 @@ class ReserveCommand extends Command {
       const guildID = message.guild.id
       const dm = new DatabaseManager(db,guildID)
 
-      const knife_channel = await dm.getChannel('knife')
-      if(!knife_channel){
-         loadingMsg.edit(strings.common.no_knife_channel);
-         return
-      }else if(knife_channel != message.channel.id){
-         loadingMsg.edit(strings.common.wrong_knife_channel.replace('[channel]', `<#${knife_channel}>`));
-         return
-      }
-
-      let clientID = message.member.id 
+      // const knife_channel = await dm.getChannel('knife')
+      // if(!knife_channel){
+      //    loadingMsg.edit(strings.common.no_knife_channel);
+      //    return
+      // }else if(knife_channel != message.channel.id){
+      //    loadingMsg.edit(strings.common.wrong_knife_channel.replace('[channel]', `<#${knife_channel}>`));
+      //    return
+      // }
+      
+      let clientID = message.member.id  
 
       const member = await message.guild.members.fetch(clientID)
       const clientName = UtilLib.extractInGameName(member.displayName, false)
       await dm.setClientID(clientID)
-      
+
+      await dm.insertMember(clientID,clientName)
+
       const boss = args.boss;
       if (boss < 1 || boss > 5) {
          loadingMsg.edit(strings.common.boss_out_of_range);

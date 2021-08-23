@@ -4,11 +4,10 @@
       "name": "AdminBoss",
       "shortDescription": "設置王指令",
       "alias": [
-        "ab",
-        "adminboss"
+        "set"
       ],
-      "displayAlias": "ab | adminboss",
-      "syntax": "!ab [周] [王]",
+      "displayAlias": "set",
+      "syntax": "!set [周] [王]",
       "description": "設置當前週數，王\n"
     },
     "hp": {
@@ -18,8 +17,8 @@
         "ahp",
         "adminHp"
       ],
-      "displayAlias": "ahp | adminHp",
-      "syntax": "!ahp [血量]",
+      "displayAlias": "setHp | sethp",
+      "syntax": "!setHp [血量]",
       "description": "設置王當前血量\n"
     },
     "reserve": {
@@ -88,14 +87,14 @@
       "description": "設置會員刀表頻道\n"
     },
     "setup": {
-      "name": "Setup",
+      "name": "Start",
       "shortDescription": "機器人初始化",
       "alias": [
-        "setup",
-        "初始化"
+        "start",
+        "重启"
       ],
-      "displayAlias": "setup | 初始化",
-      "syntax": "!setup",
+      "displayAlias": "start | 重启",
+      "syntax": "!start",
       "description": "初始化\n"
     },
     "reset": {
@@ -118,6 +117,17 @@
       "displayAlias": "role",
       "syntax": "!role [@role]",
       "description": "設置會員刀表更新\n"
+    },
+    "fail": {
+      "name": "Fail",
+      "shortDescription": "標記未出刀者",
+      "alias": [
+        "f",
+        "fail"
+      ],
+      "displayAlias": "f",
+      "syntax": "!f",
+      "description": "標記未出刀者\n"
     }
   },
   "generalHelp": {
