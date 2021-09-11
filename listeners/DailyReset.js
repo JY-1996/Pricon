@@ -24,8 +24,8 @@ class DailyResetListener extends Listener {
       for (let serverId of resetServerId) {
          const guild = this.client.util.resolveGuild(serverId, this.client.guilds.cache)
          if (guild) {
-            await am.deleteGuildKnife(guild.id)
-            await am.clearMemberData(guild.id)
+            await am.deleteGuildKnife(guild.id,"knife")
+            await am.deleteGuildKnife(guild.id,"member")
             this.client.emit("reportUpdate", guild);
             this.client.emit("memberUpdate",guild);
             console.log(`> End of guild reset for ${guild.id} (${guild.name})\n`)

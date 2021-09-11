@@ -73,7 +73,7 @@ class BossCommand extends Command {
       if(!serverKnife.empty){
          await serverKnife.forEach(doc => {
             dm.updateKnifeToDone(doc.id,current_boss)
-            dm.addKnifeCount(clientID, 1)
+            dm.addKnifeCount(clientID, 1,clientName)
         })
       }
       let boss_hp = boss_detail.current_boss_hp - hp

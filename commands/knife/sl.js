@@ -51,7 +51,7 @@ class SLCommand extends Command {
       const clientName = UtilLib.extractInGameName(member.displayName, false)
       await dm.setClientID(clientID)
 
-      await dm.setSL(clientID)
+      await dm.setSL(clientID,clientName)
  
       loadingMsg.edit(command.sl.success);
       this.client.emit("memberUpdate", message.guild);

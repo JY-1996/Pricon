@@ -24,10 +24,10 @@ class MemberUpdateListener extends Listener {
       return
     }
 
-    const role_id = await cm.getRoleId()
-    if(!role_id){
-      return
-    }
+    // const role_id = await cm.getRoleId()
+    // if(!role_id){
+    //   return
+    // }
 
     const boardChannel = this.client.util.resolveChannel(member_update_channel, guild.channels.cache); 
     if(!boardChannel){
@@ -59,7 +59,7 @@ class MemberUpdateListener extends Listener {
         total += data.count
         memberCount += 1
     })
-    text = "出刀人数 = " + memberCount + "\n\n已出刀 = " + total + "\n\n" + text
+    text = "出刀人数 = " + memberCount + "\n已出刀 = " + total + "\n\n" + text
     text += '\n最後更新：' + UtilLib.getFormattedDate();
 
     const board_message = await cm.getMemberUpdateMessage()

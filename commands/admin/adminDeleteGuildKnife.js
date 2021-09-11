@@ -20,7 +20,7 @@ class AdminDeleteGuildKnifeCommand extends Command {
       const dm = new AdminManager(db,guildID)
 
       let loadingMsg = await message.channel.send(strings.common.waiting);
-      await dm.deleteGuildKnife(guildID)
+      await dm.deleteGuildKnife(guildID,"knife")
       loadingMsg.edit(admin.reset.title)
       this.client.emit("reportUpdate", message.guild);
       

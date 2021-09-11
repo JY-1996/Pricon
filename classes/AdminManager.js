@@ -21,7 +21,7 @@ class AdminManager {
                 1: [600, 800, 1000, 1200, 1500],
                 2: [600, 800, 1000, 1200, 1500],
                 3: [700, 900, 1200, 1500, 2000],
-                4: [1700, 1800, 2000, 2100, 2200],
+                4: [1700, 1800, 2000, 2100, 2300],
                 5: [8500, 9000, 9500, 10000, 11100]
             })
         }
@@ -127,12 +127,12 @@ class AdminManager {
             .get()
     }
 
-    async deleteGuildKnife(guildID, batchSize = 10) {
+    async deleteGuildKnife(guildID,collection, batchSize = 10) {
 
         const collectionRef = this.db
             .collection("servers")
             .doc(guildID)
-            .collection("knife");
+            .collection(collection);
         const query = collectionRef.limit(batchSize);
 
         // Delete all existing knife reports
@@ -163,28 +163,6 @@ class AdminManager {
             this._deleteQueryBatch(db, query, resolve);
         });
     }
-
-    async clearMemberData(guildID){
-      var sfDocRef = await this.db.collection('servers')
-            .doc(guildID)
-            .collection('member')
-
-      return this.db.runTransaction((transaction) => {
-          return transaction.get(sfDocRef).then((sfDoc) => {
-            if (!sfDoc.exists) {
-              throw "Document does not exist!";
-            }
-            transaction.update(sfDocRef, {
-                count: 0
-            });
-          });
-        }).then(() => {
-            console.log("Transaction successfully committed!");
-        }).catch((error) => {
-            console.log("Transaction failed: ", error); 
-        })
-    }
-
 
     async getMemberData() {
         return await this.db.collection('servers')

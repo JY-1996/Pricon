@@ -267,17 +267,27 @@ async getMemberData(){
       }
     }
 
-    async setSL(member_id){
-      await this.db.collection('servers')
+    async setSL(member_id,member_name){
+      let query = await this.db.collection('servers')
       .doc(this.guildID)
       .collection('member')
       .doc(member_id)
-      .update({
-        SL: true
-      })
+
+      let data = await query.get()
+      if(data.exists){
+          await query.update({
+            SL: true
+          })
+      }else{
+          await query.set({
+            SL: true,
+            name: member_name,
+            count: 0
+          })
+      }
     }
 
-    async addKnifeCount(member_id,count){
+    async addKnifeCount(member_id,count,member_name){
       let query = await this.db.collection('servers')
       .doc(this.guildID)
       .collection('member')
@@ -289,6 +299,12 @@ async getMemberData(){
         await query.update({
           count: number + count
         })  
+      }else{
+        await query.set({
+          SL: false,
+          name: member_name,
+          count: count
+        })
       }
     }
 

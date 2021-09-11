@@ -83,7 +83,7 @@ class DiedWithCompensateCommand extends Command {
         await serverKnife.forEach(doc => {
           if(doc.data().status != 'done'){
             dm.updateKnifeToDoneWithCom(doc.id,current_boss)
-            dm.addKnifeCount(clientID, 0.5)
+            dm.addKnifeCount(clientID, 0.5,clientName)
           }
         })
       }

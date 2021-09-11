@@ -14,61 +14,62 @@ class PingCommand extends Command {
    };
 
    async exec(message) {
-   const db = this.client.db
-    const guildID = message.guild.id
-    const am = new AdminManager(db,guildID)
-    const dm = new DatabaseManager(db,guildID)
-    const cm = new ChannelManager(db,guildID)
+    this.client.emit("dailyReset");
+   // const db = this.client.db
+   //  const guildID = message.guild.id
+   //  const am = new AdminManager(db,guildID)
+   //  const dm = new DatabaseManager(db,guildID)
+   //  const cm = new ChannelManager(db,guildID)
 
-    const member_update_channel = await dm.getChannel('member_update')
-    if(!member_update_channel){
-      return
-    }
+   //  const member_update_channel = await dm.getChannel('member_update')
+   //  if(!member_update_channel){
+   //    return
+   //  }
 
-    const role_id = await cm.getRoleId()
-    if(!role_id){
-      return
-    }
+   //  const role_id = await cm.getRoleId()
+   //  if(!role_id){
+   //    return
+   //  }
 
-    const boardChannel = this.client.util.resolveChannel(member_update_channel, message.guild.channels.cache); 
-    if(!boardChannel){
-      return 
-    }
+   //  const boardChannel = this.client.util.resolveChannel(member_update_channel, message.guild.channels.cache); 
+   //  if(!boardChannel){
+   //    return 
+   //  }
 
-    let array = {}
-    let text = ''
+   //  let array = {}
+   //  let text = ''
 
-      await message.guild.members.fetch();
-    let memberList = message.guild.roles.cache.find(role => 
-      // role.id === '741160548577837157' //公會成員
-      role.id === role_id
-      ).members.map(member => 
-      member.user
-      )
-      let total = 0
-      for (const member of memberList) {
-        let memberData = await am.getMemberKnifeData(member.id)
+   //    await message.guild.members.fetch();
+   //  let memberList = message.guild.roles.cache.find(role => 
+   //    // role.id === '741160548577837157' //公會成員
+   //    role.id === role_id
+   //    ).members.map(member => 
+   //    member.user
+   //    )
+   //    let total = 0
+   //    for (const member of memberList) {
+   //      let memberData = await am.getMemberKnifeData(member.id)
         
-        let count = 0
-        await memberData.forEach(doc => {
-          let status = doc.data().status
-          let compensate = doc.data().compensate
-          if(status == 'done'){
-            if(compensate){
-              count += 0.5
-            }else{
-              count += 1
-            }
-          }
-        })
-        total += count
-        const mMember = await message.guild.members.fetch(member.id)
-        const clientName = UtilLib.extractInGameName(mMember.displayName, false)
-        text += clientName + '出刀數：' + count + '\n'
-      }
-      text = "已出刀 = " + total + "\n\n" + text
-      text += '\n最後更新：' + UtilLib.getFormattedDate();
-      await message.channel.send(text);
+   //      let count = 0
+   //      await memberData.forEach(doc => {
+   //        let status = doc.data().status
+   //        let compensate = doc.data().compensate
+   //        if(status == 'done'){
+   //          if(compensate){
+   //            count += 0.5
+   //          }else{
+   //            count += 1
+   //          }
+   //        }
+   //      })
+   //      total += count
+   //      const mMember = await message.guild.members.fetch(member.id)
+   //      const clientName = UtilLib.extractInGameName(mMember.displayName, false)
+   //      text += clientName + '出刀數：' + count + '\n'
+   //    }
+   //    text = "已出刀 = " + total + "\n\n" + text
+   //    text += '\n最後更新：' + UtilLib.getFormattedDate();
+   //    await message.channel.send(text);
    }
 }
 module.exports = PingCommand;

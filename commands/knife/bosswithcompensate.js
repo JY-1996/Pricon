@@ -73,8 +73,7 @@ class BossWithCompensateCommand extends Command {
       if(!serverKnife.empty){
          await serverKnife.forEach(doc => {
             dm.updateKnifeToDoneWithCom(doc.id,current_boss)
-            dm.addKnifeCount(clientID, 0.5)
-
+            dm.addKnifeCount(clientID, 0.5, clientName)
         })
       }
       let boss_hp = boss_detail.current_boss_hp - hp
