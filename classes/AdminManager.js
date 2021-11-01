@@ -20,8 +20,8 @@ class AdminManager {
             await queryRef.set({
                 1: [600, 800, 1000, 1200, 1500],
                 2: [600, 800, 1000, 1200, 1500],
-                3: [700, 900, 1200, 1500, 2000],
-                4: [1700, 1800, 2000, 2100, 2300],
+                3: [1000, 1100, 1600, 1800, 2200],
+                4: [1800, 1900, 2200, 2300, 2600],
                 5: [8500, 9000, 9500, 10000, 11100]
             })
         }
@@ -168,6 +168,7 @@ class AdminManager {
         return await this.db.collection('servers')
             .doc(this.guildID)
             .collection('member')
+            .orderBy('count')
             .get()
     }
 

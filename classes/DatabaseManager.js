@@ -176,9 +176,9 @@ class DatabaseManager {
   const current_week = parseInt(total_boss_died / 5) + 1 
   const current_boss = total_boss_died % 5 + 1 
   let current_phase = 1
-  if(current_week > 44){
+  if(current_week > 40){
     current_phase = 5
-  }else if(current_week > 34){
+  }else if(current_week > 30){
     current_phase = 4
   }else if(current_week > 10){
     current_phase = 3
@@ -213,9 +213,9 @@ async nextBoss(){
  const current_week = parseInt(next_boss / 5) + 1 
  const current_boss = next_boss % 5
  let current_phase = 1
- if(current_week > 44){
+ if(current_week > 40){
   current_phase = 5
-}else if(current_week > 34){
+}else if(current_week > 30){
   current_phase = 4
 }else if(current_week > 10){
   current_phase = 3
@@ -296,8 +296,12 @@ async getMemberData(){
       let data = await query.get()
       if(data.exists){
         let number = data.data().count
+        let total = number + count
+        if(total > 3){
+          total = 3
+        }
         await query.update({
-          count: number + count
+          count: total
         })  
       }else{
         await query.set({
