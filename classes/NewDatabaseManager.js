@@ -62,7 +62,22 @@ class NewDatabaseManager {
       .doc(String(doc))
       .set(data)
   }
-  
+
+  async setKnifeToAtk(doc){
+    await this.db.collection('servers')
+     .doc(this.guildID)
+     .collection('knife')
+     .doc(String(doc))
+     .update({status: "attacking"})
+  }
+
+  async setKnifeToProcessing(doc){
+    await this.db.collection('servers')
+    .doc(this.guildID)
+    .collection('knife')
+    .doc(String(doc))
+    .update({status: "processing"})
+  }
 }
 
 module.exports = NewDatabaseManager

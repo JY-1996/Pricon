@@ -9,29 +9,24 @@ class ReserveCommand extends General {
         cooldown: 3000,
         channel: 'guild',
         args: [
-        {
-          id: "compensate",
-          match: "flag",
-          flag: ['c','-c','com','-com']
-        },
-        {
-          id: "boss",
-          type: "integer",
-          prompt: {
-            start: strings.prompt.boss,
-            retry: strings.prompt.not_a_number,
+          {
+            id: "boss",
+            type: "integer",
+            prompt: {
+              start: strings.prompt.boss,
+              retry: strings.prompt.not_a_number,
+            },
           },
-        },
-        {
-          id: "member",
-          type: "memberMention",
-       },
-        {
-          id: "comment",
-          type: "string",
-          match: "restContent"
-        }
-      ],
+          {
+            id: "member",
+            type: "memberMention",
+          },
+          {
+            id: "comment",
+            type: "string",
+            match: "restContent"
+          }
+        ],
     });
   };
 

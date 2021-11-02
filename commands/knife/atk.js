@@ -1,11 +1,8 @@
-const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
-const DatabaseManager  = require("../../classes/DatabaseManager");
-const UtilLib = require("../../api/util-lib");
-const { Permissions } = require('discord.js');
+const General = require("../../commands/knife/general.js");
 
-class AtkCommand extends Command {
+class AtkCommand extends General {
   constructor() {
       super("atk", {
          aliases: ['a','atk'],
@@ -13,9 +10,12 @@ class AtkCommand extends Command {
          channel: 'guild',
          args: [
             {
-               id: "compensate",
-               match: "flag",
-               flag: ['c','-c','com','-com']
+              id: "boss",
+              type: "integer",
+              prompt: {
+                start: strings.prompt.boss,
+                retry: strings.prompt.not_a_number,
+              },
             },
             {
               id: "member",
@@ -26,57 +26,31 @@ class AtkCommand extends Command {
    };
 
   async exec(message, args) {
-    let loadingMsg = await message.channel.send(strings.common.waiting);
+    await super.exec(message,args)
 
-    //check channel
-    const db = this.client.db
-    const guildID = message.guild.id
-    const dm = new DatabaseManager(db,guildID)
-    // const knife_channel = await dm.getChannel('knife')
-    // if(!knife_channel){
-    //     loadingMsg.edit(strings.common.no_knife_channel);
-    //     return
-    // }else if(knife_channel != message.channel.id){
-    //     loadingMsg.edit(strings.common.wrong_knife_channel.replace('[channel]', `<#${knife_channel}>`));
-    //     return
-    // }
+    let knifeQuery = await this.dm.getAllKnifeQuery()
+    let hasKnife = false
+    let id = ""
+    if(!knifeQuery.empty){
+      knifeQuery.forEach(doc => {
+      if(doc.data().boss == this.boss){
+          hasKnife = true
+          id = doc.id
+        }
+      })
 
-    let clientID = message.member.id 
-    if(args.member){
-      if(message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR)){
-        clientID = args.member.id
-      }else{
-        loadingMsg.edit(strings.common.no_permission);
+      if(!hasKnife){
+        this.loadingMsg.edit(command.atk.no_reserve.replace('[id]', this.clientID))
         return
       }
     }
 
-    const member = await message.guild.members.fetch(clientID)
-    const clientName = UtilLib.extractInGameName(member.displayName, false)
-    await dm.setClientID(clientID)
-    const boss_detail = await dm.getBossDetail()
-    const current_boss = boss_detail.current_boss
-    let knife = await dm.getKnifeBossQuery(current_boss)
-
-    let hasKnife = false
-    let id = ""
-    await knife.forEach(doc => {
-      if(doc.data().status != 'done'){
-          hasKnife = true
-          id = doc.id
-      }
-    })
-    if(!hasKnife){
-      loadingMsg.edit(command.atk.no_reserve.replace('[id]',clientID))
-      return
-    }
-
-    await dm.setKnifeToAtk(id)
+    await this.dm.setKnifeToAtk(id)
     
-    loadingMsg.edit(command.atk.attack.replace('[id]', clientID).replace('[boss]', current_boss))
+    this.loadingMsg.edit(command.atk.attack.replace('[id]', this.clientID).replace('[boss]', this.boss))
 
     this.client.emit("reportUpdate", message.guild);
-    this.client.emit("logUpdate", message.guild,command.atk.log.replace('[member]', clientName).replace('[boss]',current_boss));
+    this.client.emit("logUpdate", message.guild,command.atk.log.replace('[member]', this.clientName).replace('[boss]', this.boss));
 
     return
   }
