@@ -78,6 +78,20 @@ class NewDatabaseManager {
     .doc(String(doc))
     .update({status: "processing"})
   }
+
+  async setSL(){
+      let query = await this.db.collection('servers')
+      .doc(this.guildID)
+      .collection('member')
+      .doc(this.clientID)
+
+      let data = await query.get()
+      if(data.exists){
+          await query.update({
+            SL: true
+          })
+      }
+    }
 }
 
 module.exports = NewDatabaseManager
