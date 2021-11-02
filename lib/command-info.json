@@ -28,7 +28,7 @@
   "reserve": {
     "repeated": "<@[id]>預約重複！！",
     "reserved": "<@[id]>預約了[boss]王！！備註：[comment]",
-    "knife_count_exceed" : "<@[id]>已經超出了[count]個預約！！目前預約數:[current]",
+    "knife_count_exceed" : "<@[id]>已經超出了3個預約！!",
     "log": "[member]預約了[boss]王！！備註：[comment]"
   },
   "list":{
