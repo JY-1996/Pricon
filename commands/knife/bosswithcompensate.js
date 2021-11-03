@@ -4,7 +4,7 @@ const General = require("../../commands/knife/general.js");
 
 class BossWithCompensateCommand extends General {
    	constructor() {
-      	super("boss", {
+      	super("bossc", {
          	aliases: ['bc','bossc'],
          	cooldown: 3000,
          	channel: 'guild',

@@ -63,6 +63,14 @@ class NewDatabaseManager {
       		.set(data)
   	}
 
+	async deleteKnife(id){
+    	await this.db.collection('servers')
+    		.doc(this.guildID)
+    		.collection('knife')
+    		.doc(id)
+    		.delete()
+  	}
+
   	async setKnifeToAtk(doc){
     	await this.db.collection('servers')
      		.doc(this.guildID)
