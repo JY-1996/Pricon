@@ -6,9 +6,9 @@
     "log": "[member]向[boss]王發起了進攻！！"
   },
   "boss":{
-    "damage": "<@[id]>對[boss]王造成了[hp]萬的傷害！！",
-    "should_died": "\n[boss]王的剩餘血量是0\n請執行!died指令！！",
-    "hp_left": "\n[boss]王的剩余血量是[hp]萬！！",
+    "damage": "<@[id]>對[boss]王造成了[hp]萬的傷害！！\n剩余血量为[left_hp]萬！！",
+	"no_atk": "<@[id]>無法搜尋进攻指令！！",
+    "died": "[boss]王倒下了！！\n现在是第[week]周！！",
     "log": "[member]对[boss]王造成了[hp]萬的伤害！！"
   },
   "cancel":{
@@ -24,7 +24,7 @@
     "member_info": "<@[id]> [comment]\n",
 	"no_atk": "<@[id]>無法搜尋进攻指令！！",
     "log": "[boss]王倒下了！!",
-    "second":"請輸入正確時間！"   
+    "error":"错误！！"   
   },
   "reserve": {
     "repeated": "<@[id]>預約重複！！",

@@ -1,98 +1,76 @@
-const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
-const DatabaseManager  = require("../../classes/DatabaseManager");
-const UtilLib = require("../../api/util-lib");
-const { Permissions } = require('discord.js');
+const General = require("../../commands/knife/general.js");
 
-class BossCommand extends Command {
-   constructor() {
-      super("boss", {
-         aliases: ['b','boss'],
-         cooldown: 3000,
-         channel: 'guild',
-         args: [
-            {
-               id: "compensate",
-               match: "flag",
-               flag: ['c','-c','com','-com']
-            },
-            {
-               id: "hp",
-               type: "integer",
-               prompt: {
-                  start: strings.prompt.hp,
-                  retry: strings.not_a_number,
-               },
-            },
-            {
-              id: "member",
-              type: "memberMention",
-            }
-         ],
-      });
-   };
+class BossCommand extends General {
+   	constructor() {
+      	super("boss", {
+         	aliases: ['b','boss'],
+         	cooldown: 3000,
+         	channel: 'guild',
+         	args: [
+				{
+            		id: "boss",
+            		type: "integer",
+            		prompt: {
+              			start: strings.prompt.boss,
+              			retry: strings.prompt.not_a_number,
+            		},
+          		},
+            	{
+               		id: "hp",
+               		type: "integer",
+               		prompt: {
+                  		start: strings.prompt.hp,
+                  		retry: strings.not_a_number,
+               		},
+            	},
+            	{
+              		id: "member",
+              		type: "memberMention",
+            	}
+         	],
+      	});
+   	};
 
-   async exec(message, args) {
-      let loadingMsg = await message.channel.send(strings.common.waiting);
+   	async exec(message, args) {
+    	await super.exec(message,args)
 
-      //check channel
-      const db = this.client.db
-      const guildID = message.guild.id
-      const dm = new DatabaseManager(db,guildID)
+      	const hp = args.hp;
 
-      // const knife_channel = await dm.getChannel('knife')
-      // if(!knife_channel){
-      //   loadingMsg.edit(strings.common.no_knife_channel);
-      //   return
-      // }else if(knife_channel != message.channel.id){
-      //   loadingMsg.edit(strings.common.wrong_knife_channel.replace('[channel]', `<#${knife_channel}>`));
-      //   return
-      // }
+		let knifeQuery = await this.dm.getAllKnifeQuery()
+      	let hasKnife = false
+      	let id = ""
+		if(!knifeQuery.empty){
+        	knifeQuery.forEach(doc => {
+				let data = doc.data()
+          		if(data.boss == this.boss && data.status == 'attacking'){
+            		hasKnife = true
+					id = doc.id
+          		}
+       	 	})
+      	}
 
-      let clientID = message.member.id 
-      if(args.member){
-        if(message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR)){
-          clientID = args.member.id
-        }else{
-          loadingMsg.edit(strings.common.no_permission);
-          return
-        }
-      }
+		if(!hasKnife){
+        	this.loadingMsg.edit(command.boss.no_atk.replace('[id]', this.clientID))
+        	return
+      	}
 
-      const member = await message.guild.members.fetch(clientID)
-      const clientName = UtilLib.extractInGameName(member.displayName, false)
-      await dm.setClientID(clientID)
-
-      const hp = args.hp;
-
-      const boss_detail = await dm.getBossDetail()
-      const current_boss = boss_detail.current_boss
-
-      let serverKnife = await dm.getKnifeBossQuery(current_boss)
-      if(!serverKnife.empty){
-         await serverKnife.forEach(doc => {
-            dm.updateKnifeToDone(doc.id,current_boss)
-            dm.addKnifeCount(clientID, 1,clientName)
-        })
-      }
-      let boss_hp = boss_detail.current_boss_hp - hp
-      if(boss_hp < 0){
-        boss_hp = 0
-      }
-      await dm.updateBossHp(boss_hp)
-      let text = command.boss.damage.replace('[id]',clientID).replace('[boss]', current_boss).replace('[hp]',hp)
-      if(boss_hp == 0){
-          text += command.boss.should_died.replace('[boss]', current_boss)
-      }else{
-          text += command.boss.hp_left.replace('[boss]', current_boss).replace('[hp]', boss_hp)
-      }
-      loadingMsg.edit(text)
-
-      this.client.emit("reportUpdate", message.guild);
-      this.client.emit("logUpdate", message.guild,command.boss.log.replace('[member]', clientName).replace('[boss]', current_boss).replace('[hp]', hp));
-      this.client.emit("memberUpdate", message.guild);
-      return;
+		await this.dm.setKnifeToDone(id)
+		await this.dm.addKnifeCount(this.clientID, this.clientName, 1)
+		let data = await this.dm.setBossHp(this.boss, hp)
+		if(data.status == "died"){
+			this.loadingMsg.edit(command.boss.died.replace('[id]', this.clientID).replace('[boss]', this.boss).replace('[week]', data.week))
+		}else if(data.status == "damage"){
+			this.loadingMsg.edit(command.boss.damage.replace('[id]', this.clientID).replace('[boss]', this.boss).replace('[hp]', hp).replace('[left_hp]', data.hp))
+		}else{
+			this.loadingMsg.edit(command.boss.error)
+		}
+		
+      	this.client.emit("reportUpdate", message.guild);
+      	this.client.emit("logUpdate", message.guild, command.boss.log.replace('[member]', this.clientName).replace('[boss]', this.boss).replace('[hp]', hp));
+      	this.client.emit("memberUpdate", message.guild);
+      	return;
    };
 
 }
