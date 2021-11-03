@@ -37,10 +37,5 @@ class General extends Command {
     await this.dm.insertMember(this.clientID, this.clientName)
   }
 
-  async getKnifeCount(){
-    
-
-  }
-
 }
 module.exports = General;

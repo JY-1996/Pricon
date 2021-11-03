@@ -20,9 +20,10 @@
     "cancel": "<@[id]>取消[boss]王的攻擊！！"
   },
   "died": {
-    "boss_fainted": "[boss]王倒下了！！\n現在是[next_boss]王！！預約者：\n",
+    "boss_fainted": "[boss]王倒下了！！",
     "member_info": "<@[id]> [comment]\n",
-    "log": "[boss]王倒下了！！現在是[next_boss]王！！",
+	"no_atk": "<@[id]>無法搜尋进攻指令！！",
+    "log": "[boss]王倒下了！!",
     "second":"請輸入正確時間！"   
   },
   "reserve": {
