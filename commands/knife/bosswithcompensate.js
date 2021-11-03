@@ -65,6 +65,7 @@ class BossWithCompensateCommand extends General {
 			this.loadingMsg.edit(command.boss.damage.replace('[id]', this.clientID).replace('[boss]', this.boss).replace('[hp]', hp).replace('[left_hp]', data.hp))
 		}else{
 			this.loadingMsg.edit(command.boss.error)
+			return
 		}
 		
       	this.client.emit("reportUpdate", message.guild);

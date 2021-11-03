@@ -48,6 +48,11 @@ class DiedCommand extends General {
 
 		await this.dm.setKnifeToDone(id)
 		await this.dm.addKnifeCount(this.clientID, this.clientName, 0.5)
+		let data = await this.dm.setBossDied(this.boss)
+		if(!data){
+			this.loadingMsg.edit(command.died.error)
+			return
+		}
 
       	this.loadingMsg.edit(command.died.boss_fainted.replace('[boss]', this.boss))
 

@@ -157,6 +157,28 @@ class NewDatabaseManager {
 		}
 	}
 
+	async setBossDied(boss){
+		let query = await this.db.collection('servers')
+      		.doc(this.guildID)
+      		.collection('boss')
+      		.doc(String(boss))
+		
+		let data = await query.get()
+		if(data.exists){
+			let boss_max_hp = data.data().boss_max_hp
+			let current_boss_hp = data.data().current_boss_hp
+			let total_boss_died = data.data().total_boss_died
+
+			let new_max_hp = boss_max_hp[this.checkPhase(total_boss_died)]
+			await query.update({
+          		total_boss_died: total_boss_died + 1,
+				current_boss_hp: new_max_hp
+       		})
+			return true
+		}
+		return false
+	}
+
   	async setSL(){
       	let query = await this.db.collection('servers')
       		.doc(this.guildID)
