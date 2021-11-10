@@ -14,7 +14,8 @@ class PingCommand extends Command {
    };
 
    async exec(message) {
-    await message.channel.send("12345");
+	    this.client.emit("reportUpdate", message.guild);
+    // await message.channel.send("12345");
     // this.client.emit("dailyReset");
    // const db = this.client.db
    //  const guildID = message.guild.id

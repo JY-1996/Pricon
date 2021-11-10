@@ -193,6 +193,21 @@ class NewDatabaseManager {
       	}
     }
 
+	async getAllBoss(){
+		return await this.db.collection('servers')
+      		.doc(this.guildID)
+      		.collection('boss')
+      		.get()
+	}
+
+	async getAllProcessingKnife(){
+		return await this.db.collection('servers')
+      		.doc(this.guildID)
+      		.collection('knife')
+			.where("status", "!=", "done")
+      		.get()
+	}
+
 	checkPhase(total_boss_died){
 		if(total_boss_died > 40){
   			return 4
