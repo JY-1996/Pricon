@@ -28,13 +28,13 @@ class CancelCommand extends General {
    	async exec(message, args) {
       	await super.exec(message,args)
 
-		let knifeQuery = await this.dm.getAllKnifeQuery()
+		let knifeQuery = await this.dm.getAllKnifeProcessingAtkQuery()
     	let hasKnife = false
     	let id = ""
     	if(!knifeQuery.empty){
       		knifeQuery.forEach(doc => {
 				let data = doc.data()
-      			if(data.boss == this.boss && data.status != 'done'){
+      			if(data.boss == this.boss){
           			hasKnife = true
           			id = doc.id
         		}

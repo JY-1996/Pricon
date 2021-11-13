@@ -28,7 +28,7 @@ class AtkCommand extends General {
   async exec(message, args) {
     await super.exec(message,args)
 
-    let knifeQuery = await this.dm.getAllKnifeQuery()
+    let knifeQuery = await this.dm.getAllKnifeProcessingAtkQuery()
     let hasKnife = false
     let id = ""
     if(!knifeQuery.empty){
@@ -44,6 +44,12 @@ class AtkCommand extends General {
         return
       }
     }
+	
+	let min = await this.dm.checkAtkAvailable(this.boss)
+	if(!min){
+		this.loadingMsg.edit(command.atk.cannot_atk.replace('[id]', this.clientID))
+		return 
+	}
 
     await this.dm.setKnifeToAtk(id)
     

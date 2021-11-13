@@ -38,13 +38,13 @@ class BossCommand extends General {
 
       	const hp = args.hp;
 
-		let knifeQuery = await this.dm.getAllKnifeQuery()
+		let knifeQuery = await this.dm.getAllKnifeAtkQuery()
       	let hasKnife = false
       	let id = ""
 		if(!knifeQuery.empty){
         	knifeQuery.forEach(doc => {
 				let data = doc.data()
-          		if(data.boss == this.boss && data.status == 'attacking'){
+          		if(data.boss == this.boss){
             		hasKnife = true
 					id = doc.id
           		}

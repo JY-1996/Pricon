@@ -44,7 +44,7 @@ class ReserveCommand extends General {
         return
       }
 
-      let knifeQuery = await this.dm.getAllKnifeQuery()
+      let knifeQuery = await this.dm.getAllKnifeProcessingAtkQuery()
       let hasKnife = false
       if(!knifeQuery.empty){
         knifeQuery.forEach(doc => {

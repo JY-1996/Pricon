@@ -3,6 +3,7 @@
     "no_reserve":"<@[id]>進攻失敗!!\n請先預約或使用!atkx進攻！！",
     "diff_reserve":"<@[id]>進攻失敗!!\n您已經預約[boss]王！！",
     "attack": "<@[id]>向[boss]王發起了進攻！！",
+	"cannot_atk": "<@[id]>進攻失敗！！\n请先击杀其他王！！",
     "log": "[member]向[boss]王發起了進攻！！"
   },
   "boss":{
@@ -17,7 +18,7 @@
     "log": "[member]取消預約！！"
   },
   "cancel_atk":{
-    "cancel": "<@[id]>取消[boss]王的攻擊！！",
+    "cancel": "<@[id]>取消[boss]王的進攻！！",
 	"no_reserve": "<@[id]>無法搜尋預約！！"
   },
   "died": {

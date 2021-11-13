@@ -55,6 +55,33 @@ class NewDatabaseManager {
     		.get()
   	}
 
+	async getAllKnifeAtkQuery(){
+    	return await this.db.collection('servers')
+    		.doc(this.guildID)
+    		.collection('knife')
+    		.where('member_id','==', this.clientID)
+			.where('status','==', 'attacking')
+    		.get()
+  	}
+
+	async getAllKnifeProcessingAtkQuery(){
+    	return await this.db.collection('servers')
+    		.doc(this.guildID)
+    		.collection('knife')
+    		.where('member_id','==', this.clientID)
+			.where('status','in', ['attacking', 'processing'])
+    		.get()
+  	}
+
+	async getAllKnifeDoneQuery(){
+    	return await this.db.collection('servers')
+    		.doc(this.guildID)
+    		.collection('knife')
+    		.where('member_id','==', this.clientID)
+			.where('status','==', 'done')
+    		.get()
+  	}
+
   	async setKnife(doc,data){
     	await this.db.collection('servers')
       		.doc(this.guildID)
@@ -192,6 +219,31 @@ class NewDatabaseManager {
           	})
       	}
     }
+
+	async checkAtkAvailable(boss){
+		let query = await this.db.collection('servers')
+      		.doc(this.guildID)
+      		.collection('boss')
+      		.get()
+		let min = 0
+		let curr = 0
+		if(!query.empty){
+			await query.forEach(doc => {
+				let week = doc.data().total_boss_died
+				if(min == 0 || week < min){
+					min = week
+				}
+				if(doc.id == boss){
+					curr = week
+				}
+			})
+		}
+		//curr cannot more than min + 2
+		if(curr > min){
+			return false
+		}
+		return true
+	}
 
 	async getAllBoss(){
 		return await this.db.collection('servers')
