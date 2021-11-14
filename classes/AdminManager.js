@@ -5,6 +5,11 @@ class AdminManager {
         this.guildID = guildID
     }
 
+	async getAllGuild(){
+  		return await this.db.collection('servers')
+  				.get()
+	}
+
     async setupGuildSetting() {
         await this.db.collection('servers')
             .doc(this.guildID)

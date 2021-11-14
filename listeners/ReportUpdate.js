@@ -1,6 +1,5 @@
 const { Listener } = require('discord-akairo')
 const UtilLib = require("../api/util-lib")
-const DatabaseManager = require("../classes/DatabaseManager");
 const NewDatabaseManager = require("../classes/NewDatabaseManager");
 const ChannelManager = require("../classes/ChannelManager");
 
@@ -16,12 +15,11 @@ class ReportUpdateListener extends Listener {
     const db = this.client.db
     const guildID = guild.id
     const dm = new NewDatabaseManager(db, guildID)
-	const d = new DatabaseManager(db, guildID)
     const cm = new ChannelManager(db, guildID)
 
     let tableText = ''
     
-    const report_channel = await d.getChannel('report')
+    const report_channel = await cm.getChannel('report')
     if(!report_channel){
       return
     }
