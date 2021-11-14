@@ -74,39 +74,25 @@ class AdminManager {
             })
     }
 
-    async resetBoss(current_week, current_boss) {
+    async resetBoss(current_boss, current_week) {
         const queryRef = this.db.collection('servers')
             .doc(this.guildID)
-            .collection('setting')
-            .doc('boss')
-        const boss_max_hp = await this.db.collection('servers')
-            .doc(this.guildID)
-            .collection('setting')
-            .doc('boss_max_hp')
-            .get()
+            .collection('boss')
+            .doc(String(current_boss))
         let query = await queryRef.get()
-        let current_phase = 1
-        if (current_week > 44) {
-            current_phase = 5
-        } else if (current_week > 34) {
-            current_phase = 4
-        } else if (current_week > 10) {
-            current_phase = 3
-        } else if (current_week > 3) {
-            current_phase = 2
-        }
+       	let phase = this.checkPhase(current_week - 1)
 
         await queryRef.update({
-            total_boss_died: (current_week - 1) * 5 + current_boss - 1,
-            current_boss_hp: boss_max_hp.data()[current_phase][current_boss == 5 ? 0 : current_boss]
+            total_boss_died: current_week - 1,
+            current_boss_hp: query.data().boss_max_hp[phase]
         })
     }
 
-    async resetBossHp(new_hp) {
+    async resetBossHp(current_boss, new_hp) {
         const queryRef = this.db.collection('servers')
             .doc(this.guildID)
-            .collection('setting')
-            .doc('boss')
+            .collection('boss')
+            .doc(String(current_boss))
 
         await queryRef.update({
             current_boss_hp: new_hp
@@ -214,6 +200,20 @@ class AdminManager {
             .orderBy('member')
             .get()
     }
+
+	checkPhase(total_boss_died){
+		if(total_boss_died > 40){
+  			return 4
+		}else if(total_boss_died > 30){
+  			return 3
+		}else if(total_boss_died > 10){
+  			return 2
+		}else if(total_boss_died > 3){
+  			return 1
+		}else{
+			return 0
+		}	
+	}
 }
 
 module.exports = AdminManager

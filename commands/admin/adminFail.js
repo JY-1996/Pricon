@@ -25,7 +25,7 @@ class AdminFailCommand extends Command {
       const guildID = message.guild.id
       const clientID = message.author.id
       const db = this.client.db
-      const dm = new NewDatabaseManager(db,guildID,clientID)
+      const dm = new NewDatabaseManager(db,guildID)
       
       let loadingMsg = await message.channel.send(strings.common.waiting);
 

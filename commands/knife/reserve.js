@@ -40,7 +40,7 @@ class ReserveCommand extends General {
     
       let count = await this.dm.getKnifeCount()
       if(count >= 3){
-        this.loadingMsg.edit(command.reserve.knife_count_exceed.replace('[id]', clientID))
+        this.loadingMsg.edit(command.reserve.knife_count_exceed.replace('[id]', this.clientID))
         return
       }
 
