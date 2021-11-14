@@ -2,7 +2,6 @@ const { Command } = require("discord-akairo");
 const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
 const UtilLib = require("../../api/util-lib");
-const Knife = require("../../classes/Knife");
 const NewDatabaseManager = require("../../classes/NewDatabaseManager");
 const { Permissions } = require('discord.js');
 

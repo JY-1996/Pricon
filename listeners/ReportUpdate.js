@@ -58,7 +58,10 @@ class ReportUpdateListener extends Listener {
 		let week = doc.current_week
 		let knife = doc.knife
 	
-		tableText += '`' + boss + '王  第' + week + '周  (' + hp + ' / ' + max + ') \t預約者：`\n'
+		tableText += '`' + boss + '王  第' + week + '周  (' + hp + ' / ' + max + ')                                `\n'
+		if(knife.length == 0){
+			tableText += "\t\t无預約者\n"
+		}
 		knife.forEach(doc => {
 			if(doc.status == 'attacking'){
                 tableText += '\t⚔'
