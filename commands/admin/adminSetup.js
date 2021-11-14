@@ -3,7 +3,7 @@ const { Permissions } = require('discord.js');
 const strings = require("../../lib/string.json");
 const admin = require("../../lib/admin.json");
 const help = require("../../lib/helpadmin.json");
-const NewAdminManager  = require("../../classes/NewAdminManager");
+const AdminManager  = require("../../classes/AdminManager");
 
 class AdminSetupCommand extends Command {
    constructor() {
@@ -18,7 +18,7 @@ class AdminSetupCommand extends Command {
    async exec(message, args) {
       const db = this.client.db
       const guildID = message.guild.id;
-      const am = new NewAdminManager(db,guildID)
+      const am = new AdminManager(db,guildID)
 
       let loadingMsg = await message.channel.send(strings.common.waiting);
       await am.setupGuildSetting(message.guild.name)

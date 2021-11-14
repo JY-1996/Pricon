@@ -19,7 +19,7 @@
         "cancel"
       ],
       "displayAlias": "c | cancel",
-      "syntax": "!c [周目] [王] [-all]",
+      "syntax": "!c <周目> <王>",
       "description": "刪除预约\n"
     },
     "cancel_atk": {
@@ -31,7 +31,7 @@
         "cancelAttack"
       ],
       "displayAlias": "cA | cancelAtk | cancelAttack",
-      "syntax": "!cA",
+      "syntax": "!cA <王>",
       "description": "取消进攻指令\n"
     },
     "atk": {
@@ -42,7 +42,7 @@
         "atk"
       ],
       "displayAlias": "a | atk",
-      "syntax": "!atk",
+      "syntax": "!atk <王>",
       "description": "开始进攻，必须先预约 \n"
     },
     "atkx": {
@@ -53,7 +53,7 @@
         "atkx"
       ],
       "displayAlias": "ax | atkx",
-      "syntax": "!atkx",
+      "syntax": "!atkx <王>",
       "description": "强行进攻，请先得到管理员允许 \n"
     },
     "boss": {
@@ -64,7 +64,7 @@
         "boss"
       ],
       "displayAlias": "b | boss",
-      "syntax": "!b [伤害]",
+      "syntax": "!b <王> <伤害>",
       "description": "报告伤害，如果已击杀，请使用!died\n"
     },
     "died": {
@@ -75,7 +75,7 @@
         "died"
       ],
       "displayAlias": "d | died",
-      "syntax": "!d [王]",
+      "syntax": "!d <王>",
       "description": "击杀指令，并列出下个王的预约者\n"
     },
     "list": {
@@ -97,7 +97,7 @@
         "shift"
       ],
       "displayAlias": "s | shift",
-      "syntax": "!s [剩餘時間]",
+      "syntax": "!s <剩餘時間>",
       "description": "計算報刀表格\n"
     }
   },

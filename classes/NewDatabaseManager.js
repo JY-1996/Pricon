@@ -260,6 +260,14 @@ class NewDatabaseManager {
       		.get()
 	}
 
+	async tagFailMember(){
+       return await this.db.collection('servers')
+      .doc(this.guildID)
+      .collection('member')
+      .where('count','!=',3)
+      .get()
+    }
+
 	checkPhase(total_boss_died){
 		if(total_boss_died > 40){
   			return 4

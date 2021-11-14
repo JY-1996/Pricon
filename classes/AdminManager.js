@@ -10,38 +10,68 @@ class AdminManager {
   				.get()
 	}
 
-    async setupGuildSetting() {
+    async setupGuildSetting(name) {
         await this.db.collection('servers')
             .doc(this.guildID)
             .set({
-                setup: true
+                setup: true,
+                name: name
             })
         const queryRef = await this.db.collection('servers')
             .doc(this.guildID)
             .collection('setting')
-            .doc('boss_max_hp')
+            .doc('boss_status')
         let query = queryRef.get()
         if (!query.exist) {
             await queryRef.set({
-                1: [600, 800, 1000, 1200, 1500],
-                2: [600, 800, 1000, 1200, 1500],
-                3: [1000, 1100, 1600, 1800, 2200],
-                4: [1800, 1900, 2200, 2300, 2600],
-                5: [8500, 9000, 9500, 10000, 11100]
+                total_week_done: 0
             })
         }
-        const query1Ref = this.db.collection('servers')
+        await this.db.collection('servers')
             .doc(this.guildID)
-            .collection('setting')
-            .doc('boss')
-        let query1 = query1Ref.get()
-        if (!query1.exist) {
-            await query1Ref.set({
+            .collection('boss')
+            .doc('1')
+            .set({
                 total_boss_died: 0,
                 current_boss_hp: 600,
-                knife_count: 3
+                boss_max_hp: [600, 600, 1000, 1800, 8500]
             })
-        }
+        await this.db.collection('servers')
+            .doc(this.guildID)
+            .collection('boss')
+            .doc('2')
+            .set({
+                total_boss_died: 0,
+                current_boss_hp: 800,
+                boss_max_hp: [800, 800, 1100, 1900, 9000]
+            })
+        await this.db.collection('servers')
+            .doc(this.guildID)
+            .collection('boss')
+            .doc('3')
+            .set({
+                total_boss_died: 0,
+                current_boss_hp: 600,
+                boss_max_hp: [1000, 1000, 1600, 2200, 9500]
+            })
+        await this.db.collection('servers')
+            .doc(this.guildID)
+            .collection('boss')
+            .doc('4')
+            .set({
+                total_boss_died: 0,
+                current_boss_hp: 1200,
+                boss_max_hp: [1200, 1200, 1800, 2300, 10000]
+            })
+        await this.db.collection('servers')
+            .doc(this.guildID)
+            .collection('boss')
+            .doc('5')
+            .set({
+                total_boss_died: 0,
+                current_boss_hp: 1500,
+                boss_max_hp: [1500, 1500, 2200, 2600, 11100]
+            })
     }
 
     async resetBoss(current_week, current_boss) {
