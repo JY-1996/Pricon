@@ -34,8 +34,7 @@ class AtkXCommand extends General {
         this.loadingMsg.edit(command.reserve.knife_count_exceed.replace('[id]', this.clientID))
         return
     }
-    l
-	et knifeQuery = await this.dm.getAllKnifeProcessingAtkQuery()
+    let knifeQuery = await this.dm.getAllKnifeProcessingAtkQuery()
     let hasKnife = false
     let id = ""
     if(!knifeQuery.empty){
