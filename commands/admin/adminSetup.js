@@ -16,17 +16,16 @@ class AdminSetupCommand extends Command {
    };
 
    async exec(message, args) {
-      const db = this.client.db
-      const guildID = message.guild.id;
-      const am = new AdminManager(db,guildID)
+      	const db = this.client.db
+      	const guildID = message.guild.id;
+      	const am = new AdminManager(db,guildID)
 
-      let loadingMsg = await message.channel.send(strings.common.waiting);
-      await am.setupGuildSetting(message.guild.name)
-      loadingMsg.edit(admin.setup.init)
-      return
+      	let loadingMsg = await message.channel.send(strings.common.waiting);
+      	await am.setupGuildSetting(message.guild.name)
+      	loadingMsg.edit(admin.setup.init)
+		this.client.emit("dailyReset", message.guild);
+      	return
     }
-    
- 
 }
 module.exports = AdminSetupCommand;
 
