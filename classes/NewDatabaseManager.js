@@ -238,7 +238,7 @@ class NewDatabaseManager {
 				}
 			})
 		}
-		if(['1','8','28','38'].includes(min)){
+		if(['2','9','29','39'].includes(min)){
 			if(curr == min){
 				return true
 			}else{
