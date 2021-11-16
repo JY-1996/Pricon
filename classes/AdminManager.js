@@ -52,7 +52,7 @@ class AdminManager {
             .set({
                 total_boss_died: 0,
                 current_boss_hp: 600,
-                boss_max_hp: [1000, 1000, 1600, 2200, 9500]
+                boss_max_hp: [1000, 1000, 1600, 2000, 9500]
             })
         await this.db.collection('servers')
             .doc(this.guildID)
@@ -61,7 +61,7 @@ class AdminManager {
             .set({
                 total_boss_died: 0,
                 current_boss_hp: 1200,
-                boss_max_hp: [1200, 1200, 1800, 2300, 10000]
+                boss_max_hp: [1200, 1200, 1800, 2500, 10000]
             })
         await this.db.collection('servers')
             .doc(this.guildID)
@@ -70,7 +70,7 @@ class AdminManager {
             .set({
                 total_boss_died: 0,
                 current_boss_hp: 1500,
-                boss_max_hp: [1500, 1500, 2200, 2600, 11100]
+                boss_max_hp: [1500, 1500, 2200, 2700, 11100]
             })
     }
 

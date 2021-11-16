@@ -160,7 +160,7 @@ class NewDatabaseManager {
 			let total_boss_died = data.data().total_boss_died
 			let new_hp = current_boss_hp - hp
 			if(new_hp <= 0){
-				let new_max_hp = boss_max_hp[this.checkPhase(total_boss_died)]
+				let new_max_hp = boss_max_hp[this.checkPhase(total_boss_died + 1)]
 				await query.update({
           			total_boss_died: total_boss_died + 1,
 					current_boss_hp: new_max_hp
@@ -196,7 +196,7 @@ class NewDatabaseManager {
 			let current_boss_hp = data.data().current_boss_hp
 			let total_boss_died = data.data().total_boss_died
 
-			let new_max_hp = boss_max_hp[this.checkPhase(total_boss_died)]
+			let new_max_hp = boss_max_hp[this.checkPhase(total_boss_died + 1)]
 			await query.update({
           		total_boss_died: total_boss_died + 1,
 				current_boss_hp: new_max_hp
@@ -237,6 +237,13 @@ class NewDatabaseManager {
 					curr = week
 				}
 			})
+		}
+		if(['1','8','28','38'].includes(min)){
+			if(curr == min){
+				return true
+			}else{
+				return false
+			}
 		}
 		//curr cannot more than min + 2
 		if(curr > min){
