@@ -17,16 +17,7 @@ class AdminManager {
                 setup: true,
                 name: name
             })
-        const queryRef = await this.db.collection('servers')
-            .doc(this.guildID)
-            .collection('setting')
-            .doc('boss_status')
-        let query = queryRef.get()
-        if (!query.exist) {
-            await queryRef.set({
-                total_week_done: 0
-            })
-        }
+    
         await this.db.collection('servers')
             .doc(this.guildID)
             .collection('boss')
@@ -34,7 +25,7 @@ class AdminManager {
             .set({
                 total_boss_died: 0,
                 current_boss_hp: 600,
-                boss_max_hp: [600, 600, 1000, 1800, 8500]
+                boss_max_hp: [600, 600, 1200, 1900, 8500]
             })
         await this.db.collection('servers')
             .doc(this.guildID)
@@ -43,7 +34,7 @@ class AdminManager {
             .set({
                 total_boss_died: 0,
                 current_boss_hp: 800,
-                boss_max_hp: [800, 800, 1100, 1900, 9000]
+                boss_max_hp: [800, 800, 1400, 2000, 9000]
             })
         await this.db.collection('servers')
             .doc(this.guildID)
@@ -52,7 +43,7 @@ class AdminManager {
             .set({
                 total_boss_died: 0,
                 current_boss_hp: 600,
-                boss_max_hp: [1000, 1000, 1600, 2000, 9500]
+                boss_max_hp: [1000, 1000, 1700, 2300, 9500]
             })
         await this.db.collection('servers')
             .doc(this.guildID)
@@ -61,7 +52,7 @@ class AdminManager {
             .set({
                 total_boss_died: 0,
                 current_boss_hp: 1200,
-                boss_max_hp: [1200, 1200, 1800, 2500, 10000]
+                boss_max_hp: [1200, 1200, 1900, 2500, 10000]
             })
         await this.db.collection('servers')
             .doc(this.guildID)
