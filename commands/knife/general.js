@@ -12,7 +12,7 @@ class General extends Command {
 
     this.db = this.client.db
     this.guildID = message.guild.id
-    this.clientID = message.member.id 
+    this.clientID = message.member.id
     if(args.member){
       if(message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR)){
         this.clientID = args.member.id
@@ -20,8 +20,19 @@ class General extends Command {
         this.loadingMsg.edit(strings.common.no_permission);
         return
       }
-    } 
-
+    } else if(args.comment){
+        this.comment = args.comment;
+		let data = args.comment.match('<.*>')
+		if(data){
+			if(message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR)){
+        		this.clientID = data[0].replace('<@!','').replace('>', '')
+				this.comment = this.comment.replace(data[0], '')
+      		}else{
+        		this.loadingMsg.edit(strings.common.no_permission);
+        		return
+     		}
+		}
+	}
     const member = await message.guild.members.fetch(this.clientID)
     this.clientName = UtilLib.extractInGameName(member.displayName, false)
     

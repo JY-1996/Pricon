@@ -17,63 +17,54 @@ class ReserveCommand extends General {
               retry: strings.prompt.not_a_number,
             },
           },
-          {
-            id: "member",
-            type: "memberMention",
-          },
-          {
+		   {
             id: "comment",
             type: "string",
             match: "restContent"
           }
-        ],
+        ]
     });
   };
 
   async exec(message, args) { 
-      await super.exec(message,args)
-      
-      let comment = ''
-      if (args.comment) {
-         comment = args.comment;
-      }
-    
-      let count = await this.dm.getKnifeCount()
-      if(count >= 3){
-        this.loadingMsg.edit(command.reserve.knife_count_exceed.replace('[id]', this.clientID))
-        return
-      }
+      	await super.exec(message,args)
 
-      let knifeQuery = await this.dm.getAllKnifeProcessingAtkQuery()
-      let hasKnife = false
-      if(!knifeQuery.empty){
-        knifeQuery.forEach(doc => {
-          if(doc.data().boss == this.boss){
-            hasKnife = true
-          }
-        })
+      	let count = await this.dm.getKnifeCount()
+      	if(count >= 3){
+        	this.loadingMsg.edit(command.reserve.knife_count_exceed.replace('[id]', this.clientID))
+        	return
+     	}
 
-        if(hasKnife){
-          this.loadingMsg.edit(command.reserve.repeated.replace('[id]', this.clientID));
-          return
-        }
-      }
+      	let knifeQuery = await this.dm.getAllKnifeProcessingAtkQuery()
+      	let hasKnife = false
+      	if(!knifeQuery.empty){
+        	knifeQuery.forEach(doc => {
+          		if(doc.data().boss == this.boss){
+            		hasKnife = true
+          		}
+        	})
 
-      await this.dm.setKnife(Date.now(),{
-         boss: this.boss,
-         comment: comment,
-         time: Date.now(),
-         member:  this.clientName,
-         member_id: this.clientID,
-         status: 'processing'
-      })
+        	if(hasKnife){
+          		this.loadingMsg.edit(command.reserve.repeated.replace('[id]', this.clientID));
+          		return
+        	}
+      	}
 
-      this.loadingMsg.edit(command.reserve.reserved.replace('[id]', this.clientID).replace('[boss]', this.boss).replace('[comment]',comment));
+      	await this.dm.setKnife(Date.now(),{
+         	boss: this.boss,
+         	comment: this.comment,
+         	time: Date.now(),
+         	member:  this.clientName,
+         	member_id: this.clientID,
+         	status: 'processing'
+      	})
 
-      this.client.emit("reportUpdate", message.guild);
-      this.client.emit("logUpdate", message.guild,command.reserve.log.replace('[member]', this.clientName).replace('[boss]', this.boss).replace('[comment]', comment));
-      return;
-  };
+      	this.loadingMsg.edit(command.reserve.reserved.replace('[id]', this.clientID).replace('[boss]', this.boss).replace('[comment]', this.comment));
+
+      	this.client.emit("reportUpdate", message.guild);
+      	this.client.emit("logUpdate", message.guild,command.reserve.log.replace('[member]', this.clientName).replace('[boss]', this.boss).replace('[comment]', this.comment));
+      	return;
+  	};
 
 }
 module.exports = ReserveCommand;
