@@ -22,7 +22,7 @@ class General extends Command {
       }
     } else if(args.comment){
         this.comment = args.comment;
-		let data = args.comment.match('<.*>')
+		let data = args.comment.match('<.*?>')
 		if(data){
 			if(message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR)){
         		this.clientID = data[0].replace('<@!','').replace('>', '')
