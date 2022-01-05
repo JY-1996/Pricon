@@ -1,6 +1,6 @@
 const { Listener } = require('discord-akairo')
 const UtilLib = require("../api/util-lib")
-const DatabaseManager = require("../classes/DatabaseManager");
+const NewDatabaseManager = require("../classes/NewDatabaseManager");
 const ChannelManager = require("../classes/ChannelManager");
 
 class ReportUpdateListener extends Listener { 
@@ -14,12 +14,12 @@ class ReportUpdateListener extends Listener {
    async exec(guild) {
     const db = this.client.db
     const guildID = guild.id
-    const dm = new DatabaseManager(db,guildID)
-    const cm = new ChannelManager(db,guildID)
+    const dm = new NewDatabaseManager(db, guildID)
+    const cm = new ChannelManager(db, guildID)
 
     let tableText = ''
     
-    const report_channel = await dm.getChannel('report')
+    const report_channel = await cm.getChannel('report')
     if(!report_channel){
       return
     }
@@ -28,48 +28,61 @@ class ReportUpdateListener extends Listener {
     if(!boardChannel){
         return 
     }
-    const boss_detail = await dm.getBossDetail()
-    const current_boss = boss_detail.current_boss
-    const current_phase = boss_detail.current_phase
-    const current_week = boss_detail.current_week
-    const current_boss_hp = boss_detail.current_boss_hp
+    const boss = await dm.getAllBoss()
+	const knife = await dm.getAllProcessingKnife()
+	let all_boss = []
+	await boss.forEach(doc => {
 
-    tableText += '現在為第' + current_phase + '階段' + current_week + '周'+ current_boss + '王，剩餘血量' + current_boss_hp + '萬\n--------------------------------------------------\n';
+		let data = doc.data()
 
-    const knifeQuery = await dm.getAllKnife()
-    let array = [[],[],[],[],[]]
+		all_boss[doc.id] = {
+			boss: doc.id,
+			current_boss_hp: data.current_boss_hp,
+			current_week: data.total_boss_died + 1,
+			boss_max_hp: data.boss_max_hp[dm.checkPhase(data.total_boss_died + 1)],
+			knife: []
+		}
+	})
 
-    knifeQuery.forEach(doc => {
-      if(doc.data().status != 'done'){
-        array[doc.data().boss - 1].push(doc.data())
-      }
-    })
-    array.forEach( (data,key) => {
-        if(data.length){
-            tableText += '`' + (key + 1) + '王\t預約者：                               `\n'
-            data.forEach(item => {
-              if(item.status == 'attacking'){
-                  tableText += '\t⚔'
-              }else{
-                  tableText += '\t⌛'
-              }
-          
-              if(item.comment){
-                let final = '\t' + item.member
+
+	let all_knife = []
+	await knife.forEach(doc => {
+		let data = doc.data()
+		all_boss[data.boss].knife.push(data)
+	})
+
+	all_boss.forEach(doc => {
+		let boss = doc.boss
+		let hp = doc.current_boss_hp
+		let max = doc.boss_max_hp
+		let week = doc.current_week
+		let knife = doc.knife
+	
+		tableText += '`' + boss + '王  第' + week + '周  (' + hp + ' / ' + max + ')                                `\n'
+		if(knife.length == 0){
+			tableText += "\t\t无預約者\n"
+		}
+		knife.forEach(doc => {
+			if(doc.status == 'attacking'){
+                tableText += '\t⚔'
+            }else{
+                tableText += '\t⌛'
+            }
+			if(doc.comment){
+                let final = '\t' + doc.member
                 var i;
-                for (i = 20; i > item.member.length; i--) {
+            	for (i = 20; i > doc.member.length; i--) {
                     final += ' ';
-                }
-                tableText += final + item.comment + '\n'
-              }else{
-                tableText += '\t' + item.member + '\n'
-              }
-            })
-        }else{
-            tableText += '`' + (key + 1) + '王\t無人預約                               `\n'
-        }
-    })
-    tableText += '\n最後更新：' + UtilLib.getFormattedDate();
+            	}
+                tableText += final + doc.comment + '\n'
+            }else{
+                tableText += '\t' + doc.member + '\n'
+            }
+		})
+	})
+
+	tableText += '\n最後更新：' + UtilLib.getFormattedDate();
+
     const board_message = await cm.getReportMessage()
     if (!board_message) {
         const boardMessage = await boardChannel.send(tableText);

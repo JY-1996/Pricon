@@ -82,31 +82,6 @@ class ChannelManager {
       }
     }
 
-    async setRoleId(value){
-      let queryRef =  this.db.collection('servers')
-                        .doc(this.guildID)
-                        .collection('setting')
-                        .doc('channel')
-      let query = await queryRef.get()
-      if(query.exists && query.data().role_id){
-          await queryRef.update({ role_id: value})
-      }else{
-          await queryRef.set({ role_id: value},{ merge: true })
-      }
-    }
-
-    async getRoleId(){
-      let queryRef =  this.db.collection('servers')
-                        .doc(this.guildID)
-                        .collection('setting')
-                        .doc('channel')
-      let query = await queryRef.get()
-      if(query.exists && query.data().role_id){
-          return query.data().role_id
-      }
-      return false
-    }
-
     async getMemberUpdateMessage(){
       let queryRef =  this.db.collection('servers')
                         .doc(this.guildID)
@@ -131,6 +106,29 @@ class ChannelManager {
           await queryRef.set({ member_update_board_message: value},{ merge: true })
       }
     }
+
+	async getChannel(channel){
+    	let queryRef =  this.db.collection('servers')
+    							.doc(this.guildID)
+    							.collection('setting')
+    							.doc('channel')
+   		let query = await queryRef.get()
+    	if(!query.exists){
+      		return false
+    	}
+    	if(channel == 'knife'){
+      		return query.data().knife   
+    	}else if(channel == 'log'){
+     		return query.data().log
+   		}else if(channel == 'report'){
+     		return query.data().report
+   		}
+   		else if(channel == 'member_update'){
+     		return query.data().member_update
+   		}
+   		return false
+ 	}
+
 }
 
 module.exports = ChannelManager

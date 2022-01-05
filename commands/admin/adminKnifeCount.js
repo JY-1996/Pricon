@@ -33,7 +33,7 @@ class AdminKnifeCountCommand extends Command {
       const guildID = message.guild.id
       const clientID = message.author.id
       const db = this.client.db
-      const dm = new AdminManager(db,guildID,clientID)
+      const dm = new AdminManager(db,guildID)
       
       let loadingMsg = await message.channel.send(strings.common.waiting);
 

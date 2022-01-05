@@ -1,6 +1,5 @@
 const { Listener } = require('discord-akairo')
 const AdminManager = require("../classes/AdminManager");
-const DatabaseManager  = require("../classes/DatabaseManager");
 const ChannelManager  = require("../classes/ChannelManager");
 const UtilLib = require("../api/util-lib");
 
@@ -16,18 +15,12 @@ class MemberUpdateListener extends Listener {
     const db = this.client.db
     const guildID = guild.id
     const am = new AdminManager(db,guildID)
-    const dm = new DatabaseManager(db,guildID)
     const cm = new ChannelManager(db,guildID)
 
-    const member_update_channel = await dm.getChannel('member_update')
+    const member_update_channel = await cm.getChannel('member_update')
     if(!member_update_channel){
       return
     }
-
-    // const role_id = await cm.getRoleId()
-    // if(!role_id){
-    //   return
-    // }
 
     const boardChannel = this.client.util.resolveChannel(member_update_channel, guild.channels.cache); 
     if(!boardChannel){
@@ -37,14 +30,6 @@ class MemberUpdateListener extends Listener {
     let array = {}
     let text = ''
 
-
-
-    // let memberList = guild.roles.cache.find(role => 
-    //   // role.id === '741160548577837157' //公會成員
-    //   role.id === role_id
-    //   ).members.map(member => 
-    //   member.user
-    //   )
     let total = 0
     let memberCount = 0
     let memberData = await am.getMemberData()
@@ -68,15 +53,14 @@ class MemberUpdateListener extends Listener {
         await cm.setMemberUpdateMessage(boardMessage.id)
         return;
     } else {
-       try {
-        const boardMessage = await boardChannel.messages.fetch(board_message)
-        boardMessage.edit(text);
-    } catch (e) {
-        console.log(e)
-        const boardMessage = await boardChannel.send(text)
-        await cm.setMemberUpdateMessage(boardMessage.id)
-
-    }
+       	try {
+        	const boardMessage = await boardChannel.messages.fetch(board_message)
+        	boardMessage.edit(text);
+    	} catch (e) {
+        	console.log(e)
+        	const boardMessage = await boardChannel.send(text)
+        	await cm.setMemberUpdateMessage(boardMessage.id)
+    	}
     };
     return
   }

@@ -1,5 +1,5 @@
 const { Listener } = require('discord-akairo')
-const DatabaseManager = require("../classes/DatabaseManager");
+const ChannelManager  = require("../classes/ChannelManager");
 
 class LogUpdateListener extends Listener { 
   constructor() {
@@ -13,12 +13,13 @@ class LogUpdateListener extends Listener {
     const db = this.client.db
     const guildID = guild.id
 
-    const dm = new DatabaseManager(db,guildID)
-    const log_channel = await dm.getChannel('log')
+	const cm = new ChannelManager(db,guildID)
+
+    const log_channel = await cm.getChannel('log')
       if(!log_channel){
          return
       }
-    const boardChannel = this.client.util.resolveChannel(log_channel, guild.channels.cache); 
+    const boardChannel = this.client.util.resolveChannel(log_channel,guild.channels.cache); 
     const boardMessage = await boardChannel.send(message);
     return;
   }

@@ -8,7 +8,7 @@ const AdminManager  = require("../../classes/AdminManager");
 class AdminBossCommand extends Command {
    constructor() {
       super('adminBoss', {
-         aliases: ['set'],
+         aliases: ['setboss'],
          cooldown: 3000,
          channel: 'guild',
          userPermissions: Permissions.FLAGS.ADMINISTRATOR,
@@ -39,29 +39,32 @@ class AdminBossCommand extends Command {
    };
 
    async exec(message, args) {
-      const guildID = message.guild.id
-      const clientID = message.author.id
-      const db = this.client.db
-      const dm = new AdminManager(db,guildID,clientID)
+      	const guildID = message.guild.id
+      	const clientID = message.author.id
+      	const db = this.client.db
+      	const dm = new AdminManager(db, guildID)
       
-      let loadingMsg = await message.channel.send(strings.common.waiting);
+      	let loadingMsg = await message.channel.send(strings.common.waiting);
 
-      const week = args.week
-      const boss = args.boss
+      	const week = args.week
+      	const boss = args.boss
 
-      const detail = await dm.resetBoss(week,boss)
+	  	if (boss < 1 || boss > 5) {
+      		loadingMsg.edit(strings.common.boss_out_of_range);
+      		return
+    	};
+
+      	const detail = await dm.resetBoss(boss, week)
       
-      const embed = new MessageEmbed();
-      embed.setColor("#90ffff");
-      embed.setTitle(admin.reset.field.replace('[week]', week).replace('[boss]', boss));
-      loadingMsg.delete()
-      await message.channel.send(embed);
-      this.client.emit("reportUpdate", message.guild);
+      	const embed = new MessageEmbed();
+      	embed.setColor("#90ffff");
+      	embed.setTitle(admin.reset.field.replace('[week]', week).replace('[boss]', boss));
+      	loadingMsg.delete()
+      	await message.channel.send(embed);
+      	this.client.emit("reportUpdate", message.guild);
 
-      return
-    }
-    
- 
+      	return
+    	}
 }
 module.exports = AdminBossCommand;
 

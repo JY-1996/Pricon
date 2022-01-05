@@ -1,4 +1,3 @@
-const Knife = require("../classes/Knife");
 class DatabaseManager {
 
   constructor(db,guildID,clientID = null) {
