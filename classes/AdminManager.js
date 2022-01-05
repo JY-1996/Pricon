@@ -71,7 +71,7 @@ class AdminManager {
             .collection('boss')
             .doc(String(current_boss))
         let query = await queryRef.get()
-       	let phase = this.checkPhase(current_week - 1)
+       	let phase = this.checkPhase(current_week)
 
         await queryRef.update({
             total_boss_died: current_week - 1,
@@ -192,14 +192,14 @@ class AdminManager {
             .get()
     }
 
-	checkPhase(total_boss_died){
-		if(total_boss_died > 40){
+	checkPhase(current_week){
+		if(current_week > 40){
   			return 4
-		}else if(total_boss_died > 30){
+		}else if(current_week > 30){
   			return 3
-		}else if(total_boss_died > 10){
+		}else if(current_week > 10){
   			return 2
-		}else if(total_boss_died > 3){
+		}else if(current_week > 3){
   			return 1
 		}else{
 			return 0

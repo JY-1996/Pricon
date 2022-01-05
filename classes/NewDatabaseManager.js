@@ -10,7 +10,7 @@ class NewDatabaseManager {
     	let memberData = await this.db.collection('servers')
       		.doc(this.guildID)
       		.collection('member')
-      		.where('member_id','==', this.clientID)
+      		.doc(this.clientID)
       		.get()
       	if(memberData.exists){
         	let data = memberData.data()
@@ -158,9 +158,10 @@ class NewDatabaseManager {
 			let boss_max_hp = data.data().boss_max_hp
 			let current_boss_hp = data.data().current_boss_hp
 			let total_boss_died = data.data().total_boss_died
+			let new_week = total_boss_died + 2
 			let new_hp = current_boss_hp - hp
 			if(new_hp <= 0){
-				let new_max_hp = boss_max_hp[this.checkPhase(total_boss_died + 1)]
+				let new_max_hp = boss_max_hp[this.checkPhase(new_week)]
 				await query.update({
           			total_boss_died: total_boss_died + 1,
 					current_boss_hp: new_max_hp
@@ -195,8 +196,8 @@ class NewDatabaseManager {
 			let boss_max_hp = data.data().boss_max_hp
 			let current_boss_hp = data.data().current_boss_hp
 			let total_boss_died = data.data().total_boss_died
-
-			let new_max_hp = boss_max_hp[this.checkPhase(total_boss_died + 1)]
+			let new_week = total_boss_died + 2
+			let new_max_hp = boss_max_hp[this.checkPhase(new_week)]
 			await query.update({
           		total_boss_died: total_boss_died + 1,
 				current_boss_hp: new_max_hp
@@ -246,7 +247,7 @@ class NewDatabaseManager {
 			}
 		}
 		//curr cannot more than min + 2
-		if(curr > min){
+		if(curr > min + 1){
 			return false
 		}
 		return true
@@ -275,14 +276,14 @@ class NewDatabaseManager {
       .get()
     }
 
-	checkPhase(total_boss_died){
-		if(total_boss_died > 40){
+	checkPhase(current_week){
+		if(current_week > 40){
   			return 4
-		}else if(total_boss_died > 30){
+		}else if(current_week > 30){
   			return 3
-		}else if(total_boss_died > 10){
+		}else if(current_week > 10){
   			return 2
-		}else if(total_boss_died > 3){
+		}else if(current_week > 3){
   			return 1
 		}else{
 			return 0
