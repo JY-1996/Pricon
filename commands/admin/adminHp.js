@@ -8,7 +8,7 @@ const AdminManager  = require("../../classes/AdminManager");
 class AdminHpCommand extends Command {
    constructor() {
       super('adminHp', {
-         aliases: ['setbosshp'],
+         aliases: ['setbosshp','sethp','sh'],
          cooldown: 3000,
          channel: 'guild',
          userPermissions: Permissions.FLAGS.ADMINISTRATOR,
