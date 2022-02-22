@@ -8,7 +8,7 @@ const AdminManager  = require("../../classes/AdminManager");
 class AdminBossCommand extends Command {
    constructor() {
       super('adminBoss', {
-         aliases: ['setboss'],
+         aliases: ['setboss','sb','sboss'],
          cooldown: 3000,
          channel: 'guild',
          userPermissions: Permissions.FLAGS.ADMINISTRATOR,
