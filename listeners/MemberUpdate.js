@@ -3,7 +3,7 @@ const AdminManager = require("../classes/AdminManager");
 const ChannelManager  = require("../classes/ChannelManager");
 const UtilLib = require("../api/util-lib");
 
-class MemberUpdateListener extends Listener { 
+class MemberUpdateListener extends Listener {
   constructor() {
     super('memberupdate', {
      emitter: 'client',
@@ -22,9 +22,9 @@ class MemberUpdateListener extends Listener {
       return
     }
 
-    const boardChannel = this.client.util.resolveChannel(member_update_channel, guild.channels.cache); 
+    const boardChannel = this.client.util.resolveChannel(member_update_channel, guild.channels.cache);
     if(!boardChannel){
-      return 
+      return
     }
 
     let array = {}
@@ -33,11 +33,13 @@ class MemberUpdateListener extends Listener {
     let total = 0
     let memberCount = 0
     let memberData = await am.getMemberData()
-        
+
     await memberData.forEach(doc => {
         let data = doc.data()
-        if(data.SL){
-          text += data.name + '出刀數：' + data.count + '(已SL)\n'
+        if(data.SL && data.SLmsg != ""){
+          text += data.name + '出刀數：' + data.count + '(已SL: ' + data.SLMsg + ')\n'
+        }else if(data.SL){
+            text += data.name + '出刀數：' + data.count + '(已SL)\n'
         }else{
           text += data.name + '出刀數：' + data.count + '\n'
         }

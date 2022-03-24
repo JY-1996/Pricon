@@ -6,7 +6,7 @@ const NewDatabaseManager = require("../../classes/NewDatabaseManager");
 const { Permissions } = require('discord.js');
 
 class General extends Command {
-  async exec(message, args) { 
+  async exec(message, args) {
 
     this.loadingMsg = await message.channel.send(strings.common.waiting);
 
@@ -14,6 +14,7 @@ class General extends Command {
     this.guildID = message.guild.id
     this.clientID = message.member.id
     this.comment = ""
+
     if(args.member){
       if(message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR)){
         this.clientID = args.member.id

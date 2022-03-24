@@ -150,7 +150,7 @@ class DatabaseManager {
       return false
     }
     if(channel == 'knife'){
-      return query.data().knife   
+      return query.data().knife
     }else if(channel == 'log'){
      return query.data().log
    }else if(channel == 'report'){
@@ -172,8 +172,8 @@ class DatabaseManager {
   const current_boss_hp = query.data().current_boss_hp
   const knife_count = query.data().knife_count
 
-  const current_week = parseInt(total_boss_died / 5) + 1 
-  const current_boss = total_boss_died % 5 + 1 
+  const current_week = parseInt(total_boss_died / 5) + 1
+  const current_boss = total_boss_died % 5 + 1
   let current_phase = 1
   if(current_week > 40){
     current_phase = 5
@@ -209,7 +209,7 @@ async nextBoss(){
  let reportBoss = await reportBossRef.get()
  let total_boss_died = reportBoss.data().total_boss_died
  let next_boss = total_boss_died + 1
- const current_week = parseInt(next_boss / 5) + 1 
+ const current_week = parseInt(next_boss / 5) + 1
  const current_boss = next_boss % 5
  let current_phase = 1
  if(current_week > 40){
@@ -262,11 +262,11 @@ async getMemberData(){
           SL: false,
           name: member_name,
           count: 0
-        })  
+        })
       }
     }
 
-    async setSL(member_id,member_name){
+    async setSL(member_id,member_name,message){
       let query = await this.db.collection('servers')
       .doc(this.guildID)
       .collection('member')
@@ -275,11 +275,13 @@ async getMemberData(){
       let data = await query.get()
       if(data.exists){
           await query.update({
-            SL: true
+            SL: true,
+            SLmsg: message
           })
       }else{
           await query.set({
             SL: true,
+            SLmsg: message,
             name: member_name,
             count: 0
           })
@@ -301,7 +303,7 @@ async getMemberData(){
         }
         await query.update({
           count: total
-        })  
+        })
       }else{
         await query.set({
           SL: false,

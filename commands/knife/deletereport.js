@@ -2,31 +2,23 @@ const strings = require("../../lib/string.json");
 const command = require("../../lib/command-info.json");
 const General = require("../../commands/knife/general.js");
 
-class SLCommand extends General {
+class DeleteReportCommand extends General {
   constructor() {
-    super("sl", {
-      aliases: ['sl'],
+    super("deletereport", {
+      aliases: ['n','next'],
       cooldown: 3000,
       channel: 'guild',
       args: [
-        {
-          id: "comment",
-          type: "string",
-          match: "restContent"
-        }
       ],
     });
   };
 
   async exec(message, args) {
     await super.exec(message,args)
-
-    await this.dm.setSL(this.comment)
-
-    this.loadingMsg.edit(command.sl.success);
-    this.client.emit("memberUpdate", message.guild);
+    const report = await this.dm.deleteReport()
+    this.loadingMsg.edit("留言刪除成功");
     return
   };
 
 }
-module.exports = SLCommand;
+module.exports = DeleteReportCommand;
