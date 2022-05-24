@@ -240,7 +240,7 @@ class NewDatabaseManager {
         }
       })
     }
-    if(['2','9','29','39'].includes(min)){
+    if(['2','9','29','37'].includes(min)){
       if(curr == min){
         return true
       }else{
@@ -318,7 +318,7 @@ class NewDatabaseManager {
   }
 
   checkPhase(current_week){
-    if(current_week > 40){
+    if(current_week > 38){
       return 4
     }else if(current_week > 30){
       return 3

@@ -5,7 +5,7 @@ const General = require("../../commands/knife/general.js");
 class AtkXCommand extends General {
    constructor() {
       super("atkx", {
-         aliases: ['ax','atkx'],
+         aliases: ['a','atk','ax','atkx'],
          cooldown: 3000,
          channel: 'guild',
          args: [
