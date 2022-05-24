@@ -240,7 +240,7 @@ class NewDatabaseManager {
         }
       })
     }
-    if(['2','9','29','37'].includes(min)){
+    if([2, 9, 29, 37].includes(min)){
       if(curr == min){
         return true
       }else{
