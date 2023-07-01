@@ -19,7 +19,8 @@ class SLCommand extends General {
   };
 
   async exec(message, args) {
-    await super.exec(message,args)
+    var result = await super.exec(message,args)
+      if(result == -1) { return }
 
     await this.dm.setSL(this.comment)
 

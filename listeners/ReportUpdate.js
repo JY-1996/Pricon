@@ -2,6 +2,7 @@ const { Listener } = require('discord-akairo')
 const UtilLib = require("../api/util-lib")
 const NewDatabaseManager = require("../classes/NewDatabaseManager");
 const ChannelManager = require("../classes/ChannelManager");
+const AdminManager = require("../classes/AdminManager");
 
 class ReportUpdateListener extends Listener { 
   constructor() {
@@ -16,6 +17,7 @@ class ReportUpdateListener extends Listener {
     const guildID = guild.id
     const dm = new NewDatabaseManager(db, guildID)
     const cm = new ChannelManager(db, guildID)
+    const am = new AdminManager(db, guildID)
 
     let tableText = ''
     
@@ -57,8 +59,8 @@ class ReportUpdateListener extends Listener {
 		let max = doc.boss_max_hp
 		let week = doc.current_week
 		let knife = doc.knife
-	
-		tableText += '`' + boss + '王  第' + week + '周  (' + hp + ' / ' + max + ')                                `\n'
+	    let phase = am.checkPhase(week) + 1
+		tableText += '`' + boss + '王 第' + phase + '阶段 第' + week + '周  (' + hp + ' / ' + max + ')                                `\n'
 		if(knife.length == 0){
 			tableText += "\t\t无預約者\n"
 		}

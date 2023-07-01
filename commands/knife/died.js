@@ -5,7 +5,7 @@ const General = require("../../commands/knife/general.js");
 class DiedCommand extends General {
    	constructor() {
       super("died", {
-         aliases: ['d','died'],
+         aliases: ['d','died','dc','diedc'],
          cooldown: 3000,
          channel: 'guild',
          args: [
@@ -26,7 +26,8 @@ class DiedCommand extends General {
    	};
 
    	async exec(message, args) {
-		await super.exec(message,args)
+		var result = await super.exec(message,args)
+    	if(result == -1) { return }
 
 		let knifeQuery = await this.dm.getAllKnifeAtkQuery()
     	let hasKnife = false

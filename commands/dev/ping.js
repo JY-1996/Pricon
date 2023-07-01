@@ -2,7 +2,6 @@ const { Command } = require("discord-akairo");
 const Prompter = require('discordjs-prompter');
 const { Listener } = require('discord-akairo')
 const AdminManager = require("../../classes/AdminManager");
-const DatabaseManager  = require("../../classes/DatabaseManager");
 const ChannelManager  = require("../../classes/ChannelManager");
 const UtilLib = require("../../api/util-lib");
 

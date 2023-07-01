@@ -34,8 +34,8 @@ class BossCommand extends General {
    	};
 
    	async exec(message, args) {
-    	await super.exec(message,args)
-
+    	var result = await super.exec(message,args)
+    	if(result == -1) { return }
       	const hp = args.hp;
 
 		let knifeQuery = await this.dm.getAllKnifeAtkQuery()

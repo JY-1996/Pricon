@@ -4,7 +4,6 @@ const db = require('../classes/Database')
 // const KnifeCountManager = require('../classes/KnifeCountManager')
 const InfoManager = require('../classes/InfoManager')
 const SettingManager = require('../classes/SettingsManager')
-const DatabaseManager = require('../classes/DatabaseManager')
 
 
 // let pm = new ProgressManager(db)
@@ -12,7 +11,6 @@ const DatabaseManager = require('../classes/DatabaseManager')
 // let kcm = new KnifeCountManager(db)
 let im = new InfoManager(db)
 let sm = new SettingManager(db)
-let dm = new DatabaseManager(db)
 
 module.exports = {
   //  ProgressManager: pm,
@@ -20,5 +18,4 @@ module.exports = {
   //  KnifeCountManager: kcm,
    InfoManager: im,
    SettingManager: sm,
-   DatabaseManager: dm
 }

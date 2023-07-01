@@ -27,7 +27,8 @@ class ReserveCommand extends General {
   };
 
   async exec(message, args) { 
-      	await super.exec(message,args)
+      	var result = await super.exec(message,args)
+      if(result == -1) { return }
 
       	let count = await this.dm.getKnifeCount()
       	if(count >= 3){

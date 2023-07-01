@@ -20,18 +20,18 @@ class General extends Command {
         this.clientID = args.member.id
       }else{
         this.loadingMsg.edit(strings.common.no_permission);
-        return
+        return -1
       }
     } else if(args.comment != null){
       this.comment = args.comment;
       let data = args.comment.match('<.*?>')
       if(data){
         if(message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR)){
-          this.clientID = data[0].replace('<@!','').replace('>', '')
-          this.comment = this.comment.replace(data[0], '')
+          this.clientID = data[0].replace('>', '').replace('<@','')
+          this.comment = this.comment.replace(data, '')
         }else{
           this.loadingMsg.edit(strings.common.no_permission);
-          return
+          return -1
         }
       }
     }
@@ -43,10 +43,11 @@ class General extends Command {
     this.boss = args.boss;
     if (this.boss < 1 || this.boss > 5) {
       this.loadingMsg.edit(strings.common.boss_out_of_range);
-      return
+      return -1
     };
 
     await this.dm.insertMember(this.clientID, this.clientName)
+    return 0
   }
 
 }
