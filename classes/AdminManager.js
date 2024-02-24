@@ -193,11 +193,9 @@ class AdminManager {
     }
 
 	checkPhase(current_week){
-		if(current_week > 40){
-  			return 4
-		}else if(current_week > 30){
+		if(current_week > 25){
   			return 3
-		}else if(current_week > 10){
+		}else if(current_week > 9){
   			return 2
 		}else if(current_week > 3){
   			return 1

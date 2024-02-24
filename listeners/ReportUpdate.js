@@ -33,6 +33,7 @@ class ReportUpdateListener extends Listener {
     const boss = await dm.getAllBoss()
 	const knife = await dm.getAllProcessingKnife()
 	let all_boss = []
+
 	await boss.forEach(doc => {
 
 		let data = doc.data()
