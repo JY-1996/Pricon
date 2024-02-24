@@ -25,7 +25,7 @@ class AdminManager {
             .set({
                 total_boss_died: 0,
                 current_boss_hp: 600,
-                boss_max_hp: [600, 800, 2000, 20000]
+                boss_max_hp: [600, 800, 2000, 27000]
             })
         await this.db.collection('servers')
             .doc(this.guildID)
@@ -34,7 +34,7 @@ class AdminManager {
             .set({
                 total_boss_died: 0,
                 current_boss_hp: 800,
-                boss_max_hp: [800, 1000, 2200, 21000]
+                boss_max_hp: [800, 1000, 2200, 28000]
             })
         await this.db.collection('servers')
             .doc(this.guildID)
@@ -43,7 +43,7 @@ class AdminManager {
             .set({
                 total_boss_died: 0,
                 current_boss_hp: 1000,
-                boss_max_hp: [1000, 1300, 2500, 23000]
+                boss_max_hp: [1000, 1300, 2500, 30000]
             })
         await this.db.collection('servers')
             .doc(this.guildID)
@@ -52,7 +52,7 @@ class AdminManager {
             .set({
                 total_boss_died: 0,
                 current_boss_hp: 1200,
-                boss_max_hp: [1200, 1500, 2800, 24000]
+                boss_max_hp: [1200, 1500, 2800, 31000]
             })
         await this.db.collection('servers')
             .doc(this.guildID)
@@ -61,7 +61,7 @@ class AdminManager {
             .set({ 
                 total_boss_died: 0,
                 current_boss_hp: 1500,
-                boss_max_hp: [1500, 2000, 3000, 25000]
+                boss_max_hp: [1500, 2000, 3000, 32000]
             })
     }
 
@@ -192,17 +192,15 @@ class AdminManager {
             .get()
     }
 
-	checkPhase(current_week){
-		if(current_week > 25){
-  			return 3
-		}else if(current_week > 9){
-  			return 2
-		}else if(current_week > 3){
-  			return 1
-		}else{
-			return 0
-		}	
-	}
+	 checkPhase(current_week){
+        if(current_week > 22){
+            return 3
+        }else if(current_week > 6){
+            return 2
+        }else{
+            return 1
+        }   
+    }
 }
 
 module.exports = AdminManager

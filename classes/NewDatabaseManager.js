@@ -318,16 +318,14 @@ class NewDatabaseManager {
   }
 
   checkPhase(current_week){
-    if(current_week > 25){
-      return 3
-    } else if(current_week > 9){
-      return 2
-    } else if(current_week > 3){
-      return 1
-    } else {
-      return 0
-    }
-  }
+		if(current_week > 22){
+  			return 3
+		}else if(current_week > 6){
+  			return 2
+		}else{
+			return 1
+		}	
+	}
 }
 
 module.exports = NewDatabaseManager
